@@ -11,7 +11,7 @@ export default function AdminPage() {
     }, [])
     console.log(confirmInfo);
 
-    function handleClick(e) {
+    function handleSectionClick(e) {
         e.preventDefault();
         setSection(e.target.name)
     }
@@ -29,13 +29,13 @@ export default function AdminPage() {
                         </div>
                     </NavLink>
                     <div className="d-flex flex-column">
-                        <a name="register-requests" onClick={handleClick}
+                        <a name="register-requests" onClick={handleSectionClick}
                             href="#"
                             className="admin-list-item border rounded py-2 mb-2 text center"
                         >
                             Kayıt İstekleri
                         </a>
-                        <a name="comment-request" onClick={handleClick}
+                        <a name="comment-requests" onClick={handleSectionClick}
                             href="#"
                             className="admin-list-item border rounded py-2 text center"
                         >
@@ -44,9 +44,9 @@ export default function AdminPage() {
                     </div>
                 </div>
 
-                <div className="w-75 operation-container">
+                <div className=" w-75">
                     <div className="row justify-content-end my-3">
-                        <div className="col-md-6 d-flex justify-content-end mb-5">
+                        <div className="d-flex justify-content-end mb-3 position-fixed">
                             <div className="btn-group">
                                 <a
                                     href="#"
@@ -54,7 +54,10 @@ export default function AdminPage() {
                                     data-bs-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false"
-                                ><img width={40} className="rounded-circle" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" alt="" /></a>
+                                >
+                                    <img width={40} className="rounded-circle me-1" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" alt="" />
+                                    <span>Ad Soyad</span>
+                                </a>
                                 <div
                                     className="dropdown-menu"
                                     x-placement="bottom-start"
@@ -66,11 +69,8 @@ export default function AdminPage() {
                                         transform: "translate3d(0px, 100px, 0px)"
                                     }}
                                 >
-                                    
+
                                     <a className="dropdown-item d-flex align-items-center" href="#">
-                                        <div className="icon d-flex align-items-center justify-content-center mr-3">
-                                            <span className="ion-ios-power" />
-                                        </div>
                                         Çıkış
                                     </a>
                                 </div>
@@ -78,13 +78,13 @@ export default function AdminPage() {
                         </div>
                     </div>
 
-                    <section className="row pt-5 justify-content-center text-center">
-                        <div className="w-75">
+                    <section className=" row pt-5 text-center">
+                        <div className="operation-container d-flex flex-column justify-content-center">
                             ÖRNEK KAYIT İSTEĞİ
-                            <RegisterRequest/>
+                            <RegisterRequests />
                             {section === null && <Welcome />}
-                            {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequest key={companyInfo.companyId} {...companyInfo} />)}
-                            {section === "comment-request" && <CommentRequest />}
+                            {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequests key={companyInfo.companyId} {...companyInfo} />)}
+                            {section === "comment-requests" && <CommentRequests />}
 
                         </div>
                     </section>
@@ -99,14 +99,14 @@ export default function AdminPage() {
 function Welcome() {
     return (
         <div className="d-flex flex-column justify-content-center align-items-center gap-3 pt-5">
-            <h1 style={{zIndex:"4"}}>Hoş geldiniz!</h1>
+            <h1 style={{ zIndex: "4" }}>Hoş geldiniz!</h1>
             <p>Hemen yandan bir işlem seçin ve <span className="text-info">İK</span>olaylayın!</p>
-            <img width="60%" style={{opacity:0.2, position:"absolute"}} src="img/ikolay-welcome.svg"></img>
+            <img width="60%" style={{ opacity: 0.2, position: "absolute" }} src="img/ikolay-welcome.svg"></img>
         </div>
     )
 }
 
-function RegisterRequest({ companyId, email, firstname, lastname, companyName, taxNo }) {
+function RegisterRequests({ companyId, email, firstname, lastname, companyName, taxNo }) {
     const defConfirm = { isAccepted: true, companyId: companyId, email: email, content: "" }; //content: "Üzgünüz"
     const [confirm, setConfirm] = useState({ isAccepted: true, companyId: companyId, email: email, content: "" }); //content: "Üzgünüz"
 
@@ -153,7 +153,7 @@ function RegisterRequest({ companyId, email, firstname, lastname, companyName, t
     }
 
     return (
-        <div className="border rounded p-2 d-flex flex-column justify-content-between align-items-center register-request-bg my-4">
+        <div className="border rounded p-2 d-flex flex-column justify-content-between align-items-center request-bg my-2">
             <p><span>Şirket Adı:</span> {companyName}</p>
             <p><span>Vergi No:</span> {taxNo}</p>
             <p><span>Yetkili Ad-Soyad:</span> {firstname} {lastname}</p>
@@ -222,9 +222,133 @@ function RegisterRequest({ companyId, email, firstname, lastname, companyName, t
     )
 }
 
-function CommentRequest() {
+function CommentRequests() {
+    const [pendingComments, setPendingComments] = useState([])
+
+    useEffect(() => {
+        fetch("http://localhost/comment/findallcommentforadmin")
+            .then(resp => resp.json())
+            .then(data => setPendingComments(data))
+            .catch(err => console.log(err));
+    }, [])
+
+
     return (
-        <>
-        </>
+        pendingComments.map(comment => <CommentRow key={comment.userId} {...comment} comments={pendingComments} setComments={setPendingComments} />)
     )
+}
+
+function CommentRow({ id, companyId, userId, content, comments, setComments }) {
+    const [user, setUser] = useState({ firstname: "", lastname: "" });
+    const [company, setCompany] = useState({ companyName: "", taxNo: "" });
+    const [toggle, setToggle] = useState(true);
+
+
+
+    function handleClick(e) {
+        if (e.target.name == "accept") {
+            fetch(`http://localhost/comment/acceptcomment/${id}`).then(resp => {
+                if (resp.ok) {
+                    setComments(comments.filter(comment => comment.id != id));
+                }
+            }).catch(err => console.log(err))
+        } else {
+            fetch(`http://localhost/comment/rejectcomment/${id}`).then(resp => {
+                if (resp.ok) {
+                    setComments(comments.filter(comment => comment.id != id));
+                }
+            }).catch(err => console.log(err))
+        }
+    }
+    function handleToggle(e) {
+        setToggle(false)
+    }
+    return (
+        <div className="request-bg border rounded p-2 d-flex flex-column justify-content-between align-items-center request-bg my-2">
+            <span className="mb-3 fw-bold">{content}</span>
+            <div className="d-flex justify-content-center align-items-center gap-2">
+                <button className="btn btn-info btn-sm" onClick={handleClick} name="accept">Onayla</button>
+                <button className="btn btn-warning btn-sm" onClick={handleClick} name="reject">Reddet</button>
+                <button type="button"
+                    className="btn btn-secondary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target={`#modalAdd${userId}`}
+                    onClick={handleToggle}>Detay</button>
+                <div
+                    className="modal fade"
+                    id={`modalAdd${userId}`}
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h1 style={{ color: "black" }} className="modal-title fs-5" id="exampleModalLabel">
+                                    Çalışan ve Firma Detayları:
+                                </h1>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                />
+                            </div>
+                            <div className="modal-body">
+                                <form typeof="submit">
+                                    <div className="form-group ">
+                                        {toggle ? <label >Kullanici yükleniyor.</label> : <GetFirstAndLastName userId={userId} user={user} setUser={setUser} />}
+                                        {toggle ? <label >Firma yükleniyor.</label> : <GetCompanyNameAndTaxNo companyId={companyId} company={company} setCompany={setCompany} />}
+
+                                    </div>
+                                    <div className="modal-footer justify-content-end">
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                            data-bs-dismiss="modal"
+                                        >
+                                            Kapat
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+
+}
+
+
+function GetFirstAndLastName({ userId, user, setUser }) {
+    useEffect(() => {
+        fetch(`http://localhost/user/getusersfirstandlastname/${userId}`).then(resp => resp.json()).then(data => {
+            if (!data.firstname)
+                throw new Error(data.message);
+            setUser(data);
+        }).catch(err => console.log(err))
+    }, [])
+
+    return <>
+        <label className="fw-bold">Kullanici Ad Soyad:</label>
+        <p>{user.firstname} {user.lastname}</p>
+    </>
+}
+
+function GetCompanyNameAndTaxNo({ companyId, company, setCompany }) {
+    useEffect(() => {
+        fetch(`http://localhost/company/companyinformation?id=${companyId}`).then(resp => resp.json()).then(data => {
+            if (!data.taxNo)
+                throw new Error(data.message);
+            setCompany(data);
+        })
+    }, []);
+
+
+    return <><label className="fw-bold">Firma Adı ve Vergi Numarası:</label>
+        <p>{company.companyName} {company.taxNo}</p></>
+
 }
