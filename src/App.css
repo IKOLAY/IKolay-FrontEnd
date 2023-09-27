@@ -1,0 +1,175 @@
+/* GENERAL PROPERTIES */
+
+:root {
+    --font--Sniglet: 'Sniglet', cursive;
+    --font--Rubik: 'Rubik', sans-serif;
+    --font--Poppins:'Poppins', sans-serif;
+
+    --bg--gradient: linear-gradient(to bottom, #04182D, #003C6B);
+    --text--dark: #04182D;
+    --text--light: #CED4DA;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    color: var(--text--dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 10px 0;
+}
+
+a {
+    font-family: var(--font--Poppins);
+    text-decoration: none;
+}
+
+header {
+    background: var(--bg--gradient);
+    color: var(--text--light)
+}
+
+main {
+    font-family: var(--font--Rubik);
+}
+
+footer {
+    color: var(--text--dark);
+    padding: 15px 0;
+}
+
+.bg-default {
+    background: var(--bg--gradient);
+    color: var(--text--light);
+    height: 100vh;
+}
+
+.bg-ikolay-light-h-100 {
+    background-color: var(--text--light);
+    color: var(--text--dark);
+    height: 100vh;
+}
+
+.bg-ikolay-light {
+    background-color: var(--text--light);
+    color: var(--text--dark);
+}
+
+.logo-text {
+    font-family: var(--font--Sniglet);
+    text-decoration: none;
+    font-size: 18px;
+    color: var(--text--light);
+}
+
+.logo-dark-text {
+    font-family: var(--font--Sniglet);
+    text-decoration: none;
+    font-size: 18px;
+    color: var(--text--dark);
+}
+
+.logo-span {
+    font-family: var(--font--Sniglet);
+}
+
+.container {
+    padding: 20px;
+}
+
+.container-fluid {
+    padding: 20px;
+}
+
+.text-def {
+    color: var(--text--dark);
+}
+
+/* NAVBAR PROPERTIES */
+
+.nav-link {
+    color: var(--text--light)
+}
+
+
+.nav-link:hover {
+    color: #54B4D3;
+}
+
+.nav-link-dark {
+    color: var(--text--dark);
+}
+
+.nav-link-dark:hover {
+    color: #54B4D3;
+}
+
+.navbar-toggler-icon {
+    background-image: url("/img/icons/navbar-toggler.svg");
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+/* HOME PAGE | HERO SECTION (in header) */
+
+#hero .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#hero img {
+    width: max(30vw, 250px);
+}
+
+/* HOME PAGE | SERVICE SECTION (in header) */
+
+#services {
+    background: var(--bg--gradient);
+    color: var(--text--light)
+}
+
+#services li img {
+    margin-right: 15px;
+}
+
+#services li {
+    padding-bottom: 20px;
+}
+
+/* ADMIN PAGE | Register Request */
+
+.register-request-bg {
+    background-color: rgba(206, 212, 218, 0.5);
+    color: var(--text--dark);
+}
+
+.register-request-bg p span {
+    font-weight: 600;
+}
+
+.admin-sidebar {
+    max-width: 200px;
+}
+
+.admin-list-item {
+    color: var(--text--dark);
+
+}
+
+.admin-list-item:hover {
+    color: var(--text--light);
+    background-color: var(--text--dark);
+    transition: 0.4s;
+    
+}
+
+
+
