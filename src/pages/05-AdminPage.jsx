@@ -103,7 +103,7 @@ function Welcome() {
     return (
         <div className="d-flex flex-column justify-content-center align-items-center gap-3 pt-5 mt-5">
             <h1 style={{ zIndex: "4" }}>Hoş geldiniz!</h1>
-            <p>Hemen yandan bir işlem seçin ve <span className="text-info">İK</span>olaylayın!</p>
+            <p>Hemen yan menüden bir işlem seçin ve <span className="text-info">İK</span>olaylayın!</p>
             <img width="60%" style={{ opacity: 0.2, position: "absolute" }} src="img/ikolay-welcome.svg"></img>
         </div>
     )
