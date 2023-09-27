@@ -19,13 +19,15 @@ function SelectRole({ setRole }) {
 
 
             <form typeof="submit" className="d-flex flex-column">
-                <NavLink to="/">
-                    <div className="form-outline mb-4 text-center">
-                        <a className="navbar-brand logo-text " href="#">
-                            <span className="text-info">İK</span>olay
-                        </a>
-                    </div>
-                </NavLink>
+
+                <div className="form-outline mb-4 text-center">
+                    <NavLink className="navbar-brand logo-text" to="/">
+                        <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
+
+                        <span className="text-info">İK</span>olay
+                    </NavLink>
+                </div>
+
                 <div className="form-outline">
                     <label className="form-label" htmlFor="email">
                         Hangi seçenek sizi daha iyi tanımlıyor?
@@ -86,13 +88,13 @@ function RegisterCompanyManager() {
     return (
         <main className="bg-default d-flex justify-content-center align-items-center">
             <form typeof="submit" onSubmit={handleSubmit} className="d-flex align-items-center flex-column" >
-                <NavLink to="/">
-                    <div className="text-center mb-4">
-                        <a className="navbar-brand logo-text " href="#">
-                            <span className="text-info">İK</span>olay Kayıt
-                        </a>
-                    </div>
-                </NavLink>
+            <div className="form-outline mb-4 text-center">
+                    <NavLink className="navbar-brand logo-text" to="/">
+                        <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
+
+                        <span className="text-info">İK</span>olay
+                    </NavLink>
+                </div>
 
                 <label className="form-label" htmlFor="companyName">
                     Şirket Adı
@@ -139,7 +141,7 @@ function RegisterCompanyManager() {
 
                 <button className="btn btn-info w-100  mb-2" disabled={user.email == "" && true} type="submit">GÖNDER</button>
 
-                <a  className="w-100" href="http://localhost:5173/register">
+                <a className="w-100" href="http://localhost:5173/register">
                     <button className="btn btn-secondary w-100" type="button">Vazgeç</button>
                 </a>
             </form>
@@ -228,12 +230,11 @@ function RegisterGuest() {
                 </label>
 
 
-                <div className="d-flex flex-row justify-content-between gap-4 w-100">
-                    <a href="http://localhost:5173/register">
-                        <button className="btn btn-secondary" type="button">Vazgeç</button>
-                    </a>
-                    <button className="btn btn-info" disabled={user.email == "" && true} type="submit">GÖNDER</button>
-                </div>
+                <button className="btn btn-info w-100  mb-2" disabled={user.email == "" && true} type="submit">GÖNDER</button>
+
+                <a className="w-100" href="http://localhost:5173/register">
+                    <button className="btn btn-secondary w-100" type="button">Vazgeç</button>
+                </a>
 
             </form>
         </main>

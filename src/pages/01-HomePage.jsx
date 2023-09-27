@@ -102,11 +102,11 @@ function HomeHeader() {
     return (
         <header className="container-fluid px-5 text-center">
             <nav className="navbar navbar-expand-lg">
-                <a className="navbar-brand logo-text" href="#">
+                <NavLink className="navbar-brand logo-text" to="/">
                     <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
 
                     <span className="text-info">İK</span>olay
-                </a>
+                </NavLink>
                 <button
                     className="navbar-toggler"
                     type="button "
