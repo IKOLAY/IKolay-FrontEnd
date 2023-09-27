@@ -16,6 +16,13 @@ export default function AdminPage() {
         setSection(e.target.name)
     }
 
+    function handleLogout(e) {
+        window.localStorage.clear("token")
+        window.localStorage.clear("user")
+        window.localStorage.clear("company")
+        window.localStorage.clear("shift")
+    }
+
     return (
         <main className="container-fluid bg-default m-0 p-0">
             <div className="row m-0">
@@ -45,8 +52,8 @@ export default function AdminPage() {
                 </div>
 
                 <div className=" w-75">
-                    <div className="row justify-content-end my-3">
-                        <div className="d-flex justify-content-end mb-3 position-fixed">
+                    <div className="row justify-content-end">
+                        <div className="d-flex justify-content-end mt-2 position-fixed">
                             <div className="btn-group">
                                 <a
                                     href="#"
@@ -70,18 +77,16 @@ export default function AdminPage() {
                                     }}
                                 >
 
-                                    <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <NavLink className="dropdown-item d-flex align-items-center" to="/" onClick={handleLogout}>
                                         Çıkış
-                                    </a>
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <section className=" row pt-5 text-center">
-                        <div className="operation-container d-flex flex-column justify-content-center">
-                            ÖRNEK KAYIT İSTEĞİ
-                            <RegisterRequests />
+                    <section className=" row pt-5 mt-5 text-center">
+                        <div className="operation-container d-flex flex-column justify-content-center mt-3">
                             {section === null && <Welcome />}
                             {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequests key={companyInfo.companyId} {...companyInfo} />)}
                             {section === "comment-requests" && <CommentRequests />}
@@ -98,7 +103,7 @@ export default function AdminPage() {
 
 function Welcome() {
     return (
-        <div className="d-flex flex-column justify-content-center align-items-center gap-3 pt-5">
+        <div className="d-flex flex-column justify-content-center align-items-center gap-3 pt-5 mt-5">
             <h1 style={{ zIndex: "4" }}>Hoş geldiniz!</h1>
             <p>Hemen yandan bir işlem seçin ve <span className="text-info">İK</span>olaylayın!</p>
             <img width="60%" style={{ opacity: 0.2, position: "absolute" }} src="img/ikolay-welcome.svg"></img>
