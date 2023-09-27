@@ -28,7 +28,7 @@ export default function AdminPage() {
             <div className="row m-0">
                 <div className="w-25 bg-ikolay-light-h-100 admin-sidebar text-center small">
                     <NavLink to="/">
-                        <div className="my-4">
+                        <div className="my-3">
                             <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
                             <span className="navbar-brand logo-dark-text">Admin</span>
                         </div>
@@ -51,7 +51,7 @@ export default function AdminPage() {
 
                 <div className=" w-75">
                     <div className="row justify-content-end">
-                        <div className="w-75 d-flex justify-content-end mt-2 position-fixed end-0">
+                        <div className="w-75 d-flex justify-content-end mt-3 position-fixed end-0">
                             <div className="btn-group">
                                 <a
                                     href="#"
@@ -103,7 +103,7 @@ function Welcome() {
     return (
         <div className="d-flex flex-column justify-content-center align-items-center gap-3 pt-5 mt-5">
             <h1 style={{ zIndex: "4" }}>Hoş geldiniz!</h1>
-            <p>Hemen yan menüden bir işlem seçin ve <span className="text-info">İK</span>olaylayın!</p>
+            <h4 style={{ zIndex: "4" }}>Hemen yan menüden bir işlem seçin ve <span className="text-info">İK</span>olaylayın!</h4>
             <img width="60%" style={{ opacity: 0.2, position: "absolute" }} src="img/ikolay-welcome.svg"></img>
         </div>
     )
