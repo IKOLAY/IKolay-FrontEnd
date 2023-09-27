@@ -104,7 +104,6 @@ function HomeHeader() {
             <nav className="navbar navbar-expand-lg">
                 <NavLink className="navbar-brand logo-text" to="/">
                     <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
-
                     <span className="text-info">İK</span>olay
                 </NavLink>
                 <button

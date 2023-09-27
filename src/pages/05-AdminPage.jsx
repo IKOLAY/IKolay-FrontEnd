@@ -28,11 +28,9 @@ export default function AdminPage() {
             <div className="row m-0">
                 <div className="w-25 bg-ikolay-light-h-100 admin-sidebar text-center small">
                     <NavLink to="/">
-                        <div className="text-center py-4 border-bottom mb-4 ps-0  ">
-                            <a className="navbar-brand logo-dark-text" href="#">
-                                <img width={25} src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
-                                <small>Admin</small>
-                            </a>
+                        <div className="my-4">
+                            <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
+                            <span className="navbar-brand logo-dark-text">Admin</span>
                         </div>
                     </NavLink>
                     <div className="d-flex flex-column">
@@ -53,7 +51,7 @@ export default function AdminPage() {
 
                 <div className=" w-75">
                     <div className="row justify-content-end">
-                        <div className="d-flex justify-content-end mt-2 position-fixed">
+                        <div className="w-75 d-flex justify-content-end mt-2 position-fixed end-0">
                             <div className="btn-group">
                                 <a
                                     href="#"
