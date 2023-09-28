@@ -28,7 +28,7 @@ export default function AdminPage() {
             <div className="row m-0">
                 <div className="w-25 bg-ikolay-light-h-100 admin-sidebar text-center small">
                     <NavLink to="/">
-                        <div className="my-3">
+                        <div className="my-2 border-bottom pb-2  border-secondary">
                             <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
                             <span className="navbar-brand logo-dark-text">Admin</span>
                         </div>
