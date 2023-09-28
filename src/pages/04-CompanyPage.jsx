@@ -10,7 +10,7 @@ export default function CompanyPage() {
 
     return (
         <main className="container-fluid bg-default m-0 p-0">
-            <ul className="col-10 nav nav-tabs py-2" id="myTab" role="tablist">
+            <ul className="col-12 nav nav-tabs pt-3" id="myTab" role="tablist">
                 <li className="nav-item" role="presentation">
                     <button
                         className="nav-link active"
@@ -39,11 +39,10 @@ export default function CompanyPage() {
                         Personel Sayfam
                     </button>
                 </li>
-                
             </ul>
             <div className="col-2">
-                    <div className=" justify-content-end">
-                        <div className=" d-flex justify-content-end position-fixed top-0 end-0 mt-2">
+                    <div className=" justify-content-end pt-2">
+                        <div className=" d-flex justify-content-end position-fixed top-0 end-0 ">
                             <div className="btn-group">
                                 <a
                                     href="#"
