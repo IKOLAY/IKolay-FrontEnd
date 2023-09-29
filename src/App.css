@@ -35,14 +35,20 @@ main {
 }
 
 footer {
-    color: var(--text--dark);
     padding: 15px 0;
+    background-color: var(--bg--gradient);
+    color: var(--text--light);
 }
 
 .bg-default {
     background: var(--bg--gradient);
     color: var(--text--light);
     height: 100vh;
+}
+
+.bg-default-footer {
+    background: var(--bg--gradient);
+    color: var(--text--light);
 }
 
 .bg-ikolay-light-h-100 {

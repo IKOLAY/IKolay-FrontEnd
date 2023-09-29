@@ -91,6 +91,8 @@ export default function HomePage() {
                         </div>
                     </div>
                 </section>
+
+                <Clients />
             </main>
             <HomeFooter />
 
@@ -165,9 +167,218 @@ function HomeHeader() {
     )
 }
 
+function Clients() {
+    return (
+        <section className=" text-def text-center">
+            <div className="container">
+                <div className="row">
+                <div className="col-12">
+                        <h2 className=" text-def">Müşterilerimiz</h2>
+                    </div>
+                    
+                    <div className="col-4"></div>
+                    <div className="col-12">
+                        <div
+                            id="carouselExampleIndicators"
+                            className="carousel slide"
+                            data-bs-ride="carousel"
+                        >
+                            <div className="carousel-inner">
+                                <div className="carousel-item active">
+                                    <div className="row">
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="carousel-item">
+                                    <div className="row">
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="carousel-item">
+                                    <div className="row">
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card">
+                                                <div className="bg-light d-flex justify-content-center rounded">
+                                                    <img
+                                                        className="w-50 rounded-circle py-4"
+                                                        alt="100%x280"
+                                                        src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
+                                                    />
+                                                </div>
+                                                <div className="card-body">
+                                                    <h4 className="card-title">Company Name</h4>
+                                                    <p className="card-text">
+                                                        Company About
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div className="col-12 text-center mt-2">
+                        <button
+                            className="btn btn-secondary me-5"
+                            href="#carouselExampleIndicators"
+                            role="button"
+                            data-bs-slide="prev"
+                        >
+                            <i className="fa fa-arrow-left" />
+                        </button>
+                        <button
+                            className="btn btn-secondary "
+                            href="#carouselExampleIndicators"
+                            role="button"
+                            data-bs-slide="next"
+                        >
+                            <i className="fa fa-arrow-right" />
+                        </button>
+                    </div>
+            </div>
+        </section>
+    )
+}
+
 function HomeFooter() {
     return (
-        <footer className="d-flex align-items-center justify-content-center bg-dark-subtle">
+        <footer className="d-flex align-items-center justify-content-center bg-default-footer">
             <small>© 2022 İKolay, Inc</small>
         </footer>
 
