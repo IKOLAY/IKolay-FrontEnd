@@ -1,4 +1,4 @@
-import { NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 
@@ -23,24 +23,26 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
             return (
                 <a href="#clients" className="nav-link-dark">{linkTitle}</a>
             )
-        } else if(linkTitle === "Personel"){
+        } else if (linkTitle === "Personel") {
             return (
                 <div className="d-flex flex-column justify-content-center align-items-center">
                     {window.location.href !== `http://localhost:5173${navLink}` && <NavLink to={navLink} className="nav-link-dark">{linkTitle}
-            </NavLink>}
-                    
-            <button className="border btn btn-info rounded w-75" name="employee-profile" onClick={setSection}>Profil</button>
+                    </NavLink>}
+
+                    <button className="border btn btn-info rounded w-75" name="employee-profile" onClick={setSection}>Profil</button>
                 </div>
             )
         }
         return (
-            <NavLink to={navLink} className="nav-link-dark">{linkTitle}
-            </NavLink>
+            <>
+                {window.location.href !== `http://localhost:5173${navLink}` && <NavLink to={navLink} className="nav-link-dark">{linkTitle}
+                </NavLink>}
+            </>
         )
     }
 
     return (
-        <div className="avatar-dropdown pe-3 ps-3" style={{marginTop:"-10px"}}>
+        <div className="avatar-dropdown pe-3 ps-3" style={{ marginTop: "-10px" }}>
             <div className="btn-group">
                 <a
                     href="#"

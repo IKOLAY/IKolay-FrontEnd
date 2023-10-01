@@ -30,15 +30,17 @@ export default function AdminPage() {
 
     return (
         <main className="container-fluid bg-default-h-100 m-0 p-0">
-            <div className="row m-0">
-                <div className="w-25 bg-ikolay-light-h-100 ikolay-sidebar text-center small pt-2">
-                    <NavLink to="/">
-                        <div className="my-4 border-bottom pb-4  border-secondary">
+            <div className="d-flex m-0">
+                <div className="w-25 bg-ikolay-light-h-100 ikolay-sidebar text-center small p-2" >
+                    <div className="border-bottom border-secondary py-3 mb-1">
+                        <NavLink to="/">
                             <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
-                            <span className="navbar-brand logo-dark-text">Admin</span>
-                        </div>
-                    </NavLink>
-                    <div className="d-flex flex-column">
+                        </NavLink>
+                        <NavLink to="/admin">
+                            <span className="navbar-brand logo-dark-text nav-link-dark">Admin</span>
+                        </NavLink>
+                    </div>
+                    <div className="d-flex flex-column my-4">
                         <a name="register-requests" onClick={handleSectionClick}
                             href="#"
                             className="ikolay-list-item border border-secondary rounded py-2 mb-2 text center"
@@ -54,23 +56,20 @@ export default function AdminPage() {
                     </div>
                 </div>
 
-                <div className="w-75">
+                <div className="w-100 d-flex mx-2">
                     <div className="position-fixed end-0 mt-4">
-                    <AvatarDropdown userNameTitle="Admin Adı" userEmailTitle="Admin Email" user={user} role={role} />
+                        <AvatarDropdown userNameTitle="Admin Adı" userEmailTitle="Admin Email" user={user} role={role} />
                     </div>
 
-                    <section className="row pt-5 mt-5 text-center">
-                        <div className="operation-container d-flex flex-column justify-content-center">
-                            <RegisterRequests />
-                            {section === null && <DashboardWelcome />}
-                            {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequests key={companyInfo.companyId} {...companyInfo} />)}
-                            {section === "comment-requests" && <CommentRequests />}
+                    <section className="operation-container d-flex flex-column text-center justify-content-center">
 
-                        </div>
+                        {section === null && <DashboardWelcome />}
+                        {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequests key={companyInfo.companyId} {...companyInfo} />)}
+                        {section === "comment-requests" && <CommentRequests />}
+
+
                     </section>
                 </div>
-
-                <div className="col-2"></div>
             </div>
         </main >
     )
@@ -240,7 +239,7 @@ function CommentRow({ id, companyId, userId, content, comments, setComments }) {
                 <button className="btn btn-info btn-sm" onClick={handleClick} name="accept">Onayla</button>
                 <button className="btn btn-warning btn-sm" onClick={handleClick} name="reject">Reddet</button>
                 <button type="button"
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-light btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target={`#modalAdd${userId}`}
                     onClick={handleToggle}>Detay</button>
