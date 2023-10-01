@@ -341,7 +341,7 @@ function EmployeeReviews({ content }) {
             </div>
             <div className="d-flex flex-row justify-content-start">
                 <img
-                    src="https://cdn-icons-png.flaticon.com/512/4974/4974985.png"
+                    src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random()*7)}-bg.webp`}
                     alt="avatar 1"
                     style={{ width: 45, height: "100%" }}
                 />
