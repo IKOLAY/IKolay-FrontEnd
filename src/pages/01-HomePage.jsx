@@ -1,12 +1,10 @@
-import { createContext, useContext, useState } from "react";
+
 import { NavLink } from "react-router-dom";
 import AvatarDropdown from "../components/AvatarDropdown";
 
-const UserContext = createContext(null);
-const RoleContext = createContext(null);
 
 export default function HomePage() {
-
+    let role = window.localStorage.getItem("role");
     return (
         <>
             <HomeHeader />
@@ -104,8 +102,7 @@ export default function HomePage() {
 }
 
 function HomeHeader() {
-    let user = JSON.parse(window.localStorage.getItem("user"))
-    let role = window.localStorage.getItem("role");
+    
     return (
         <header className="container-fluid px-5 text-center">
             <nav className="navbar navbar-expand-lg ">
@@ -148,11 +145,9 @@ function HomeHeader() {
                         </li>
 
                         <li className="nav-item">
-                            <RoleContext.Provider value={role}>
-                                <UserContext.Provider value={user}>
+
                                     <RoleButtons />
-                                </UserContext.Provider>
-                            </RoleContext.Provider>
+
                         </li>
                     </ul>
                 </div>
@@ -179,6 +174,8 @@ function HomeHeader() {
 }
 
 function RoleButtons() {
+    let role = window.localStorage.getItem("role");
+    let user = JSON.parse(window.localStorage.getItem("user"))
     switch (role) {
         case null:
             return (
