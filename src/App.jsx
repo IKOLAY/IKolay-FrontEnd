@@ -18,6 +18,7 @@ function App() {
       <Route path='/company' element={<CompanyPage />} />
       <Route path='/admin' element={<AdminPage/>} />
       <Route path='/employee' element={<EmployeePage/>} />
+
     </Routes>
   )
 }

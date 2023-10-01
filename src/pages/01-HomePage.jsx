@@ -1,10 +1,30 @@
 
 import { NavLink } from "react-router-dom";
 import AvatarDropdown from "../components/AvatarDropdown";
+import { useEffect, useState } from "react";
+import CompanyBadge from "../components/CompanyBadge";
 
 
 export default function HomePage() {
     let role = window.localStorage.getItem("role");
+    const [companyList, setCompanyList] = useState([])
+    if (localStorage.getItem("user") != null) {
+        useEffect(() => {
+            fetch(`http://localhost/company/findbycompanynametopfive`)
+                .then
+                (response => {
+                    console.log(response);
+                    if (!response.ok)
+                        throw new Error("Hata olustu")
+                    return response.json();
+                }).then(data => {
+                    console.log(data);
+                    setCompanyList(data)
+                }).catch(err => console.log(err));
+        }, [])
+    }
+
+
     return (
         <>
             <HomeHeader />
@@ -94,7 +114,7 @@ export default function HomePage() {
                         </div>
                     </div>
                 </section>
-                {role !== null && <Clients />}
+                {role !== null && companyList.length !== 0 && <Clients companyList={companyList} />}
             </main>
             <HomeFooter />
         </>
@@ -102,7 +122,7 @@ export default function HomePage() {
 }
 
 function HomeHeader() {
-    
+
     return (
         <header className="container-fluid px-5 text-center">
             <nav className="navbar navbar-expand-lg ">
@@ -146,7 +166,7 @@ function HomeHeader() {
 
                         <li className="nav-item">
 
-                                    <RoleButtons />
+                            <RoleButtons />
 
                         </li>
                     </ul>
@@ -157,7 +177,7 @@ function HomeHeader() {
                 <div className="row">
                     <div className="col-md-6 col-sm-12">
                         <h5>İnsan Kaynakları Yönetimi artık çok kolay!</h5>
-                        <h1>Siz de <span className="logo-span"><span className="text-info logo-text">İK</span>olay</span> Ailesine Katılın</h1>
+                        <h1>Siz de <span className="logo-span logo-text" style={{ fontSize: "1em" }}><span className="text-info logo-text" style={{ fontSize: "1em" }}>İK</span>olay</span> Ailesine Katılın</h1>
                         <p className="lead">Şirketinizin büyümesine destek olmak için buradayız. İnsan kaynakları yönetimini basit ve etkili hale getiren güçlü bir çözüm sunuyoruz. <br /> Personel onboarding, maaş ve ödemeler, vardiyalar ve daha fazlasını kolayca yönetin.</p>
                         <NavLink to="/register">
                             <button className="btn btn-info px-4 py-2">Hemen Ücretsiz Kaydol!</button>
@@ -194,21 +214,14 @@ function RoleButtons() {
         case "ADMIN":
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <li className="nav-item">
-                        <NavLink to="/admin" className="nav-link text-decoration-underline">Admin</NavLink>
-                    </li>
-                    <li>
-                        <AvatarDropdown userNameTitle={"Admin Adı:"} userEmailTitle={"Admin Email:"} user={user} role={role} />
-                    </li>
+                    <AvatarDropdown userNameTitle={"Admin Adı:"} userEmailTitle={"Admin Email:"} user={user} role={role} />
                 </div>
             )
 
         case "MANAGER":
             return (
                 <div className="d-flex justify-content-center gap-1">
-
                     <AvatarDropdown userNameTitle={"Yönetici Adı:"} userEmailTitle={"Yönetici Email:"} user={user} role={role} />
-
                 </div>
             )
 
@@ -216,12 +229,7 @@ function RoleButtons() {
         case "EMPLOYEE":
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <li className="nav-item">
-                        <NavLink to="/employee" className="nav-link text-decoration-underline">Personel</NavLink>
-                    </li>
-                    <li>
-                        <AvatarDropdown userNameTitle={"Personel Adı:"} userEmailTitle={"Personel Email:"} user={user} role={role} />
-                    </li>
+                    <AvatarDropdown userNameTitle={"Personel Adı:"} userEmailTitle={"Personel Email:"} user={user} role={role} />
                 </div>
             )
 
@@ -229,245 +237,124 @@ function RoleButtons() {
         case "VISITOR":
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <li>
-                        <AvatarDropdown userNameTitle={"Kullanıcı Adı:"} userEmailTitle={"Kullanıcı Email:"} user={user} role={role} />
-                    </li>
+                    <AvatarDropdown userNameTitle={"Kullanıcı Adı:"} userEmailTitle={"Kullanıcı Email:"} user={user} role={role} />
                 </div>
             )
 
     }
 }
 
-function Clients() {
+function Clients({ companyList }) {
     return (
-        <section id="clients">
-            <section className=" text-def text-center">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-12">
-                            <h2 className="text-def">Müşterilerimiz</h2>
-                        </div>
+        <section id="clients" className="d-flex justify-content-center">
+            <div className="d-flex overflow-y-hidden overflow-x-auto justify-content-start gap-1 p-3">
+                {companyList.length !== 0 && companyList.map(company => <CarouselCard key={company.companyName} {...company} />)}
+            </div>
+        </section>
+    )
+}
 
-                        <form className="d-flex col-12 form-inline mb-3">
-                            <input
-                                className="form-control me-1"
-                                type="search"
-                                placeholder="Şirket ara..."
-                                aria-label="Search"
-                            />
-                            <button className="btn btn-info my-2 my-sm-0" type="submit">
-                                Ara
-                            </button>
-                        </form>
+function CarouselCard(props) {
+    const [reviews, setReviews] = useState([]);
 
-                        <div className="col-4"></div>
+    useEffect(() => {
+        fetch(`http://localhost:80/comment/findallcommentforguest?companyId=${props.id}`).then(response => {
+            console.log(response);
+            if (!response.ok)
+                throw new Error("Hata Var")
+            return response.json()
+        }).then(data => {
+            console.log(data);
+            setReviews(data)
+        }).then(error => console.log(error));
+    }, [])
 
-                        <div className="col-12">
-                            <div
-                                id="carouselExampleIndicators"
-                                className="carousel slide"
-                                data-bs-ride="carousel"
-                            >
-                                <div className="carousel-inner">
-                                    <div className="carousel-item active">
-                                        <div className="row">
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
+    return (
+
+        <div className="text-center">
+            <button className="border-0 m-0 p-0 rounded" type="button" data-bs-toggle="modal" data-bs-target={`#modal-${props.id}`}>
+                <div className="card" style={{ minWidth: "200px", maxWidth: "200px" }}>
+                    <div className="bg-light d-flex justify-content-center rounded p-2">
+                        <img
+                            className="rounded-circle-clients"
+                            alt="şirket logosu"
+                            src={props.logo}
+                        />
+                    </div>
+                    <div className="card-body">
+                        <h4 className="card-title small p-3">{props.companyName}</h4>
+                    </div>
+                </div>
+            </button>
+            <div
+                className="modal fade bd-example-modal-lg"
+                tabIndex={-1}
+                role="dialog"
+                aria-labelledby="myLargeModalLabel"
+                aria-hidden="true"
+                id={`modal-${props.id}`}
+            >
+                <div className="modal-dialog modal-lg bg-default text-def">
+                    <CompanyBadge company={{ ...props }} />
+                    <section className="bg-default">
+                        <div className="container py-5 w-100">
+                            <div className="row d-flex justify-content-center">
+                                <div className="col-9">
+                                    <div className="card">
+                                        <div
+                                            className="card-header d-flex justify-content-center align-items-center p-3 "
+                                            style={{ borderTop: "4px solid #ffa900" }}
+                                        >
+                                            <h5 className="mb-0">Çalışan Değerlendirmeleri</h5>
                                         </div>
-                                    </div>
-                                    
-                                    <div className="carousel-item">
-                                        <div className="row">
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div
+                                            className="card-body"
+                                            data-mdb-perfect-scrollbar="true"
+                                            style={{ position: "relative", }}
+                                        >
+                                            {reviews.map((review, index) => <EmployeeReviews key={index} {...review} />
+                                            )}
+                                        </div>
+                                        <div className="card-footer text-muted d-flex justify-content-start align-items-center p-3">
                                            
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="carousel-item">
-                                        <div className="row">
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="col-md-4 mb-3">
-                                                <div className="card">
-                                                    <div className="bg-light d-flex justify-content-center rounded">
-                                                        <img
-                                                            className="w-50 rounded-circle py-4"
-                                                            alt="100%x280"
-                                                            src="https://media.istockphoto.com/id/1281009425/vector/three-elements-triangle-symbol-abstract-business-logotype.jpg?s=612x612&w=0&k=20&c=CyXS_u8bP7T4V-fh_bmj0pm360JU3LrC9CG3mdpq87M="
-                                                        />
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <h4 className="card-title">Company Name</h4>
-                                                        <p className="card-text">
-                                                            Company About
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div className="col-12 text-center mt-2">
-                        <button
-                            className="btn btn-secondary me-5"
-                            href="#carouselExampleIndicators"
-                            role="button"
-                            data-bs-slide="prev"
-                        >
-                            <i className="fa fa-arrow-left" />
-                        </button>
-                        <button
-                            className="btn btn-secondary "
-                            href="#carouselExampleIndicators"
-                            role="button"
-                            data-bs-slide="next"
-                        >
-                            <i className="fa fa-arrow-right" />
-                        </button>
-                    </div>
+                    </section>
+
                 </div>
-            </section>
-        </section>
+            </div>
+        </div>
+
+
+    )
+}
+
+function EmployeeReviews({ content }) {
+    return (
+        <>
+            <div className="d-flex justify-content-between">
+                <p className="small mb-1"></p>
+                <p className="small mb-1 text-muted">23 Ocak 2023</p>
+            </div>
+            <div className="d-flex flex-row justify-content-start">
+                <img
+                    src="https://cdn-icons-png.flaticon.com/512/4974/4974985.png"
+                    alt="avatar 1"
+                    style={{ width: 45, height: "100%" }}
+                />
+                <div>
+                    <p
+                        className="small p-2 ms-3 mb-3 rounded-3"
+                        style={{ backgroundColor: "#f5f6f7" }}
+                    >
+                        {content}
+                    </p>
+                </div>
+            </div>
+        </>
     )
 }
 

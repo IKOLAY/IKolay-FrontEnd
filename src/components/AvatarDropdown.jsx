@@ -29,7 +29,7 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
     }
 
     return (
-        <div className="pe-3 ps-3">
+        <div className="pe-3 ps-3" style={{marginTop:"-10px"}}>
             <div className="btn-group">
                 <a
                     href="#"
@@ -38,7 +38,7 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
                     aria-haspopup="true"
                     aria-expanded="false"
                 >
-                    <img width={32} className="avatar rounded-circle pt-2 me-1" src={user.photoUrl} alt="" />
+                    <img width={40} className="avatar rounded-circle pt-2 me-1" src={user.photoUrl} alt="" />
                 </a>
                 <div
                     className="dropdown-menu"

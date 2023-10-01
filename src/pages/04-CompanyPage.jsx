@@ -139,6 +139,7 @@ export default function CompanyPage() {
                                     </NavLink>
                                 </div>
                             <CompanyBadge company={company} />
+                            <button className="btn btn-sm btn-info mb-2">Şirket Bilgilerini Düzenle</button>
                             <ul className="list-unstyled border-top border-secondary d-flex flex-column gap-2 pt-2">
                                 <li className="mb-1">
                                     <button

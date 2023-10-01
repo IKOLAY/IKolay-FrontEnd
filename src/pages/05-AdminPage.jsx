@@ -55,7 +55,7 @@ export default function AdminPage() {
                 </div>
 
                 <div className="w-75">
-                    <div className="position-fixed end-0">
+                    <div className="position-fixed end-0 mt-4">
                     <AvatarDropdown userNameTitle="Admin Adı" userEmailTitle="Admin Email" user={user} role={role} />
                     </div>
 
