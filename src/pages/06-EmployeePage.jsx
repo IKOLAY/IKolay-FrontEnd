@@ -79,8 +79,12 @@ export default function EmployeePage() {
 
     return (
         <main className="row bg-default-h-100 m-0 p-0">
-            <div className="col-1 px-2 bg-ikolay-light ikolay-sidebar text-center small" style={{ height: "100%", width: "36%" }}>
-
+            <div className="d-flex m-0 p-0 " id="myTabContent" >
+            <div className="position-fixed end-0 pt-2">
+                    <AvatarDropdown userNameTitle={"Personel Adı"} userEmailTitle={"Personel Email"} user={defUser} role={role} setSection={handleSectionClick} />
+            </div>
+            <div className=" px-2 bg-ikolay-light ikolay-sidebar text-center small" style={{ height: "100%", width: "36%" }}>
+            
                 <div className="border-bottom border-secondary py-2 mb-1">
                     <NavLink to="/">
                         <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
@@ -217,9 +221,6 @@ export default function EmployeePage() {
                 </ul>
             </div>
             <div className="operation-container col d-flex">
-                <div className="position-fixed end-0 pt-4">
-                    <AvatarDropdown userNameTitle={"Personel Adı"} userEmailTitle={"Personel Email"} user={defUser} role={role} setSection={handleSectionClick} />
-                </div>
                 <section className="col-12 d-flex flex-column text-center justify-content-center px-2">
                     {section === null && <DashboardWelcome />}
                     {section === "public-holidays" && <PublicHolidays />}
@@ -230,7 +231,7 @@ export default function EmployeePage() {
 
                 </section>
             </div>
-
+            </div>
         </main>
     )
 }

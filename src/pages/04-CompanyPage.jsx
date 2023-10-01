@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import DashboardWelcome from "../components/DashboardWelcome";
 import { useState, useEffect } from "react";
-import { WarningMessage } from "../components/InfoMessages";
 import EmployeeList from "../components/companyPageComponents/02-EmployeeList";
 import EmployeeLeave from "../components/companyPageComponents/01-EmployeeLeave";
 import ShiftSystem from "../components/companyPageComponents/05-EmployeeShiftSystem";
@@ -11,6 +10,7 @@ import IncomingPayments from "../components/companyPageComponents/07-IncomingPay
 import AddIncomeOutcome from "../components/companyPageComponents/06-AddIncomeOutCome";
 import AvatarDropdown from "../components/AvatarDropdown";
 import CompanyBadge from "../components/CompanyBadge";
+import EmployeePage from "./06-EmployeePage";
 
 export default function CompanyPage() {
     const [section, setSection] = useState(null);
@@ -319,12 +319,12 @@ export default function CompanyPage() {
 
                 </div>
                 <div
-                    className="tab-pane fade h-100"
+                    className="tab-pane fade h-100 overflow-hidden"
                     id="employee"
                     role="tabpanel"
                     aria-labelledby="employee-tab"
                 >
-                    ...
+                    <EmployeePage />
                 </div>
 
             </div>
