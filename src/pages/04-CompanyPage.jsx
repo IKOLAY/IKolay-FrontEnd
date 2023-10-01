@@ -1,104 +1,238 @@
 import { NavLink } from "react-router-dom";
+import DashboardWelcome from "../components/DashboardWelcome";
+import { useState, useEffect } from "react";
+import { WarningMessage } from "../components/InfoMessages";
+import EmployeeList from "../components/companyPageComponents/02-EmployeeList";
+import EmployeeLeave from "../components/companyPageComponents/01-EmployeeLeave";
+import ShiftSystem from "../components/companyPageComponents/05-EmployeeShiftSystem";
+import AnnualProfitLoss from "../components/companyPageComponents/03-AnnualProfitLoss";
+import AllExpenses from "../components/companyPageComponents/04-AllExpenses";
+import IncomingPayments from "../components/companyPageComponents/07-IncomingPayments";
+import AddIncomeOutcome from "../components/companyPageComponents/06-AddIncomeOutCome";
+import AvatarDropdown from "../components/AvatarDropdown";
+import CompanyBadge from "../components/CompanyBadge";
 
 export default function CompanyPage() {
-    function handleLogout(e) {
-        window.localStorage.clear("token")
-        window.localStorage.clear("user")
-        window.localStorage.clear("company")
-        window.localStorage.clear("shift")
+    const [section, setSection] = useState(null);
+    const [ariaExpandedEmployee, setAriaExpandedEmployee] = useState(false);
+    const [ariaExpandedFinance, setAriaExpandedFinance] = useState(false);
+
+    let defCompany = JSON.parse(window.localStorage.getItem("company"));
+    const [company, setCompany] = useState({ ...defCompany })
+
+
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    const role = window.localStorage.getItem("role");
+
+
+    function handleSectionClick(e) {
+        e.preventDefault();
+        setSection(e.target.name);
     }
 
-    return (
-        <main className="container-fluid bg-default m-0 p-0">
-            <ul className="col-12 nav nav-tabs pt-3" id="myTab" role="tablist">
-                <li className="nav-item" role="presentation">
-                    <button
-                        className="nav-link active"
-                        id="home-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#home"
-                        type="button"
-                        role="tab"
-                        aria-controls="home"
-                        aria-selected="true"
-                    >
-                        Şirket Sayfası
-                    </button>
-                </li>
-                <li className="nav-item" role="presentation">
-                    <button
-                        className="nav-link"
-                        id="profile-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#profile"
-                        type="button"
-                        role="tab"
-                        aria-controls="profile"
-                        aria-selected="false"
-                    >
-                        Personel Sayfam
-                    </button>
-                </li>
-            </ul>
-            <div className="col-2">
-                    <div className=" justify-content-end pt-2">
-                        <div className=" d-flex justify-content-end position-fixed top-0 end-0 ">
-                            <div className="btn-group">
-                                <a
-                                    href="#"
-                                    className="btn-img img dropdown-toggle text-white"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <img width={40} className="rounded-circle me-1" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" alt="" />
-                                </a>
-                                <div
-                                    className="dropdown-menu"
-                                    x-placement="bottom-start"
-                                    style={{
-                                        position: "absolute",
-                                        willChange: "transform",
-                                        top: 0,
-                                        left: 0,
-                                        transform: "translate3d(0px, 100px, 0px)"
-                                    }}
-                                >
+    function handleAriaExpandedEmployee() {
+        if (ariaExpandedEmployee === false) {
+            setAriaExpandedEmployee(true)
+        } else {
+            setAriaExpandedEmployee(false)
+        }
+    }
 
-                                    <NavLink className="dropdown-item d-flex align-items-center" to="/" onClick={handleLogout}>
-                                        Çıkış
+    function handleAriaExpandedFinance() {
+        if (ariaExpandedFinance === false) {
+            setAriaExpandedFinance(true)
+        } else {
+            setAriaExpandedFinance(false)
+        }
+    }
+
+    function handleCancelEditCompany(e) {
+        setCompany({ ...defCompany })
+    }
+
+    function handleEditCompany(e) {
+        console.log(company)
+        setCompany({ ...company, [e.target.name]: e.target.value })
+    }
+
+    function handleSaveEditCompany() {
+        fetch("http://localhost:80/company/update", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(company)
+        }).then
+            (response => {
+                console.log(response);
+                return response.json();
+            }).then(data => {
+                console.log(data);
+                if (data.message) {
+
+                    throw new Error(data.message)
+                }
+                localStorage.setItem("company", JSON.stringify(data))
+                setCompany({ ...data })
+            }).catch(err => {
+                setCompany({ ...defCompany })
+                console.log(err);
+            });
+    }
+
+
+    return (
+        <main className="container-fluid bg-default-h-100 m-0 p-0">
+            <div className="col-12" style={{ height: "7%" }}>
+                <ul className="col-12 nav nav-tabs " id="myTab" role="tablist">
+                    <li className="nav-item" role="presentation">
+                        <button
+                            className="nav-link active"
+                            id="company-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#company"
+                            type="button"
+                            role="tab"
+                            aria-controls="company"
+                            aria-selected="true"
+                        >
+                            Şirket Sayfası
+                        </button>
+                    </li>
+                    <li className="nav-item" role="presentation">
+                        <button
+                            className="nav-link"
+                            id="wmployee-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#employee"
+                            type="button"
+                            role="tab"
+                            aria-controls="employee"
+                            aria-selected="false"
+                        >
+                            Personel Sayfam
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div className="tab-content container-fluid m-0 p-0 " id="myTabContent" style={{ height: "91%" }}>
+                <div
+                    className="w-100 tab-pane fade show active"
+                    id="company"
+                    role="tabpanel"
+                    aria-labelledby="company-tab"
+                    style={{ height: "100%" }}
+                >
+
+                    <div className="d-flex" style={{ height: "100%" }}>
+                        <div className="position-fixed end-0">
+                        <AvatarDropdown userNameTitle="Yönetici Adı" userEmailTitle="Yönetici Email" user={user} role={role}/>
+                        </div>
+                        <div className=" px-2 bg-ikolay-light ikolay-sidebar text-center small" style={{ height: "100%", width: "36%" }}>
+                            
+                                <div className="border-bottom border-secondary py-2 mb-1">
+                                    <NavLink to="/">
+                                    <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
+                                    </NavLink>
+                                    <NavLink to="/company">
+                                    <span className="navbar-brand logo-dark-text nav-link-dark">Kurumsal</span>
                                     </NavLink>
                                 </div>
-                            </div>
+                            <CompanyBadge company={company} />
+                            <ul className="list-unstyled border-top border-secondary d-flex flex-column gap-2 pt-2">
+                                <li className="mb-1">
+                                    <button
+                                        className="btn align-items-center ikolay-list-item collapsed border-secondary mb-2 w-100"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#employee-collapse"
+                                        onClick={handleAriaExpandedEmployee}
+                                    >
+                                        <span className="btn-toggle-employee me-1" aria-expanded={ariaExpandedEmployee}></span>Personel
+                                    </button>
+                                    <div className="collapse" id="employee-collapse">
+                                        <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 d-flex flex-column gap-2">
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="employee-list" onClick={handleSectionClick}>
+                                                    Liste
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="employee-leave" onClick={handleSectionClick}>
+                                                    İzin
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="employee-shift" onClick={handleSectionClick}>
+                                                    Vardiya
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li className="mb-1">
+                                    <button
+                                        className="btn align-items-center rounded collapsed ikolay-list-item border-secondary w-100 mb-2"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#finance-collapse"
+                                        onClick={handleAriaExpandedFinance}
+                                    >
+                                        <span className="btn-toggle-finance me-1" aria-expanded={ariaExpandedFinance}></span>Finans
+                                    </button>
+                                    <div className="collapse" id="finance-collapse">
+                                        <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 d-flex flex-column gap-2">
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="profit-loss" onClick={handleSectionClick}>
+                                                    Kar / Zarar
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="all-expenses" onClick={handleSectionClick}>
+                                                    Tüm Giderler
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="incoming-payments" onClick={handleSectionClick}>
+                                                    Yaklaşan Ödemeler
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="add-income-outcome" onClick={handleSectionClick}>
+                                                    Gelir/Gider Gir
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
+                        <section className="operation-container d-flex flex-column text-center justify-content-center px-2">
+                            {section === null && <DashboardWelcome />}
+                            {section === "employee-list" && <EmployeeList />}
+                            {section === "employee-leave" && <EmployeeLeave />}
+                            {section === "employee-shift" && <ShiftSystem/>}
+                            {section === "profit-loss" && <AnnualProfitLoss />}
+                            {section === "all-expenses" && <AllExpenses />}
+                            {section === "incoming-payments" && <IncomingPayments />}
+                            {section === "add-income-outcome" && <AddIncomeOutcome />}
+
+
+
+                        </section>
                     </div>
+
                 </div>
-            <div className="tab-content" id="myTabContent">
                 <div
-                    className="tab-pane fade show active"
-                    id="home"
+                    className="tab-pane fade h-100"
+                    id="employee"
                     role="tabpanel"
-                    aria-labelledby="home-tab"
+                    aria-labelledby="employee-tab"
                 >
                     ...
                 </div>
-                <div
-                    className="tab-pane fade"
-                    id="profile"
-                    role="tabpanel"
-                    aria-labelledby="profile-tab"
-                >
-                    ...
-                </div>
-                <div
-                    className="tab-pane fade"
-                    id="contact"
-                    role="tabpanel"
-                    aria-labelledby="contact-tab"
-                >
-                    ...
-                </div>
+
             </div>
         </main>
     )
 }
+

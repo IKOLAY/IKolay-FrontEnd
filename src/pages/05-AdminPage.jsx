@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom"
+import DashboardWelcome from "../components/DashboardWelcome";
+import AvatarDropdown from "../components/AvatarDropdown";
 
 export default function AdminPage() {
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    const role = window.localStorage.getItem("role");
     const [section, setSection] = useState(null)
 
     const [confirmInfo, setConfirmInfo] = useState([]);
@@ -21,14 +25,15 @@ export default function AdminPage() {
         window.localStorage.clear("user")
         window.localStorage.clear("company")
         window.localStorage.clear("shift")
+        window.localStorage.clear("role")
     }
 
     return (
-        <main className="container-fluid bg-default m-0 p-0">
+        <main className="container-fluid bg-default-h-100 m-0 p-0">
             <div className="row m-0">
-                <div className="w-25 bg-ikolay-light-h-100 admin-sidebar text-center small">
+                <div className="w-25 bg-ikolay-light-h-100 ikolay-sidebar text-center small pt-2">
                     <NavLink to="/">
-                        <div className="my-2 border-bottom pb-2  border-secondary">
+                        <div className="my-4 border-bottom pb-4  border-secondary">
                             <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
                             <span className="navbar-brand logo-dark-text">Admin</span>
                         </div>
@@ -36,56 +41,28 @@ export default function AdminPage() {
                     <div className="d-flex flex-column">
                         <a name="register-requests" onClick={handleSectionClick}
                             href="#"
-                            className="admin-list-item border rounded py-2 mb-2 text center"
+                            className="ikolay-list-item border border-secondary rounded py-2 mb-2 text center"
                         >
                             Kayıt İstekleri
                         </a>
                         <a name="comment-requests" onClick={handleSectionClick}
                             href="#"
-                            className="admin-list-item border rounded py-2 text center"
+                            className="ikolay-list-item border border-secondary rounded py-2 text center"
                         >
                             Yorum İstekleri
                         </a>
                     </div>
                 </div>
 
-                <div className=" w-75">
-                    <div className="row justify-content-end">
-                        <div className="w-75 d-flex justify-content-end mt-3 position-fixed end-0">
-                            <div className="btn-group">
-                                <a
-                                    href="#"
-                                    className="btn-img img dropdown-toggle text-white"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    <img width={40} className="rounded-circle me-1" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" alt="" />
-                                    <span>Ad Soyad</span>
-                                </a>
-                                <div
-                                    className="dropdown-menu"
-                                    x-placement="bottom-start"
-                                    style={{
-                                        position: "absolute",
-                                        willChange: "transform",
-                                        top: 0,
-                                        left: 0,
-                                        transform: "translate3d(0px, 100px, 0px)"
-                                    }}
-                                >
-
-                                    <NavLink className="dropdown-item d-flex align-items-center" to="/" onClick={handleLogout}>
-                                        Çıkış
-                                    </NavLink>
-                                </div>
-                            </div>
-                        </div>
+                <div className="w-75">
+                    <div className="position-fixed end-0">
+                    <AvatarDropdown userNameTitle="Admin Adı" userEmailTitle="Admin Email" user={user} role={role} />
                     </div>
 
-                    <section className=" row pt-5 mt-5 text-center">
-                        <div className="operation-container d-flex flex-column justify-content-center mt-3">
-                            {section === null && <Welcome />}
+                    <section className="row pt-5 mt-5 text-center">
+                        <div className="operation-container d-flex flex-column justify-content-center">
+                            <RegisterRequests />
+                            {section === null && <DashboardWelcome />}
                             {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequests key={companyInfo.companyId} {...companyInfo} />)}
                             {section === "comment-requests" && <CommentRequests />}
 
@@ -96,16 +73,6 @@ export default function AdminPage() {
                 <div className="col-2"></div>
             </div>
         </main >
-    )
-}
-
-function Welcome() {
-    return (
-        <div className="d-flex flex-column justify-content-center align-items-center gap-3 pt-5 mt-5">
-            <h1 style={{ zIndex: "4" }}>Hoş geldiniz!</h1>
-            <h4 style={{ zIndex: "4" }}>Hemen yan menüden bir işlem seçin ve <span className="text-info">İK</span>olaylayın!</h4>
-            <img width="60%" style={{ opacity: 0.2, position: "absolute" }} src="img/ikolay-welcome.svg"></img>
-        </div>
     )
 }
 
@@ -124,7 +91,7 @@ function RegisterRequests({ companyId, email, firstname, lastname, companyName, 
         }).then(resp => {
             console.log(resp);
             if (!resp.ok)
-                throw new Error("Hata initiate");
+                throw new Error("Üzgünüz, bir hata oluştu!");
             return resp.json();
         }).then(data => {
             setConfirm({ ...defConfirm })
@@ -140,7 +107,7 @@ function RegisterRequests({ companyId, email, firstname, lastname, companyName, 
             body: JSON.stringify(confirm)
         }).then(resp => {
             if (!resp.ok)
-                throw new Error("Hata initiate");
+                throw new Error("Üzgünüz, bir hata oluştu!");
             return resp.json();
         }).then(data => {
             setConfirm({ ...defConfirm })

@@ -15,7 +15,7 @@ export default function RegisterPage() {
 
 function SelectRole({ setRole }) {
     return (
-        <main className="bg-default d-flex justify-content-center align-items-center">
+        <main className="bg-default-h-100 d-flex justify-content-center align-items-center">
 
 
             <form typeof="submit" className="d-flex flex-column">
@@ -77,7 +77,7 @@ function RegisterCompanyManager() {
             body: JSON.stringify(user)
         }).then(resp => {
             if (!resp.ok)
-                throw new Error("Hata initiate");
+                throw new Error("Üzgünüz, bir hata oluştu!");
             return resp.json();
         }).then(data => {
             setUser({ ...defUser })
@@ -86,7 +86,7 @@ function RegisterCompanyManager() {
     }
 
     return (
-        <main className="bg-default d-flex justify-content-center align-items-center">
+        <main className="bg-default-h-100 d-flex justify-content-center align-items-center">
             <form typeof="submit" onSubmit={handleSubmit} className="d-flex align-items-center flex-column" >
             <div className="form-outline mb-4 text-center">
                     <NavLink className="navbar-brand logo-text" to="/">
@@ -190,7 +190,7 @@ function RegisterGuest() {
     }
 
     return (
-        <main className="bg-default d-flex justify-content-center align-items-center">
+        <main className="bg-default-h-100 d-flex justify-content-center align-items-center">
             <form typeof="submit" onSubmit={handleSubmit} className="d-flex flex-column justify-content-center align-items-center">
                 <NavLink to="/">
                     <div className="text-center mb-4">

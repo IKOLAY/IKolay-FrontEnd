@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { WarningMessage } from "../components/InfoMessages";
 
 export default function LoginPage() {
     const defLogInfo = { email: "", password: "" }
     const [loginInfo, setLoginInfo] = useState({ ...defLogInfo });
+    const [warningMessage, setWarningMessage] = useState(null);
     const navigate = useNavigate();
     function handleSubmit(e) {
 
@@ -17,25 +19,59 @@ export default function LoginPage() {
             body: JSON.stringify(loginInfo)
         }).then(resp => {
             if (!resp.ok)
-                throw new Error("Hata initiate");
+                throw new Error("Üzgünüz bir hata oluştu!");
             return resp.json();
         }).then(data => {
-            window.localStorage.setItem("token", data.token)
-            console.log(data.token);
+            window.localStorage.setItem("token", data.token);
+            window.localStorage.setItem("role", data.role);
             fetch(`http://localhost:80/user/loggeduser?token=${data.token}`)
                 .then(resp => resp.json())
                 .then(data2 => {
                     console.log(data2);
                     window.localStorage.setItem("user", JSON.stringify(data2));
-                    if (data.role == "MANAGER")
-                        navigate("/company")
-                    else if (data.role == "ADMIN")
-                        navigate("/admin")
-                    else
-                        navigate("/")
+                    if (data2.companyId == null) {
+                        window.localStorage.setItem("company", null);
+                        window.localStorage.setItem("shift", null)
+                        roleCheck(data.role)
+                    } else {
+                        fetch(`http://localhost:80/company/companyinformation?id=${data2.companyId}`)
+                            .then(resp => resp.json())
+                            .then(data3 => {
+                                console.log(data3);
+                                window.localStorage.setItem("company", JSON.stringify(data3));
+                                if (data2.shiftId == null) {
+                                    window.localStorage.setItem("shift", null);
+                                    roleCheck(data.role)
+                                }
+                                else {
+                                    fetch(`http://localhost:80/shift/findshift/${data2.shiftId}`)
+                                        .then(resp => resp.json())
+                                        .then(data4 => {
+                                            console.log(data4);
+                                            window.localStorage.setItem("shift", JSON.stringify(data4));
+                                            roleCheck(data.role)
+                                        })
+                                }
+                            });
+                    }
                 })
-        }).catch(err => console.log(err))
 
+        }).catch(err => {
+            console.log(err);
+            setWarningMessage("Eposta veya şifre hatalı!");
+        }).catch(err => console.log(err))
+    }
+
+
+    function roleCheck(role) {
+        if (role == "MANAGER")
+            navigate("/company")
+        else if (role == "ADMIN")
+            navigate("/admin")
+        else if (role == "EMPLOYEE")
+            navigate("/employee")
+        else
+            navigate("/")
     }
 
     function handleChange(e) {
@@ -43,7 +79,7 @@ export default function LoginPage() {
     }
 
     return (
-        <main className="bg-default d-flex justify-content-center align-items-center">
+        <main className="bg-default-h-100 d-flex justify-content-center align-items-center">
             <form typeof="submit" onSubmit={handleSubmit}>
                 <NavLink to="/">
                     <div className="form-outline mb-4 text-center">
@@ -53,13 +89,13 @@ export default function LoginPage() {
                     </div>
                 </NavLink>
                 <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="email">
+                    <label className="form-label w-100" htmlFor="email">
                         Eposta
                         <input type="text" name="email" id="email" className="form-control" value={loginInfo.email} onChange={handleChange} />
                     </label>
                 </div>
                 <div className="form-outline mb-4">
-                    <label className="form-label" htmlFor="password">
+                    <label className="form-label w-100" htmlFor="password">
                         Şifre
                         <input className="form-control" name="password" id="password" type="password" value={loginInfo.password} onChange={handleChange} />
                     </label>
@@ -75,7 +111,11 @@ export default function LoginPage() {
                     </NavLink>
                 </p>
 
+                {warningMessage !== null && <WarningMessage warningMessage={warningMessage} />}
+
+
             </form>
+            
         </main>
     )
 }
