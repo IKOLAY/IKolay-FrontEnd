@@ -303,7 +303,7 @@ function CarouselCard(props) {
                                     <div className="card">
                                         <div
                                             className="card-header d-flex justify-content-center align-items-center p-3 "
-                                            style={{ borderTop: "4px solid #ffa900" }}
+                                            style={{ borderTop: "4px solid #0DCAF0" }}
                                         >
                                             <h5 className="mb-0">Çalışan Değerlendirmeleri</h5>
                                         </div>
@@ -312,11 +312,21 @@ function CarouselCard(props) {
                                             data-mdb-perfect-scrollbar="true"
                                             style={{ position: "relative", }}
                                         >
-                                            {reviews.map((review, index) => <EmployeeReviews key={index} {...review} />
-                                            )}
+                                            {
+                                                reviews.length == 0 ?
+                                                    <div className="card mt-1 bg-dark-subtle">
+                                                        <div className="card-body">Henüz Bir Yorum Yapılmadı</div>
+                                                    </div>
+                                                    :
+                                                    <div>
+                                                        {reviews.map((review, index) => <EmployeeReviews key={index} {...review} />
+                                                        )}
+                                                    </div>
+                                            }
+
                                         </div>
                                         <div className="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +351,7 @@ function EmployeeReviews({ content }) {
             </div>
             <div className="d-flex flex-row justify-content-start">
                 <img
-                    src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random()*7)}-bg.webp`}
+                    src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random() * 7)}-bg.webp`}
                     alt="avatar 1"
                     style={{ width: 45, height: "100%" }}
                 />

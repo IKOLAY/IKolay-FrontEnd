@@ -7,19 +7,17 @@ import CompanyPage from './pages/04-CompanyPage'
 import AdminPage from './pages/05-AdminPage'
 import EmployeePage from './pages/06-EmployeePage'
 
-
 function App() {
 
   return (
-    <Routes>
-      <Route path='/' element={<HomePage />} />
-      <Route path='/register' element={<RegisterPage />} />
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/company' element={<CompanyPage />} />
-      <Route path='/admin' element={<AdminPage/>} />
-      <Route path='/employee' element={<EmployeePage/>} />
-
-    </Routes>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/company' element={<CompanyPage />} />
+        <Route path='/admin' element={<AdminPage />} />
+        <Route path='/employee' element={<EmployeePage />} />
+      </Routes>
   )
 }
 

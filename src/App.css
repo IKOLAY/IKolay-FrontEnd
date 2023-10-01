@@ -238,6 +238,8 @@ footer {
 }
 
 
+
+
 @media screen and (min-device-width: 320px)
     and (-webkit-min-device-pixel-ratio: 2) {
         * {
@@ -250,6 +252,7 @@ footer {
     .ikolay-sidebar {
         min-width: 140px;
     }
+
 
     }
 
