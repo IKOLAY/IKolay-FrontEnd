@@ -126,20 +126,115 @@ export default function CompanyPage() {
 
                     <div className="d-flex" style={{ height: "100%" }}>
                         <div className="position-fixed end-0">
-                        <AvatarDropdown userNameTitle="Yönetici Adı" userEmailTitle="Yönetici Email" user={user} role={role}/>
+                            <AvatarDropdown userNameTitle="Yönetici Adı" userEmailTitle="Yönetici Email" user={user} role={role} />
                         </div>
                         <div className=" px-2 bg-ikolay-light ikolay-sidebar text-center small" style={{ height: "100%", width: "36%" }}>
-                            
-                                <div className="border-bottom border-secondary py-2 mb-1">
-                                    <NavLink to="/">
+
+                            <div className="border-bottom border-secondary py-2 mb-1">
+                                <NavLink to="/">
                                     <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
-                                    </NavLink>
-                                    <NavLink to="/company">
+                                </NavLink>
+                                <NavLink to="/company">
                                     <span className="navbar-brand logo-dark-text nav-link-dark">Kurumsal</span>
-                                    </NavLink>
-                                </div>
+                                </NavLink>
+                            </div>
                             <CompanyBadge company={company} />
-                            <button className="btn btn-sm btn-info mb-2">Şirket Bilgilerini Düzenle</button>
+                            <button
+                                className="btn btn-sm btn-info mb-2"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditCompany"
+                            >
+                                Şirket Bilgilerini Düzenle
+                            </button>
+                            <section
+                                className="modal fade"
+                                id="modalEditCompany"
+                                tabIndex={-1}
+                                aria-labelledby="exampleModalLabel"
+                                aria-hidden="true"
+                            >
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h1 style={{ color: "black" }} className="modal-title fs-5" id="exampleModalLabel">
+                                                Şirket Bilgilerini Düzenle
+                                            </h1>
+                                            <button
+                                                type="button"
+                                                className="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                            />
+                                        </div>
+                                        <div className="modal-body">
+                                            <form typeof="submit" className="text-def">
+                                                <div className="form-group">
+                                                    <label htmlFor="companyName">Şirket Adı</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control bg-secondary-subtle text-center"
+                                                        id="companyName"
+                                                        name="companyName"
+                                                        value={company.companyName}
+                                                        readOnly
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="companyAddress">Adres</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="address"
+                                                        name="address"
+                                                        value={company.address}
+                                                        onChange={handleEditCompany}
+
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="companyAbout">Hakkında</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="about"
+                                                        name="about"
+                                                        value={company.about}
+                                                        onChange={handleEditCompany}
+
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="companyTel">Telefon</label>
+                                                    <input
+                                                        type="number"
+                                                        className="form-control"
+                                                        id="phone"
+                                                        name="phone"
+                                                        value={company.phone}
+                                                        onChange={handleEditCompany}
+
+                                                    />
+                                                </div>
+                                                <div className="modal-footer justify-content-between">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-secondary"
+                                                        data-bs-dismiss="modal"
+                                                        onClick={handleCancelEditCompany}
+                                                    >
+                                                        Vazgeç
+                                                    </button>
+                                                    <button type="button" className="btn btn-outline-info" data-bs-dismiss="modal" onClick={handleSaveEditCompany} disabled={company.companyName == "" && true}>
+                                                        Kaydet
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </section>
                             <ul className="list-unstyled border-top border-secondary d-flex flex-column gap-2 pt-2">
                                 <li className="mb-1">
                                     <button
@@ -211,7 +306,7 @@ export default function CompanyPage() {
                             {section === null && <DashboardWelcome />}
                             {section === "employee-list" && <EmployeeList />}
                             {section === "employee-leave" && <EmployeeLeave />}
-                            {section === "employee-shift" && <ShiftSystem/>}
+                            {section === "employee-shift" && <ShiftSystem />}
                             {section === "profit-loss" && <AnnualProfitLoss />}
                             {section === "all-expenses" && <AllExpenses />}
                             {section === "incoming-payments" && <IncomingPayments />}
