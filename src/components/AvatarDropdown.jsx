@@ -38,7 +38,7 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
                     aria-haspopup="true"
                     aria-expanded="false"
                 >
-                    <img width={32} className="avatar rounded-circle pt-2 me-1" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" alt="" />
+                    <img width={32} className="avatar rounded-circle pt-2 me-1" src={user.photoUrl} alt="" />
                 </a>
                 <div
                     className="dropdown-menu"

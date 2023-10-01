@@ -39,7 +39,7 @@ function ListEmployeeAndAddEmployee({ companyId }) {
     )
 }
 
-function EmployeeRow({ employeeList, setEmployeeList, firstname, lastname, email, phone, companyId }) {
+function EmployeeRow({ employeeList, setEmployeeList, firstname, lastname, photoUrl, email, phone, companyId }) {
 
     return (
         <>
@@ -47,7 +47,7 @@ function EmployeeRow({ employeeList, setEmployeeList, firstname, lastname, email
                 <td className="d-flex justify-content-center">
                     <div className="d-flex justify-content-center align-items-center">
                         <img
-                            src={`https://mdbootstrap.com/img/new/avatars/${Math.ceil(Math.random() * 7)}.jpg`}
+                            src={photoUrl}
                             alt=""
                             style={{ width: 45, height: 45 }}
                             className="rounded-circle"
