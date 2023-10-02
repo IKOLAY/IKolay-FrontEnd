@@ -27,7 +27,7 @@ export default function HomePage() {
 
     return (
         <>
-            <HomeHeader />
+            <HomeHeader role = {role}/>
             <main className="bg-dark-subtle">
                 <section id="about" className="container w-100">
                     <div className="d-flex flex-column justify-content-center align-items-center text-center p-4">
@@ -121,7 +121,7 @@ export default function HomePage() {
     )
 }
 
-function HomeHeader() {
+function HomeHeader({role}) {
 
     return (
         <header className="container-fluid px-5 text-center">
@@ -179,9 +179,9 @@ function HomeHeader() {
                         <h5>İnsan Kaynakları Yönetimi artık çok kolay!</h5>
                         <h1>Siz de <span className="logo-span logo-text" style={{ fontSize: "1em" }}><span className="text-info logo-text" style={{ fontSize: "1em" }}>İK</span>olay</span> Ailesine Katılın</h1>
                         <p className="lead">Şirketinizin büyümesine destek olmak için buradayız. İnsan kaynakları yönetimini basit ve etkili hale getiren güçlü bir çözüm sunuyoruz. <br /> Personel onboarding, maaş ve ödemeler, vardiyalar ve daha fazlasını kolayca yönetin.</p>
-                        <NavLink to="/register">
+                        {role === null && <NavLink to="/register">
                             <button className="btn btn-info px-4 py-2">Hemen Ücretsiz Kaydol!</button>
-                        </NavLink>
+                        </NavLink>}
                     </div>
 
                     <div className="col-md-6 col-sm-12 h-25">
