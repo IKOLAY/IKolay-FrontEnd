@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import AvatarDropdown from "../components/AvatarDropdown";
 import { useEffect, useState } from "react";
 import CompanyBadge from "../components/CompanyBadge";
+import { showErrorMessage } from "../components/InfoMessages";
 
 
 export default function HomePage() {
@@ -15,19 +16,22 @@ export default function HomePage() {
                 (response => {
                     console.log(response);
                     if (!response.ok)
-                        throw new Error("Hata olustu")
+                        throw new Error("Üzgünüz bir hata oluştu!")
                     return response.json();
                 }).then(data => {
                     console.log(data);
-                    setCompanyList(data)
-                }).catch(err => console.log(err));
+                    setCompanyList(data);
+                }).catch(err => {
+                    console.log(err);
+                    showErrorMessage(err.message);
+                });
         }, [])
     }
 
 
     return (
         <>
-            <HomeHeader role = {role}/>
+            <HomeHeader role={role} />
             <main className="bg-dark-subtle">
                 <section id="about" className="container w-100">
                     <div className="d-flex flex-column justify-content-center align-items-center text-center p-4">
@@ -121,7 +125,7 @@ export default function HomePage() {
     )
 }
 
-function HomeHeader({role}) {
+function HomeHeader({ role }) {
 
     return (
         <header className="container-fluid px-5 text-center">
@@ -261,12 +265,15 @@ function CarouselCard(props) {
         fetch(`http://localhost:80/comment/findallcommentforguest?companyId=${props.id}`).then(response => {
             console.log(response);
             if (!response.ok)
-                throw new Error("Hata Var")
+                throw new Error("Üzgünüz, bir hata oluştu!")
             return response.json()
         }).then(data => {
             console.log(data);
             setReviews(data)
-        }).then(error => console.log(error));
+        }).then(error => {
+            console.log(error);
+            showErrorMessage(error.message);
+        });
     }, [])
 
     return (
@@ -351,7 +358,7 @@ function EmployeeReviews({ content }) {
             </div>
             <div className="d-flex flex-row justify-content-start">
                 <img
-                    src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random() * 7)}-bg.webp`}
+                    src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random() * 6)}-bg.webp`}
                     alt="avatar 1"
                     style={{ width: 45, height: "100%" }}
                 />

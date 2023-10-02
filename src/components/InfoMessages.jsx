@@ -1,10 +1,4 @@
-export function WarningMessage({ warningMessage }) {
-    return (
-        <div className="alert alert-primary alert-dismissible fade show w-100 text-center" role="alert">
-            {warningMessage}
-        </div>
-    )
-}
+import Swal from "sweetalert2";
 
 export function FormValidationMessage({ message }) {
     return (
@@ -12,4 +6,24 @@ export function FormValidationMessage({ message }) {
             {message}
         </div>
     )
+}
+
+export function showErrorMessage(message){
+    Swal.fire({
+        icon: 'error',
+        title: 'Hata!',
+        text: message,
+        confirmButtonText: 'Tamam',
+        confirmButtonColor: "#6C757D",
+      })
+}
+
+export function showSuccessMessage(message){
+    Swal.fire({
+        title: 'Teşekkürler!',
+        text: message,
+        icon: 'success',
+        confirmButtonText: 'Devam',
+        confirmButtonColor: "#5cb85c",
+    })
 }

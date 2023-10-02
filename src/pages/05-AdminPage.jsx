@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom"
 import DashboardWelcome from "../components/DashboardWelcome";
 import AvatarDropdown from "../components/AvatarDropdown";
+import { showErrorMessage } from "../components/InfoMessages";
 
 export default function AdminPage() {
     const user = JSON.parse(window.localStorage.getItem("user"));
@@ -110,7 +111,10 @@ function RegisterRequests({ companyId, email, firstname, lastname, companyName, 
             return resp.json();
         }).then(data => {
             setConfirm({ ...defConfirm })
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            console.log(err);
+            showErrorMessage(err.message)
+        })
     }
 
     function handleCancel() {
@@ -198,7 +202,10 @@ function CommentRequests() {
         fetch("http://localhost/comment/findallcommentforadmin")
             .then(resp => resp.json())
             .then(data => setPendingComments(data))
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                showErrorMessage(err.message);
+            });
     }, [])
 
 
@@ -212,8 +219,6 @@ function CommentRow({ id, companyId, userId, content, comments, setComments }) {
     const [company, setCompany] = useState({ companyName: "", taxNo: "" });
     const [toggle, setToggle] = useState(true);
 
-
-
     function handleClick(e) {
         if (e.target.name == "accept") {
             fetch(`http://localhost/comment/acceptcomment/${id}`).then(resp => {
@@ -226,12 +231,17 @@ function CommentRow({ id, companyId, userId, content, comments, setComments }) {
                 if (resp.ok) {
                     setComments(comments.filter(comment => comment.id != id));
                 }
-            }).catch(err => console.log(err))
+            }).catch(err => {
+                console.log(err);
+                showErrorMessage(err.message);
+            });
         }
     }
+
     function handleToggle(e) {
         setToggle(false)
     }
+
     return (
         <div className="request-bg border rounded p-2 d-flex flex-column justify-content-between align-items-center request-bg my-2">
             <span className="mb-3 fw-bold">{content}</span>
@@ -298,7 +308,10 @@ function GetFirstAndLastName({ userId, user, setUser }) {
             if (!data.firstname)
                 throw new Error(data.message);
             setUser(data);
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            console.log(err);
+            showErrorMessage(err.message);
+        });
     }, [])
 
     return <>

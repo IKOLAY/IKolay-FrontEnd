@@ -11,6 +11,7 @@ import AddIncomeOutcome from "../components/companyPageComponents/06-AddIncomeOu
 import AvatarDropdown from "../components/AvatarDropdown";
 import CompanyBadge from "../components/CompanyBadge";
 import EmployeePage from "./06-EmployeePage";
+import { showErrorMessage } from "../components/InfoMessages";
 
 export default function CompanyPage() {
     const [section, setSection] = useState(null);
@@ -69,14 +70,15 @@ export default function CompanyPage() {
             }).then(data => {
                 console.log(data);
                 if (data.message) {
-
-                    throw new Error(data.message)
+                    showErrorMessage(data.message);
+                    throw new Error(data.message);
                 }
                 localStorage.setItem("company", JSON.stringify(data))
                 setCompany({ ...data })
             }).catch(err => {
-                setCompany({ ...defCompany })
+                setCompany({ ...defCompany });
                 console.log(err);
+                showErrorMessage(err.message);
             });
     }
 

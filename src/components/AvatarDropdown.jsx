@@ -26,9 +26,10 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
         } else if (linkTitle === "Personel") {
             return (
                 <div className="d-flex flex-column justify-content-center align-items-center">
-                    {window.location.href !== `http://localhost:5173${navLink}` && <NavLink to={navLink} className="nav-link-dark">{linkTitle}
-                    </NavLink>}
-                    {window.location.href === `http://localhost:5173${navLink}` && <button className="border btn btn-info rounded w-75" name="employee-profile" onClick={setSection}>Profil</button>}
+                    {window.location.href !== `http://localhost:5173${navLink}` &&
+                        <NavLink to={navLink} className="nav-link-dark">{linkTitle}</NavLink>}
+                    {window.location.href === `http://localhost:5173${navLink}` &&
+                        <button className="border btn btn-info rounded w-75" name="employee-profile" onClick={setSection}>Profil</button>}
                 </div>
             )
         }
@@ -80,7 +81,7 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
                         {role === "VISITOR" && <UserSpecificLink linkTitle="İKolay Müşterileri" navLink="#clients" />}
                         <NavLink to="/" className="nav-link-dark" >
                             <button className="btn-link border-0 bg-transparent text-decoration-none nav-link-dark" type="button" onClick={handleLogout}>
-                            Çıkış
+                                Çıkış
                             </button>
                         </NavLink>
                     </div>

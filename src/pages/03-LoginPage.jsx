@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { WarningMessage } from "../components/InfoMessages";
+import { showErrorMessage } from "../components/InfoMessages";
 
 export default function LoginPage() {
     const defLogInfo = { email: "", password: "" }
     const [loginInfo, setLoginInfo] = useState({ ...defLogInfo });
-    const [warningMessage, setWarningMessage] = useState(null);
     const navigate = useNavigate();
     function handleSubmit(e) {
 
@@ -19,7 +18,7 @@ export default function LoginPage() {
             body: JSON.stringify(loginInfo)
         }).then(resp => {
             if (!resp.ok)
-                throw new Error("Üzgünüz bir hata oluştu!");
+                throw new Error("Eposta veya şifre hatalı.");
             return resp.json();
         }).then(data => {
             window.localStorage.setItem("token", data.token);
@@ -58,10 +57,9 @@ export default function LoginPage() {
 
         }).catch(err => {
             console.log(err);
-            setWarningMessage("Eposta veya şifre hatalı!");
-        }).catch(err => console.log(err))
+            showErrorMessage(err.message)
+        })
     }
-
 
     function roleCheck(role) {
         if (role == "MANAGER")
@@ -91,13 +89,21 @@ export default function LoginPage() {
                 <div className="form-outline mb-4">
                     <label className="form-label w-100" htmlFor="email">
                         Eposta
-                        <input type="text" name="email" id="email" className="form-control" value={loginInfo.email} onChange={handleChange} />
+                        <input name="email" id="email" type="text" className="form-control" value={loginInfo.email} onChange={handleChange} required onInvalid={(e) => {
+                            if (e.target.value == "") {
+                                e.target.setCustomValidity('Eposta boş olamaz!')
+                            } else {
+                                e.target.setCustomValidity('Eposta @ içermeli! Örnek: ornek@ornek.com')
+                            }
+                        }}
+                            onInput={e => e.target.setCustomValidity('')} title="Eposta @ içermeli! Örnek: ornek@ornek.com"/>
                     </label>
                 </div>
                 <div className="form-outline mb-4">
                     <label className="form-label w-100" htmlFor="password">
                         Şifre
-                        <input className="form-control" name="password" id="password" type="password" value={loginInfo.password} onChange={handleChange} />
+                        <input name="password" id="password" type="password" className="form-control" value={loginInfo.password} onChange={handleChange} required onInvalid={e => e.target.setCustomValidity('Şifre boş olamaz!')}
+                            onInput={e => e.target.setCustomValidity('')} />
                     </label>
                 </div>
                 <button type="submit" className="btn btn-info mb-4 w-100">
@@ -110,8 +116,6 @@ export default function LoginPage() {
                     <a href="#!" className="text-info small text-decoration-underline">Kaydol!</a>
                     </NavLink>
                 </p>
-
-                {warningMessage !== null && <WarningMessage warningMessage={warningMessage} />}
 
 
             </form>

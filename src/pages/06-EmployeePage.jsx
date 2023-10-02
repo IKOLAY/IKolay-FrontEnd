@@ -4,6 +4,7 @@ import { useState } from "react";
 import DashboardWelcome from "../components/DashboardWelcome";
 import CompanyBadge from "../components/CompanyBadge";
 import PublicHolidays from "../components/PublicHolidays";
+import { showErrorMessage } from "../components/InfoMessages";
 
 
 
@@ -33,7 +34,8 @@ export default function EmployeePage() {
                 setMessage(data)
             }).catch(err => {
                 console.log(err);
-                setMessage({ ...defMessage })
+                setMessage({ ...defMessage });
+                showErrorMessage(err.message);
             })
     }
 
@@ -60,6 +62,7 @@ export default function EmployeePage() {
             }).catch(err => {
                 setStatus("error")
                 console.log(err);
+                showErrorMessage(err.message);
             });
     }
 
@@ -266,19 +269,20 @@ function EmployeeProfile({ setOperation }) {
             }).then(data => {
                 console.log(data);
                 if (data.message) {
-
-                    throw new Error(data.message)
+                    showErrorMessage(data.message);
+                    throw new Error(data.message);
+                    
                 }
                 localStorage.setItem("user", JSON.stringify(data))
                 setUser({ ...data })
             }).catch(err => {
                 setUser({ ...defUser })
                 console.log(err);
+                showErrorMessage(err.message)
             });
     }
 
     return (
-
         <div className="d-flex justify-content-center align-items-center h-100 text-def">
             <div className="card rounded">
                 <div className="card-body text-center">
@@ -336,7 +340,6 @@ function EmployeeProfile({ setOperation }) {
                                                 name="firstname"
                                                 value={user.firstname}
                                                 onChange={handleChange}
-
                                             />
                                         </div>
                                         <div className="form-group">
@@ -348,7 +351,6 @@ function EmployeeProfile({ setOperation }) {
                                                 name="lastname"
                                                 value={user.lastname}
                                                 onChange={handleChange}
-
                                             />
                                         </div>
                                         <div className="form-group">
@@ -360,7 +362,6 @@ function EmployeeProfile({ setOperation }) {
                                                 name="email"
                                                 value={user.email}
                                                 onChange={handleChange}
-
                                             />
                                         </div>
                                         <div className="form-group">
@@ -372,7 +373,6 @@ function EmployeeProfile({ setOperation }) {
                                                 name="phone"
                                                 value={user.phone == null ? "Belirlenmedi." : user.phone}
                                                 onChange={handleChange}
-
                                             />
                                         </div>
                                         <div className="form-group">
@@ -384,7 +384,6 @@ function EmployeeProfile({ setOperation }) {
                                                 name="address"
                                                 value={user.address == null ? "" : user.address}
                                                 onChange={handleChange}
-
                                             />
                                         </div>
                                     </form>
@@ -420,11 +419,6 @@ function EmployeeProfile({ setOperation }) {
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-
-
     )
 }
