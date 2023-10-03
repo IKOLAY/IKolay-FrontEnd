@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import AvatarDropdown from "../components/AvatarDropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardWelcome from "../components/DashboardWelcome";
 import CompanyBadge from "../components/CompanyBadge";
 import PublicHolidays from "../components/PublicHolidays";
@@ -227,6 +227,11 @@ export default function EmployeePage() {
                                         Resmi Tatiller
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="#" className="nav-link-dark" name="leave-request" onClick={handleSectionClick}>
+                                        İzin Talebi
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -255,6 +260,7 @@ export default function EmployeePage() {
                 <section className="col-12 d-flex flex-column text-center justify-content-center px-2">
                     {section === null && <DashboardWelcome />}
                     {section === "public-holidays" && <PublicHolidays />}
+                    {section === "leave-request" && <Leave {...defUser}/>}
                     {section === "employee-profile" && <EmployeeProfile />}
                     {section === "expense-request" && <IncomeOutcomeForEmployeeMethod />}
                 </section>
@@ -445,5 +451,217 @@ function EmployeeProfile({ setOperation }) {
                 </div>
             </div>
         </div>
+    )
+}
+
+function Leave({ id, companyId }) {
+    const defLeave = { leaveName: "", startingDate: "", duration: "", userId: id, companyId: companyId };
+    const [newLeave, setNewLeave] = useState({ ...defLeave });
+    const [myRequest, setMyRequest] = useState(null);
+    useEffect(() => {
+        fetch(`http://localhost:80/leave/getmyleaverequests?companyId=${companyId}&userId=${id}`)
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.message)
+                    throw new Error(data.message);
+                setMyRequest(data);
+                console.log(data);
+            })
+    }, [])
+
+    function handleChange(e) {
+        setNewLeave({ ...newLeave, [e.target.name]: e.target.value })
+    }
+
+    function handleClick(e) {
+        fetch(`http://localhost:80/leave/sendleaverequest`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newLeave)
+        }).then(resp => resp.json())
+            .then(data => {
+                if (data.message)
+                    throw new Error(data.message)
+                console.log(data);
+                setMyRequest([...myRequest, { ...data }])
+                setNewLeave({ ...defLeave })
+                console.log(defLeave);
+            })
+    }
+    function handleCancel(e) {
+        setNewLeave({ ...defLeave })
+    }
+    return (
+        <>
+            <section>
+                <div className="d-flex flex-column gap-2">
+                    <section className="d-flex flex-row gap-3">
+                        <button
+                            type="button"
+                            className="btn btn-lg btn-outline-primary w-100 mb-4"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalLeave"
+                        >+ İzin Talebi Gir</button>
+                    </section>
+                    <section
+                        className="modal fade"
+                        id="modalLeave"
+                        tabIndex={-1}
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                    >
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h1 style={{ color: "black" }} className="modal-title fs-5" id="exampleModalLabel">
+                                        İzin Talebi
+                                    </h1>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    />
+                                </div>
+                                <div className="modal-body">
+                                    <form typeof="submit">
+                                        <div className="form-group">
+                                            <label htmlFor="holidayName">Gerekçe</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="holidayName"
+                                                name="leaveName"
+                                                onChange={handleChange}
+                                                value={newLeave.leaveName}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="startDate">Başlangıç Tarihi</label>
+                                            <input
+                                                type="date"
+                                                className="form-control"
+                                                id="startDate"
+                                                name="startingDate"
+                                                onChange={handleChange}
+                                                value={newLeave.startingDate}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="duration">Süre</label>
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                placeholder="Gün sayısını giriniz..."
+                                                id="duration"
+                                                name="duration"
+                                                onChange={handleChange}
+                                                value={newLeave.duration}
+                                            />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div className="modal-footer justify-content-between">
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                        onClick={handleCancel}
+                                    >
+                                        Vazgeç
+                                    </button>
+                                    <button type="button"
+                                        className="btn btn-info"
+                                        onClick={handleClick}
+                                        data-bs-dismiss="modal"
+                                    >
+                                        Gönder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section className="mb-0 bg-white text-center overflow-y-scroll" style={{height:"400px"}}>
+                <h1>PERSONELE ÖZEL İZİNLER</h1>
+                <table className="table align-middle">
+                    <thead className="bg-light">
+                        <tr>
+                            <th scope="col">Gerekçe</th>
+                            <th scope="col">İzin Başlangıç Tarihi</th>
+                            <th scope="col">İş günü</th>
+                            <th scope="col">Onay durumu</th>
+                            <th scope="col">Talep Oluşturulma Tarihi</th>
+                            <th scope="col">Vazgeç</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {myRequest!=null && myRequest.map(request => <MyRequestEmployeeTableRow setMyRequest={setMyRequest} myRequest={myRequest} {...request}/>)}
+                    </tbody>
+                </table>
+            </section>
+        </>
+    )
+}
+
+
+function MyRequestEmployeeTableRow({id,leaveName, createDate,duration,startingDate,status,setMyRequest,myRequest}) {
+
+    const date = new Date(createDate);
+
+    const stringDate = date.toISOString().split("T")[0];
+    function backgroundFixer(status){
+        switch(status){
+            case"PENDING": return "bg-warning"
+            case"ACCEPTED": return "bg-success"
+            case"REJECTED": return "bg-danger"
+            case"CANCELED": return "bg-secondary"
+        }
+    }
+
+    function handleEnglish(status){
+        switch(status){
+            case"PENDING": return "BEKLEMEDE"
+            case"ACCEPTED": return "ONAYLANDI"
+            case"REJECTED": return "REDDEDILDI"
+            case "CANCELED": return "IPTAL EDILDI"
+        }
+    }
+
+    function handleClick(e){
+        fetch(`http://localhost:80/leave/cancelleave/${id}`).then(resp => resp.json())
+        .then(data=>{
+            if(data.message)
+            throw new Error(data.message)
+            setMyRequest([...myRequest.map(req=> {
+                if(req.id==id)
+                return {...data}
+                return req
+            })])
+        })
+    }
+
+
+    return (<>
+
+        <tr>
+            <td>{leaveName}</td>
+            <td>{startingDate}</td>
+            <td>{duration}</td>
+            <td><span className={`"badge px-2 rounded text-black ${backgroundFixer(status)}`}>{handleEnglish(status)}</span></td>
+            <td>{stringDate}</td>
+            <td><button type="button" 
+            className="btn btn-danger" 
+            disabled={status!="PENDING"?true:false}
+            onClick={handleClick}
+            >IPTAL ET</button></td>
+        </tr>
+
+    </>
     )
 }
