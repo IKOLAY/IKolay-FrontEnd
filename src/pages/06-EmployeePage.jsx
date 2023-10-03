@@ -5,6 +5,7 @@ import DashboardWelcome from "../components/DashboardWelcome";
 import CompanyBadge from "../components/CompanyBadge";
 import PublicHolidays from "../components/PublicHolidays";
 import { showErrorMessage } from "../components/InfoMessages";
+import { IncomeOutcomeForEmployeeMethod } from "../components/companyPageComponents/06-AddIncomeOutCome";
 
 
 
@@ -19,6 +20,7 @@ export default function EmployeePage() {
     const [message, setMessage] = useState({ ...defMessage })
 
     const [ariaExpandedLeave, setAriaExpandedLeave] = useState(false);
+    const [ariaExpandedFinance, setAriaExpandedFinance] = useState(false);
 
     function handleMessageChange(e) {
         setMessage({ ...message, [e.target.name]: e.target.value })
@@ -77,6 +79,14 @@ export default function EmployeePage() {
             setAriaExpandedLeave(true)
         } else {
             setAriaExpandedLeave(false)
+        }
+    }
+
+    function handleAriaExpandedFinance() {
+        if (ariaExpandedLeave === false) {
+            setAriaExpandedFinance(true)
+        } else {
+            setAriaExpandedFinance(false)
         }
     }
 
@@ -220,7 +230,25 @@ export default function EmployeePage() {
                             </ul>
                         </div>
                     </li>
-
+                    <li className="mb-1">
+                        <button
+                            className="btn align-items-center ikolay-list-item collapsed border-secondary mb-2 w-100"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#finance-collapse"
+                            onClick={handleAriaExpandedFinance}
+                        >
+                            <span className="btn-toggle-employee me-1" aria-expanded={ariaExpandedFinance}></span>Finans
+                        </button>
+                        <div className="collapse" id="finance-collapse">
+                            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 d-flex flex-column gap-2">
+                                <li>
+                                    <a href="#" className="nav-link-dark" name="expense-request" onClick={handleSectionClick}>
+                                        Harcama Talebi
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div className="operation-container col d-flex">
@@ -228,10 +256,7 @@ export default function EmployeePage() {
                     {section === null && <DashboardWelcome />}
                     {section === "public-holidays" && <PublicHolidays />}
                     {section === "employee-profile" && <EmployeeProfile />}
-
-
-
-
+                    {section === "expense-request" && <IncomeOutcomeForEmployeeMethod />}
                 </section>
             </div>
             </div>
