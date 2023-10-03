@@ -7,8 +7,6 @@ import PublicHolidays from "../components/PublicHolidays";
 import { showErrorMessage } from "../components/InfoMessages";
 import { IncomeOutcomeForEmployeeMethod } from "../components/companyPageComponents/06-AddIncomeOutCome";
 
-
-
 export default function EmployeePage() {
     const [section, setSection] = useState(null);
     const defUser = JSON.parse(window.localStorage.getItem("user"));
@@ -67,7 +65,6 @@ export default function EmployeePage() {
                 showErrorMessage(err.message);
             });
     }
-
 
     function handleSectionClick(e) {
         e.preventDefault();
@@ -609,7 +606,6 @@ function Leave({ id, companyId }) {
     )
 }
 
-
 function MyRequestEmployeeTableRow({id,leaveName, createDate,duration,startingDate,status,setMyRequest,myRequest}) {
 
     const date = new Date(createDate);
@@ -626,10 +622,10 @@ function MyRequestEmployeeTableRow({id,leaveName, createDate,duration,startingDa
 
     function handleEnglish(status){
         switch(status){
-            case"PENDING": return "BEKLEMEDE"
-            case"ACCEPTED": return "ONAYLANDI"
-            case"REJECTED": return "REDDEDILDI"
-            case "CANCELED": return "IPTAL EDILDI"
+            case"PENDING": return "Beklemede"
+            case"ACCEPTED": return "Onaylandı"
+            case"REJECTED": return "Reddedildi"
+            case "CANCELED": return "İptal Edildi"
         }
     }
 
