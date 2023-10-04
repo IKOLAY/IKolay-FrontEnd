@@ -28,6 +28,27 @@ export default function HomePage() {
         }, [])
     }
 
+    const [backToTopButtonDisplay, setBackToTopButtonDisplay] = useState("d-none")
+
+window.onscroll = function () {
+scrollFunction();
+};
+
+function scrollFunction() {
+if (
+document.body.scrollTop > 20 ||
+document.documentElement.scrollTop > 20
+) {
+setBackToTopButtonDisplay("d-block");
+} else if(document.body.scrollTop === 0) {
+setBackToTopButtonDisplay("d-none");
+}
+}
+
+function backToTop() {
+document.body.scrollTop = 0;
+document.documentElement.scrollTop = 0;
+}
 
     return (
         <>
@@ -120,6 +141,10 @@ export default function HomePage() {
                 </section>
                 {role !== null && companyList.length !== 0 && <Clients companyList={companyList} />}
             </main>
+            {
+                
+            }
+            <button className={`${backToTopButtonDisplay} btn btn-danger position-fixed bottom-0 end-0 me-2 mb-2`} onClick={backToTop} ><i class="fas fa-arrow-up"></i></button>
             <HomeFooter />
         </>
     )

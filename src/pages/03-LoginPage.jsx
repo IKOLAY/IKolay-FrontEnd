@@ -82,7 +82,7 @@ export default function LoginPage() {
                 <NavLink to="/">
                     <div className="form-outline mb-4 text-center">
                         <a className="navbar-brand logo-text " href="#">
-                            <span className="text-info">İK</span>olay
+                            <span className="text-info logo-text">İK</span>olay
                         </a>
                     </div>
                 </NavLink>
