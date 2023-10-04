@@ -316,8 +316,9 @@ export function IncomeOutcomeForEmployeeMethod() {
                         ref={fileInput}
                         style={{ color: "white" }}
                     />
-                    {addPayment.file && <img src={addPayment.file} alt={addPayment.file} />}
+                    
                 </div>
+                {addPayment.file && <img width="200" src={addPayment.file} alt={addPayment.file} />}
                 <div className="d-flex flex-row justify-content-center mt-2">
                     <button type="submit" className="btn btn-info" >EKLE</button>
                 </div>
