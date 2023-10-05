@@ -277,13 +277,13 @@ function Clients({ companyList }) {
     return (
         <section id="clients" className="d-flex justify-content-center">
             <div className="d-flex overflow-y-hidden overflow-x-auto justify-content-start gap-1 p-3">
-                {companyList.length !== 0 && companyList.map(company => <CarouselCard key={company.companyName} {...company} />)}
+                {companyList.length !== 0 && companyList.map(company => <ClientCard key={company.companyName} {...company} />)}
             </div>
         </section>
     )
 }
 
-function CarouselCard(props) {
+function ClientCard(props) {
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
