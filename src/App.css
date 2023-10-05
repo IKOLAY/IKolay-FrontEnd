@@ -252,6 +252,9 @@ footer {
         min-width: 140px;
     }
 
+    .error-img {
+        width: 50%
+    }
 
     }
 
@@ -260,5 +263,12 @@ footer {
         width: 100%;
     }
 
-    
+    .error h1 {
+        font-size: 5em;
+    }
+
+    .error-img {
+        width: 40%;
+    }
+
     }
