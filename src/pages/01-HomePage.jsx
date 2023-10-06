@@ -3,52 +3,33 @@ import { NavLink } from "react-router-dom";
 import AvatarDropdown from "../components/AvatarDropdown";
 import { useEffect, useState } from "react";
 import CompanyBadge from "../components/CompanyBadge";
-import { showErrorMessage } from "../components/InfoMessages";
+import { showErrorMessage, showInfoMessage } from "../components/InfoMessages";
 
 
 export default function HomePage() {
     let role = window.localStorage.getItem("role");
-    const [companyList, setCompanyList] = useState([])
-    if (localStorage.getItem("user") != null) {
-        useEffect(() => {
-            fetch(`http://localhost/company/findbycompanynametopfive`)
-                .then
-                (response => {
-                    console.log(response);
-                    if (!response.ok)
-                        throw new Error("Üzgünüz bir hata oluştu!")
-                    return response.json();
-                }).then(data => {
-                    console.log(data);
-                    setCompanyList(data);
-                }).catch(err => {
-                    console.log(err);
-                    showErrorMessage(err.message);
-                });
-        }, [])
-    }
 
     const [backToTopButtonDisplay, setBackToTopButtonDisplay] = useState("d-none")
 
-window.onscroll = function () {
-scrollFunction();
-};
+    window.onscroll = function () {
+        scrollFunction();
+    };
 
-function scrollFunction() {
-if (
-document.body.scrollTop > 20 ||
-document.documentElement.scrollTop > 20
-) {
-setBackToTopButtonDisplay("d-block");
-} else if(document.body.scrollTop === 0) {
-setBackToTopButtonDisplay("d-none");
-}
-}
+    function scrollFunction() {
+        if (
+            document.body.scrollTop > 20 ||
+            document.documentElement.scrollTop > 20
+        ) {
+            setBackToTopButtonDisplay("d-block");
+        } else if (document.body.scrollTop === 0) {
+            setBackToTopButtonDisplay("d-none");
+        }
+    }
 
-function backToTop() {
-document.body.scrollTop = 0;
-document.documentElement.scrollTop = 0;
-}
+    function backToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
 
     return (
         <>
@@ -139,12 +120,12 @@ document.documentElement.scrollTop = 0;
                         </div>
                     </div>
                 </section>
-                {role !== null && companyList.length !== 0 && <Clients companyList={companyList} />}
+                {role !== null && <Clients />}
             </main>
             {
-                
+
             }
-            <button className={`${backToTopButtonDisplay} btn btn-danger position-fixed bottom-0 end-0 me-2 mb-2`} onClick={backToTop} ><i class="fas fa-arrow-up"></i></button>
+            <button className={`${backToTopButtonDisplay} btn btn-danger position-fixed bottom-0 end-0 me-2 mb-2`} onClick={backToTop} ><i className="fas fa-arrow-up"></i></button>
             <HomeFooter />
         </>
     )
@@ -273,11 +254,49 @@ function RoleButtons() {
     }
 }
 
-function Clients({ companyList }) {
+function Clients() {
+    const [companyList, setCompanyList] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    useEffect(() => {
+        fetch(`http://localhost/company/findall`).then(resp => resp.json())
+            .then(data => {
+                if (data.message)
+                    throw new Error(data.message)
+                setCompanyList(data)
+            }).catch(err => console.log(err));
+    }, [])
+
+    function handleSearch(){
+        fetch(`http://localhost/company/findbysearchvalue?searchValue=${searchTerm}`).then(resp => resp.json())
+            .then(data => {
+                if (data.message)
+                    throw new Error(data.message)
+                setCompanyList(data)
+                console.log(companyList)
+            }).catch(err => console.log(err));
+    }
+
     return (
-        <section id="clients" className="d-flex justify-content-center">
-            <div className="d-flex overflow-y-hidden overflow-x-auto justify-content-start gap-1 p-3">
-                {companyList.length !== 0 && companyList.map(company => <ClientCard key={company.companyName} {...company} />)}
+        <section id="clients" className="d-flex flex-column justify-content-start overflow-x-auto" style={{minHeight:"300px"}}>
+            <div className="d-flex mx-auto pt-3">
+                <form className="d-flex my-2 my-lg-0">
+                    <input
+                        className="form-control mr-sm-2 text-def"
+                        type="search"
+                        placeholder="Şirket Ara"
+                        aria-label="Search"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        
+                    />
+                    <button className="btn btn-outline-info my-2 my-sm-0 ms-1" type="button" onClick={handleSearch}>
+                        <i className="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+            </div>
+            <div className="d-flex overflow-y-hidden mx-auto gap-1 p-3">
+                {companyList.map(company => <ClientCard key={company.companyName} {...company} />)}
+                {companyList.length === 0 && <p className="text-def">Aradığınız kriterlere uygun bir şirket bulunamadı.</p>}
             </div>
         </section>
     )
@@ -295,7 +314,7 @@ function ClientCard(props) {
         }).then(data => {
             console.log(data);
             setReviews(data)
-        }).then(error => {
+        }).catch(error => {
             console.log(error);
             showErrorMessage(error.message);
         });

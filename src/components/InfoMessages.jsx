@@ -27,3 +27,12 @@ export function showSuccessMessage(message){
         confirmButtonColor: "#5cb85c",
     })
 }
+
+export function showInfoMessage (message){
+    Swal.fire({
+        text: message,
+        icon: 'info',
+        confirmButtonText: 'Tamam',
+        confirmButtonColor: "#6C757D",
+    })
+}
