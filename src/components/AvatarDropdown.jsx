@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 
 
 export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, role, setSection }) {
-
+    const navigate = useNavigate();
 
     function handleLogout(e) {
         window.localStorage.clear("token");
@@ -11,6 +11,7 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
         window.localStorage.clear("company");
         window.localStorage.clear("shift");
         window.localStorage.clear("role");
+        navigate("/")
         if (window.location.href === "http://localhost:5173/") {
             location.reload()
         }
@@ -79,11 +80,11 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
                         {role === "MANAGER" && <UserSpecificLink linkTitle="Kurumsal" navLink="/company" />}
                         {role === "EMPLOYEE" && <UserSpecificLink linkTitle="Personel" navLink="/employee" />}
                         {role === "VISITOR" && <UserSpecificLink linkTitle="İKolay Müşterileri" navLink="#clients" />}
-                        <NavLink to="/" className="nav-link-dark" >
-                            <button className="btn-link border-0 bg-transparent text-decoration-none nav-link-dark" type="button" onClick={handleLogout}>
-                                Çıkış
-                            </button>
-                        </NavLink>
+
+                        <button className="btn-link border-0 bg-transparent text-decoration-none nav-link-dark" type="button" onClick={handleLogout}>
+                            Çıkış
+                        </button>
+
                     </div>
                 </div>
             </div>
