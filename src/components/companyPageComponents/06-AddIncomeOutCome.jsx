@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { EmployeesAllPayments } from "./09-EmployeesAllPayments";
 import { CompanysPendingPayments } from "./08-CompanysPendingPayments";
 
+
+
 export default function AddIncomeOutcome() {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -127,6 +129,7 @@ export default function AddIncomeOutcome() {
 }
 
 export function IncomeOutcomeForEmployeeMethod() {
+    
     const fileInput = useRef();
     const user = JSON.parse(localStorage.getItem("user"));
     const [currencyList, setCurrencyList] = useState([]);
@@ -307,23 +310,26 @@ export function IncomeOutcomeForEmployeeMethod() {
                         </select>
                     </div>
                 </div>
-                <div className="input-group mt-1">
+                <div className="input-group mt-1 ">
+                    <label htmlFor="files" className="btn btn-secondary btn-sm rounded">Dosya Ekle</label>
                     <input
+                        id="files"
+                        className="invisible"
                         type="file"
                         aria-label="related-document"
                         aria-describedby="basic-addon2"
                         onChange={onImageChange}
                         ref={fileInput}
-                        style={{ color: "white" }}
                     />
+                    
                     
                 </div>
                 {addPayment.file && <img width="200" src={addPayment.file} alt={addPayment.file} />}
                 <div className="d-flex flex-row justify-content-center mt-2">
-                    <button type="submit" className="btn btn-info" >EKLE</button>
+                    <button type="submit" className="btn btn-info">Gönder</button>
                 </div>
             </form>
-            <div className="overflow-y-scroll mt-3">
+            <div className="overflow-y-auto mt-3" style={{maxHeight:"200px"}}>
                 <EmployeesAllPayments myRequests={myRequests} user={user} setMyRequests={setMyRequests} />
             </div>
         </>

@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
-
-
-export function EmployeesAllPayments({myRequests,setMyRequests,user}) {
+export function EmployeesAllPayments({myRequests}) {
 
     return (
         <>
-            <div className="d-flex flex-column justify-content-center bg-white rounded">
-                <h3 className="text-center p-2">Harcama İsteklerim </h3>
+            <div className="d-flex flex-column justify-content-center bg-white rounded text-def">
+                <h3 className="text-center mt-3">Harcama İsteklerim</h3>
                 <table className="table align-middle mb-0 bg-white small">
                     <thead className="bg-light">
                         {myRequests == null && <tr>Yükleniyor!</tr>}
@@ -23,7 +20,7 @@ export function EmployeesAllPayments({myRequests,setMyRequests,user}) {
                         </tr>
 
                     </thead>
-                    <tbody className="table-group-divider">
+                    <tbody>
                         {myRequests != null && myRequests.map((expense,index) => <ExpensesTableRow key={index} {...expense}/>)}
                     </tbody>
                 </table>
@@ -62,7 +59,7 @@ function ExpensesTableRow({confirmationDate,currencyMultiplier,currencyType,expe
             <td>{currencyMultiplier}</td>
             <td>{confirmationDate==null?"Beklemede":confirmationDate}</td>
             <td >
-                <div className={`badge ${backgroundFixer(status)} p-3 text-def border border-2`} >
+                <div className={`${backgroundFixer(status)} border p-2 rounded text-def`} >
                 {handleEnglish(status)}
                 </div>
             </td>

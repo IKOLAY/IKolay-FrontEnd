@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import DashboardWelcome from "../components/DashboardWelcome";
 import CompanyBadge from "../components/CompanyBadge";
 import PublicHolidays from "../components/PublicHolidays";
-import { showErrorMessage } from "../components/InfoMessages";
+import { showErrorMessage, showInfoMessage } from "../components/InfoMessages";
 import { IncomeOutcomeForEmployeeMethod } from "../components/companyPageComponents/06-AddIncomeOutCome";
 
 export default function EmployeePage() {
@@ -35,7 +35,7 @@ export default function EmployeePage() {
             }).catch(err => {
                 console.log(err);
                 setMessage({ ...defMessage });
-                showErrorMessage(err.message);
+                showInfoMessage(err.message)
             })
     }
 
@@ -178,7 +178,7 @@ export default function EmployeePage() {
                                         <label htmlFor="content">Yorumunuz</label>
                                         <textarea className="w-100" style={{ minHeight: "150px" }} name="content" id="content" cols="30" rows="10" placeholder="Şirketinizle ilgili düşüncelerinizi giriniz...(Boş bırakılamaz!)" onChange={handleMessageChange} required value={message.content}></textarea>
                                     </div>
-                                    <div className={`mb-3 mx-5 rounded ${message.commentType == "REJECTED" && "bg-danger"} ${message.commentType == "PENDING" && "bg-warning"} ${message.commentType == "ACCEPTED" && "bg-success"}`}>
+                                    <div className={`mb-4 p-2 border mx-auto rounded ${message.commentType == "REJECTED" && "bg-danger-subtle border-danger"} ${message.commentType == "PENDING" && "bg-warning-subtle border-warning"} ${message.commentType == "ACCEPTED" && "bg-success-subtle border-success"}`}>
                                         {message.commentType == "PENDING" && <label>Önceki gönderiniz karar aşamasındadır. Yorumunuz onaylanana veya reddedilene kadar yorumunuzu yenileyemezsiniz!</label>}
                                         {message.commentType == "ACCEPTED" && <label>Yorumunuz onaylanmıştır! Yorumunuzu güncelleyebilirsiniz!</label>}
                                         {message.commentType == "REJECTED" && <label >Yorumunuz reddedilmiştir! Lütfen yorumunuzu güncelleyiniz!</label>}
@@ -497,7 +497,7 @@ function Leave({ id, companyId }) {
                     <section className="d-flex flex-row gap-3">
                         <button
                             type="button"
-                            className="btn btn-lg btn-outline-primary w-100 mb-4"
+                            className="btn btn-lg btn-info w-100 mb-4"
                             data-bs-toggle="modal"
                             data-bs-target="#modalLeave"
                         >+ İzin Talebi Gir</button>
@@ -583,7 +583,7 @@ function Leave({ id, companyId }) {
                 </div>
             </section>
 
-            <section className="mb-0 bg-white text-center overflow-y-scroll" style={{height:"400px"}}>
+            <section className="mb-0 bg-white text-center overflow-y-scroll text-def small" style={{height:"400px"}}>
                 <h1>PERSONELE ÖZEL İZİNLER</h1>
                 <table className="table align-middle">
                     <thead className="bg-light">
@@ -613,10 +613,10 @@ function MyRequestEmployeeTableRow({id,leaveName, createDate,duration,startingDa
     const stringDate = date.toISOString().split("T")[0];
     function backgroundFixer(status){
         switch(status){
-            case"PENDING": return "bg-warning"
-            case"ACCEPTED": return "bg-success"
-            case"REJECTED": return "bg-danger"
-            case"CANCELED": return "bg-secondary"
+            case"PENDING": return "bg-warning-subtle border-warning"
+            case"ACCEPTED": return "bg-success-subtle border-success "
+            case"REJECTED": return "bg-danger-subtle border-danger"
+            case"CANCELED": return "bg-secondary-subtle border-secondary"
         }
     }
 
@@ -649,13 +649,13 @@ function MyRequestEmployeeTableRow({id,leaveName, createDate,duration,startingDa
             <td>{leaveName}</td>
             <td>{startingDate}</td>
             <td>{duration}</td>
-            <td><span className={`"badge px-2 rounded text-black ${backgroundFixer(status)}`}>{handleEnglish(status)}</span></td>
+            <td><span className={`border p-2 rounded text-def ${backgroundFixer(status)}`}>{handleEnglish(status)}</span></td>
             <td>{stringDate}</td>
             <td><button type="button" 
-            className="btn btn-danger" 
+            className="btn btn-outline-danger" 
             disabled={status!="PENDING"?true:false}
             onClick={handleClick}
-            >IPTAL ET</button></td>
+            >İptal Et</button></td>
         </tr>
 
     </>

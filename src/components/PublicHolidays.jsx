@@ -16,7 +16,7 @@ export default function PublicHolidays() {
         }).catch(err => console.log(err))
     }, []);
     return (
-        <section className="mb-0 bg-light text-center p-4">
+        <section className="mb-0 bg-light text-center p-4 rounded">
             <h1 className="text-def border-bottom border-secondary-subtle">RESMİ TATİLLER</h1>
             <table className="table table-light align-middle">
                 <thead>

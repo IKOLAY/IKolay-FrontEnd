@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import PublicHolidays from "../PublicHolidays";
+import { showErrorMessage, showSuccessMessage } from "../InfoMessages";
 
 export default function EmployeeLeave() {
-    const [warningMessage, setWarningMessage] = useState(null);
     const user = JSON.parse(window.localStorage.getItem("user"));
     const defLeave = {
         leaveName: "",
@@ -28,8 +28,6 @@ export default function EmployeeLeave() {
 
     function handleChange(e) {
         setNewLeave({ ...newLeave, [e.target.name]: e.target.value })
-        setWarningMessage(null)
-
     }
 
     function handleSubmit() {
@@ -48,16 +46,16 @@ export default function EmployeeLeave() {
         }).then
             (response => {
                 console.log(response);
-                setWarningMessage("İzin başarıyla kaydedilmiştir!")
                 return response.json();
             }).then(data => {
                 console.log(data);
                 if (data.message)
                     throw new Error(data.message)
                 setNewLeave({ ...defLeave })
+                showSuccessMessage("İzin başarıyla kaydedilmiştir.")
             }).catch(err => {
                 console.log(err)
-                setWarningMessage(err.message)
+                showErrorMessage(err.message)
             });
     }
 
@@ -216,7 +214,7 @@ export default function EmployeeLeave() {
                                         placeholder="Personelin kişisel emailini giriniz..."
                                     />
                                 </div>
-                                {warningMessage !== null && <WarningMessage warningMessage={warningMessage} />}
+
                             </form>
                         </div>
                         <div className="modal-footer justify-content-between">
@@ -235,70 +233,70 @@ export default function EmployeeLeave() {
                 </div>
             </section>
             <PublicHolidays />
-            <div className=" overflow-y-scroll bg-light rounded" style={{maxHeight:"150px"}}>
-            <section className="mb-0 bg-white text-center rounded mt-2">
-                <h1>PERSONELE ÖZEL İZİNLER</h1>
-                <table className="table align-middle">
-                    <thead className="bg-light">
-                        <tr>
-                            <th scope="col">Gerekçe</th>
-                            <th scope="col">İzin Başlangıç Tarihi</th>
-                            <th scope="col">İş günü</th>
-                            <th scope="col">Onay durumu</th>
-                            <th scope="col">Talep Oluşturulma Tarihi</th>
-                            <th scope="col">Vazgeç</th>
+            <div className=" overflow-y-auto bg-light rounded text-def" style={{ maxHeight: "150px" }}>
+                <section className="mb-0 bg-white text-center rounded  p-3">
+                    <h1>PERSONEL İZİN TALEPLERİ</h1>
+                    <table className="table align-middle">
+                        <thead className="bg-light">
+                            <tr>
+                                <th scope="col">Gerekçe</th>
+                                <th scope="col">İzin Başlangıç Tarihi</th>
+                                <th scope="col">İş günü</th>
+                                <th scope="col">Onay durumu</th>
+                                <th scope="col">Talep Oluşturulma Tarihi</th>
+                                <th scope="col">Vazgeç</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {pendingRequests!=null && pendingRequests.map(request => <PendingRequestsEmployeeTableRow setPendingRequests={setPendingRequests} pendingRequests={pendingRequests} {...request}/>)}
-                    </tbody>
-                </table>
-            </section>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {pendingRequests != null && pendingRequests.map(request => <PendingRequestsEmployeeTableRow setPendingRequests={setPendingRequests} pendingRequests={pendingRequests} {...request} />)}
+                        </tbody>
+                    </table>
+                </section>
             </div>
         </div>
     )
 }
 
-function PendingRequestsEmployeeTableRow({id,leaveName, createDate,duration,startingDate,status,setPendingRequests,pendingRequests}) {
+function PendingRequestsEmployeeTableRow({ id, leaveName, createDate, duration, startingDate, status, setPendingRequests, pendingRequests }) {
 
     const date = new Date(createDate);
     const stringDate = date.toISOString().split("T")[0];
 
-    function backgroundFixer(status){
-        switch(status){
-            case"PENDING": return "bg-warning"
-            case"ACCEPTED": return "bg-success"
-            case"REJECTED": return "bg-danger"
-            case"CANCELED": return "bg-secondary"
+    function backgroundFixer(status) {
+        switch (status) {
+            case "PENDING": return "bg-warning-subtle border-warning"
+            case "ACCEPTED": return "bg-success-subtle border-success"
+            case "REJECTED": return "bg-danger-subtle border-danger"
+            case "CANCELED": return "bg-secondary-subtle border-secondary"
         }
     }
 
-    function handleEnglish(status){
-        switch(status){
-            case"PENDING": return "BEKLEMEDE"
-            case"ACCEPTED": return "ONAYLANDI"
-            case"REJECTED": return "REDDEDILDI"
-            case "CANCELED": return "IPTAL EDILDI"
+    function handleEnglish(status) {
+        switch (status) {
+            case "PENDING": return "Beklemede"
+            case "ACCEPTED": return "Onaylandı"
+            case "REJECTED": return "Reddedildi"
+            case "CANCELED": return "İptal Edildi"
         }
     }
 
-    function handleConfirmClick(e){
+    function handleConfirmClick(e) {
         fetch(`http://localhost:80/leave/confirmleave/${id}`).then(resp => resp.json())
-        .then(data=>{
-            if(data.message)
-            throw new Error(data.message)
-            setPendingRequests([...pendingRequests.filter(req=> req.id!=id)]);
-        })
+            .then(data => {
+                if (data.message)
+                    throw new Error(data.message)
+                setPendingRequests([...pendingRequests.filter(req => req.id != id)]);
+            })
     }
 
-    function handleRejectClick(e){
+    function handleRejectClick(e) {
         fetch(`http://localhost:80/leave/rejectleave/${id}`).then(resp => resp.json())
-        .then(data=>{
-            if(data.message)
-            throw new Error(data.message)
-            setPendingRequests([...pendingRequests.filter(req=> req.id!=id)]);
-        })
+            .then(data => {
+                if (data.message)
+                    throw new Error(data.message)
+                setPendingRequests([...pendingRequests.filter(req => req.id != id)]);
+            })
     }
 
 
@@ -308,18 +306,19 @@ function PendingRequestsEmployeeTableRow({id,leaveName, createDate,duration,star
             <td>{leaveName}</td>
             <td>{startingDate}</td>
             <td>{duration}</td>
-            <td><span className={`"badge px-2 rounded text-black ${backgroundFixer(status)}`}>{handleEnglish(status)}</span></td>
+            <td><span className={`p-2 rounded border text-def ${backgroundFixer(status)}`}>{handleEnglish(status)}</span></td>
             <td>{stringDate}</td>
-            <td><button type="button" 
-            className="btn btn-success" 
-            disabled={status!="PENDING"?true:false}
-            onClick={handleConfirmClick}
-            >ONAYLA</button>
-            <button type="button" 
-            className="btn btn-danger" 
-            disabled={status!="PENDING"?true:false}
-            onClick={handleRejectClick}
-            >REDDET</button></td>
+            <td>
+                <button type="button"
+                    className="btn btn-outline-success btn-sm me-1"
+                    disabled={status != "PENDING" ? true : false}
+                    onClick={handleConfirmClick}
+                >ONAYLA</button>
+                <button type="button"
+                    className="btn btn-outline-danger btn-sm"
+                    disabled={status != "PENDING" ? true : false}
+                    onClick={handleRejectClick}
+                >REDDET</button></td>
         </tr>
 
     </>
