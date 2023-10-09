@@ -11,19 +11,29 @@ export default function EmployeeLeave() {
         email: "",
         companyId: user.companyId,
     }
+    const [leaveList, setLeaveList] = useState([]);
 
     const [newLeave, setNewLeave] = useState({ ...defLeave });
     const [pendingRequests, setPendingRequests] = useState(null);
     useEffect(() => {
         fetch(`http://localhost:80/leave/getcompanyspendingleaverequest/${user.companyId}`)
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.message)
-                    throw new Error(data.message);
-                setPendingRequests(data);
-                console.log(data);
-            })
-    }, [])
+        .then(resp => resp.json())
+        .then(data => {
+            if (data.message)
+                throw new Error(data.message);
+            setPendingRequests(data);
+            console.log(data);
+        })
+    fetch(`http://localhost:80/leave/getcompanyleaves?companyId=${user.companyId}`).then(resp => {
+        if (!resp.ok)
+            throw new Error("Hata initiate");
+        return resp.json();
+    }).then(data => {
+        console.log(data);
+        setLeaveList(data);
+        console.log(leaveList);
+    }).catch(err => console.log(err))
+}, [])
 
 
     function handleChange(e) {
@@ -60,17 +70,17 @@ export default function EmployeeLeave() {
     }
 
     return (
-        <div className="d-flex flex-column gap-2">
-            <section className="d-flex flex-row gap-3">
+        <div className="d-flex flex-column gap-3 overflow-x-hidden mt-5">
+            <section className="d-flex flex-row gap-3 mt-5">
                 <button
                     type="button"
-                    className="btn btn-lg btn-info w-50"
+                    className="btn btn-info w-50"
                     data-bs-toggle="modal"
                     data-bs-target="#modalHoliday"
                 >+ Resmi Tatil</button>
                 <button
                     type="button"
-                    className="btn btn-lg btn-info w-50"
+                    className="btn btn-info w-50"
                     data-bs-toggle="modal"
                     data-bs-target="#modalLeave"
                 >+ İzin</button>
@@ -232,9 +242,9 @@ export default function EmployeeLeave() {
                     </div>
                 </div>
             </section>
-            <PublicHolidays />
-            <div className=" overflow-y-auto bg-light rounded text-def" style={{ maxHeight: "150px" }}>
-                <section className="mb-0 bg-white text-center rounded  p-3">
+            <PublicHolidays leaveList={leaveList} setLeaveList={setLeaveList}/>
+            <div className="overflow-y-auto bg-light rounded text-def" style={{ maxHeight: "30%" }}>
+                <section className="mb-0 bg-white text-center rounded p-3">
                     <h1>PERSONEL İZİN TALEPLERİ</h1>
                     <table className="table align-middle">
                         <thead className="bg-light">

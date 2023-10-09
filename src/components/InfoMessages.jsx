@@ -11,7 +11,7 @@ export function FormValidationMessage({ message }) {
 export function showErrorMessage(message){
     Swal.fire({
         icon: 'error',
-        title: 'Hata!',
+        title: 'Hay aksi!',
         text: message,
         confirmButtonText: 'Tamam',
         confirmButtonColor: "#6C757D",

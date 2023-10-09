@@ -3,11 +3,12 @@ import { NavLink } from "react-router-dom";
 import AvatarDropdown from "../components/AvatarDropdown";
 import { useEffect, useState } from "react";
 import CompanyBadge from "../components/CompanyBadge";
-import { showErrorMessage, showInfoMessage } from "../components/InfoMessages";
+import { showErrorMessage } from "../components/InfoMessages";
 
 
 export default function HomePage() {
     let role = window.localStorage.getItem("role");
+    let user = JSON.parse(window.localStorage.getItem("user"));
 
     const [backToTopButtonDisplay, setBackToTopButtonDisplay] = useState("d-none")
 
@@ -33,7 +34,7 @@ export default function HomePage() {
 
     return (
         <>
-            <HomeHeader role={role} />
+            <HomeHeader role={role} user={user} />
             <main className="bg-dark-subtle">
                 <section id="about" className="container w-100">
                     <div className="d-flex flex-column justify-content-center align-items-center text-center p-4">
@@ -131,7 +132,7 @@ export default function HomePage() {
     )
 }
 
-function HomeHeader({ role }) {
+function HomeHeader({ role, user }) {
 
     return (
         <header className="container-fluid px-5 text-center">
@@ -157,7 +158,7 @@ function HomeHeader({ role }) {
                     <div className="me-auto"></div>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <a className="nav-link" href="/">
                                 Ana Sayfa
                             </a>
                         </li>
@@ -176,7 +177,7 @@ function HomeHeader({ role }) {
 
                         <li className="nav-item">
 
-                            <RoleButtons />
+                            <RoleButtons role={role} user={user}/>
 
                         </li>
                     </ul>
@@ -186,8 +187,9 @@ function HomeHeader({ role }) {
             <section id="hero" className="container">
                 <div className="row">
                     <div className="col-md-6 col-sm-12">
+                        {role !== null && <h1>Hoş geldiniz <span className="text-info logo-text" style={{ fontSize: "1em" }}>{user.firstname} {user.lastname}</span>!</h1>}
                         <h5>İnsan Kaynakları Yönetimi artık çok kolay!</h5>
-                        <h1>Siz de <span className="logo-span logo-text" style={{ fontSize: "1em" }}><span className="text-info logo-text" style={{ fontSize: "1em" }}>İK</span>olay</span> Ailesine Katılın</h1>
+                        {role === null && <h1>Siz de <span className="logo-text" style={{ fontSize: "1em" }}><span className="text-info logo-text" style={{ fontSize: "1em" }}>İK</span>olay</span> Ailesine Katılın</h1>}
                         <p className="lead">Şirketinizin büyümesine destek olmak için buradayız. İnsan kaynakları yönetimini basit ve etkili hale getiren güçlü bir çözüm sunuyoruz. <br /> Personel onboarding, maaş ve ödemeler, vardiyalar ve daha fazlasını kolayca yönetin.</p>
                         {role === null && <NavLink to="/register">
                             <button className="btn btn-info px-4 py-2">Hemen Ücretsiz Kaydol!</button>
@@ -203,9 +205,8 @@ function HomeHeader({ role }) {
     )
 }
 
-function RoleButtons() {
-    let role = window.localStorage.getItem("role");
-    let user = JSON.parse(window.localStorage.getItem("user"))
+function RoleButtons({role, user}) {
+    
     switch (role) {
         case null:
             return (
@@ -224,14 +225,14 @@ function RoleButtons() {
         case "ADMIN":
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <AvatarDropdown userNameTitle={"Admin Adı:"} userEmailTitle={"Admin Email:"} user={user} role={role} />
+                    <AvatarDropdown userNameTitle={"Admin Adı"} userEmailTitle={"Admin Email"} user={user} role={role} />
                 </div>
             )
 
         case "MANAGER":
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <AvatarDropdown userNameTitle={"Yönetici Adı:"} userEmailTitle={"Yönetici Email:"} user={user} role={role} />
+                    <AvatarDropdown userNameTitle={"Yönetici Adı"} userEmailTitle={"Yönetici Email"} user={user} role={role} />
                 </div>
             )
 
@@ -239,7 +240,7 @@ function RoleButtons() {
         case "EMPLOYEE":
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <AvatarDropdown userNameTitle={"Personel Adı:"} userEmailTitle={"Personel Email:"} user={user} role={role} />
+                    <AvatarDropdown userNameTitle={"Personel Adı"} userEmailTitle={"Personel Email"} user={user} role={role} />
                 </div>
             )
 
@@ -247,7 +248,7 @@ function RoleButtons() {
         case "VISITOR":
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <AvatarDropdown userNameTitle={"Kullanıcı Adı:"} userEmailTitle={"Kullanıcı Email:"} user={user} role={role} />
+                    <AvatarDropdown userNameTitle={"Kullanıcı Adı"} userEmailTitle={"Kullanıcı Email"} user={user} role={role} />
                 </div>
             )
 
@@ -277,11 +278,12 @@ function Clients() {
     }
 
     return (
-        <section id="clients" className="d-flex flex-column justify-content-start overflow-x-auto" style={{minHeight:"300px"}}>
-            <div className="d-flex mx-auto pt-3">
-                <form className="d-flex my-2 my-lg-0">
+        <section id="clients" className="d-flex flex-column justify-content-start overflow-x-auto p-4" style={{minHeight:"300px"}}>
+            <h2 className="text-center">Kimlerle Çalışıyoruz?</h2>
+            <div className="d-flex mx-auto">
+                <form className="d-flex">
                     <input
-                        className="form-control mr-sm-2 text-def"
+                        className="form-control text-def"
                         type="search"
                         placeholder="Şirket Ara"
                         aria-label="Search"
@@ -289,7 +291,7 @@ function Clients() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         
                     />
-                    <button className="btn btn-outline-info my-2 my-sm-0 ms-1" type="button" onClick={handleSearch}>
+                    <button className="btn btn-outline-info ms-1" type="button" onClick={handleSearch}>
                         <i className="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
@@ -326,11 +328,16 @@ function ClientCard(props) {
             <button className="border-0 m-0 p-0 rounded" type="button" data-bs-toggle="modal" data-bs-target={`#modal-${props.id}`}>
                 <div className="card" style={{ minWidth: "200px", maxWidth: "200px" }}>
                     <div className="bg-light d-flex justify-content-center rounded p-2">
-                        <img
+                        {props.logo === null && <img
+                            className="rounded-circle-clients"
+                            alt="şirket logosu"
+                            src="/img/ikolay-companypp.svg"
+                        />}
+                        {props.logo !== null && <img
                             className="rounded-circle-clients"
                             alt="şirket logosu"
                             src={props.logo}
-                        />
+                        />}
                     </div>
                     <div className="card-body">
                         <h4 className="card-title small p-3">{props.companyName}</h4>
@@ -407,10 +414,7 @@ function EmployeeReviews({ content }) {
                     style={{ width: 45, height: "100%" }}
                 />
                 <div>
-                    <p
-                        className="small p-2 ms-3 mb-3 rounded-3"
-                        style={{ backgroundColor: "#f5f6f7" }}
-                    >
+                    <p className="small p-2 ms-3 mb-3 rounded-3 bg-secondary-subtle">
                         {content}
                     </p>
                 </div>

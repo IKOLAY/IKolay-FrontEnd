@@ -326,10 +326,10 @@ export function IncomeOutcomeForEmployeeMethod() {
                 </div>
                 {addPayment.file && <img width="200" src={addPayment.file} alt={addPayment.file} />}
                 <div className="d-flex flex-row justify-content-center mt-2">
-                    <button type="submit" className="btn btn-info">Gönder</button>
+                    <button type="submit" className="btn btn-info"><i className="fa-regular fa-paper-plane"></i> Gönder</button>
                 </div>
             </form>
-            <div className="overflow-y-auto mt-3" style={{maxHeight:"200px"}}>
+            <div className="overflow-y-auto mt-3" style={{maxHeight:"40%"}}>
                 <EmployeesAllPayments myRequests={myRequests} user={user} setMyRequests={setMyRequests} />
             </div>
         </>

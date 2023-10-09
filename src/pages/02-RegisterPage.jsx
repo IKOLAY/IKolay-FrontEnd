@@ -8,7 +8,7 @@ export default function RegisterPage() {
     return (
         <>
             {role === null && <SelectRole setRole={setRole} />}
-            {role === "company" && <RegisterCompanyManager />}
+            {role === "company" && <Pricing />}
             {role === "guest" && <RegisterGuest />}
         </>
     )
@@ -22,8 +22,7 @@ function SelectRole({ setRole }) {
                 <div className="form-outline mb-4 text-center">
                     <NavLink className="navbar-brand logo-text" to="/">
                         <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
-
-                        <span className="text-info">İK</span>olay
+                        <span className="text-info logo-text">İK</span>olay
                     </NavLink>
                 </div>
 
@@ -40,6 +39,87 @@ function SelectRole({ setRole }) {
                     <option value="guest">Ziyaretçi</option>
                 </select>
             </form>
+        </main>
+    )
+}
+
+function Pricing() {
+    return (
+        <main className="d-flex  flex-column bg-default-h-100 justify-content-center">
+            <div className="d-flex flex-column justify-content-center align-items-center text-center">
+                <NavLink className="navbar-brand logo-text" to="/">
+                    <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
+                    <span className="text-info logo-text">İK</span>olay
+                </NavLink>
+                <h1 className="pt-0">Fiyatlandırma</h1>
+                <h2>İnsan Kaynakları Yönetimi Artık Daha Kolay ve Erişilebilir!<br></br>
+                    <span className="text-info">İlk Bir Ay Ücretsiz Üyelikle Başlayın:</span>
+                </h2>
+            </div>
+
+            <div className="d-flex text-def text-center gap-2 justify-content-center">
+                <div className="bg-light card col-3">
+                    <div className="card-header m-0 p-0">
+                        <h4>Bronz</h4>
+                    </div>
+                    <div className="card-body m-1 p-2 d-flex flex-column justify-content-around align-items-center">
+                        <h2 className="card-title">
+                            500 ₺ <small className="text-muted">/ ay</small>
+                        </h2>
+                        <p className="small text-muted">
+                            Hesabınıza <span className="fw-bold">tek seferlik 1 aylık kullanım</span> tanımlayın. İKolay'ın sınırsız kolaylıklar dünyasına ilk adımı atın. Paket süreniz dolmadan hesabınız üzerinden paketinizi yenilemek için bildirim alın.
+                        </p>
+                        <button
+                            type="button"
+                            className="btn btn-lg btn-info"
+                        >
+                            Seç
+                        </button>
+                    </div>
+                </div>
+                
+                <div className="bg-light card col-3 ">
+                {/* {(screen.width < 375) && <p className="small bg-warning-subtle text-warning p-0 m-0 rounded fw-bold">En Popüler!</p>} */}
+                    <div className="card-header m-0 p-0">
+                    <div className="ribbon "><span>En Popüler!</span></div>
+                        <h4>Gümüş</h4>
+                    </div>
+                    <div className="card-body m-1 p-2 d-flex flex-column justify-content-around align-items-center">
+                        <h2 className="card-title">
+                        450 ₺ <small className="text-muted">/ ay</small>
+                        </h2>
+                        <p className="small text-muted">
+                        <span className="fw-bold">3 aylık kullanım süresi</span>ni hesabınıza tek seferde tanımlayın, hizmetlerimizi test edin. 3 ay sonunda ihtiyaçlarınıza göre dilerseniz yıllık paketimizle, dilerseniz aynı paketle İKolaylamaya devam edin!
+                        </p>
+                        <button
+                            type="button"
+                            className="btn btn-lg btn-info"
+                        >
+                            Seç
+                        </button>
+                    </div>
+                </div>
+                <div className="bg-light card col-3">
+                    <div className="card-header m-0 p-0">
+                        <h4>Altın</h4>
+                    </div>
+                    <div className="card-body m-1 p-2 d-flex flex-column justify-content-around align-items-center">
+                        <h2 className="card-title">
+                        400 ₺ <small className="text-muted">/ ay</small>
+                        </h2>
+                        <p className="small text-muted">
+                        <span className="fw-bold">Bir yıl boyunca</span>, paket yenileme derdi olmadan sınırsız İKolaylayın, işletmenizin bütün İK süreçlerini tek platformdan yürütün! Yıl sonunda paketiniz dolmadan hesabınız üzerinden paketinizi yenilemek için bildirim alın.
+                        </p>
+                        <button
+                            type="button"
+                            className="btn btn-lg btn-info"
+                        >
+                            Seç
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </main>
     )
 }
@@ -99,7 +179,6 @@ function RegisterCompanyManager() {
                 <div className="form-outline mb-2 text-center">
                     <NavLink className="navbar-brand logo-text" to="/">
                         <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
-
                         <span className="text-info logo-text">İK</span>olay
                     </NavLink>
                 </div>
@@ -110,10 +189,9 @@ function RegisterCompanyManager() {
                         onInput={e => e.target.setCustomValidity('')} />
                 </label>
 
-                <label className="form-label" htmlFor="taxNo">
+                <label className="form-label w-100" htmlFor="taxNo">
                     Vergi No
-                    <input className="form-control" value={user.taxNo} id="taxNo" type="number" name="taxNo" onChange={handleChange} required onInvalid={e => e.target.setCustomValidity('Vergi No boş olamaz!')}
-                        onInput={e => e.target.setCustomValidity('')} />
+                    <input className="form-control" value={user.taxNo} id="taxNo" type="number" name="taxNo" onChange={handleChange} max="9999999999" min="1000000000" onInvalid={e => e.target.setCustomValidity('Vergi no 10 haneli olmalıdır.')} onInput={e => e.target.setCustomValidity('')} required />
                 </label>
 
                 <label className="form-label" htmlFor="firstname">
@@ -142,12 +220,12 @@ function RegisterCompanyManager() {
 
                 <label className="form-label" htmlFor="password">
                     Şifre
-                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} value={user.password} id="password" type="password" name="password" onChange={handleChange} />
+                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} value={user.password} id="password" type="password" name="password" onChange={handleChange} onInput={e => e.target.setCustomValidity('')} onInvalid={e => e.target.setCustomValidity("Şifre en az 6 karakterden oluşmalıdır")} minLength="6" required />
                 </label>
 
                 <label className="form-label" htmlFor="passwordControl">
                     Şifre Onayı
-                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} value={user.passwordControl} id="passwordControl" type="password" name="passwordControl" onChange={handleChange} />
+                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} value={user.passwordControl} id="passwordControl" type="password" name="passwordControl" onChange={handleChange} required />
                 </label>
 
                 <div className="w-100 text-center">
@@ -243,12 +321,12 @@ function RegisterGuest() {
 
                 <label className="form-label" htmlFor="password">
                     Şifre
-                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} id="password" value={user.password} type="password" name="password" onChange={handleChange} />
+                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} id="password" value={user.password} type="password" name="password" onChange={handleChange} onInput={e => e.target.setCustomValidity('')} onInvalid={e => e.target.setCustomValidity("Şifre en az 6 karakterden oluşmalıdır")} minLength="6" required />
                 </label>
 
                 <label className="form-label" htmlFor="passwordControl">
                     Şifre Onayı
-                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} id="passwordControl" value={user.passwordControl} type="password" name="passwordControl" onChange={handleChange} />
+                    <input className={`${user.password != user.passwordControl && "border-danger"} form-control`} id="passwordControl" value={user.passwordControl} type="password" name="passwordControl" onChange={handleChange} required />
                 </label>
 
                 <div className="w-100 text-center">

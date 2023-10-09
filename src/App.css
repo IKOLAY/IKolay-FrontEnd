@@ -88,10 +88,6 @@ footer {
     color: var(--text--dark);
 }
 
-.logo-span {
-    font-family: var(--font--Sniglet);
-}
-
 .container {
     padding: 20px;
 }
@@ -103,6 +99,7 @@ footer {
 .text-def {
     color: var(--text--dark);
 }
+
 
 .btn-toggle-employee[aria-expanded="true"] {
     transform: rotate(90deg);
@@ -256,6 +253,10 @@ footer {
         width: 50%
     }
 
+    .ribbon {
+        display: none;
+    }
+
     }
 
 @media screen and (min-width: 1024px) {
@@ -272,3 +273,53 @@ footer {
     }
 
     }
+
+    .ribbon {
+        position: absolute;
+        right: -5px;
+        top: -5px;
+        z-index: 1;
+        overflow: hidden;
+        width: 93px;
+        height: 93px;
+        text-align: right;
+      }
+      .ribbon span {
+        font-size: 0.7rem;
+        color: #fff;
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bold;
+        line-height: 32px;
+        transform: rotate(45deg);
+        width: 125px;
+        display: block;
+        background: #F7AE54;
+        background: linear-gradient(#EA9122 0%, #F7AE54 100%);
+        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 17px; 
+        right: -29px;
+        
+      }
+      
+      .ribbon span::before {
+         content: '';
+         position: absolute; 
+         left: 0px; top: 100%;
+         z-index: -1;
+         border-left: 3px solid #F7AE54;
+         border-right: 3px solid transparent;
+         border-bottom: 3px solid transparent;
+         border-top: 3px solid #F7AE54;
+      }
+      .ribbon span::after {
+         content: '';
+         position: absolute; 
+         right: 0%; top: 100%;
+         z-index: -1;
+         border-right: 3px solid #F7AE54;
+         border-left: 3px solid transparent;
+         border-bottom: 3px solid transparent;
+         border-top: 3px solid #F7AE54;
+      }

@@ -63,7 +63,7 @@ function ExpensesTableRow({confirmationDate,currencyMultiplier,currencyType,expe
                 {handleEnglish(status)}
                 </div>
             </td>
-            <td>{fileId != null ? <a href={`http://localhost:80/files/${fileId}`} target="_blank"><button className="btn btn-outline-primary" name="accept">İndir</button></a> : "Belge Yok"}</td>
+            <td>{fileId != null ? <a href={`http://localhost:80/files/${fileId}`} target="_blank"><button className="btn btn-outline-primary btn-sm" name="accept"><i className="fa-solid fa-download"></i> İndir</button></a> : "Belge Yok"}</td>
         </tr>
     )
 }

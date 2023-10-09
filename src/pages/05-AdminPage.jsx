@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom"
 import DashboardWelcome from "../components/DashboardWelcome";
 import AvatarDropdown from "../components/AvatarDropdown";
-import { showErrorMessage } from "../components/InfoMessages";
 
 export default function AdminPage() {
     const user = JSON.parse(window.localStorage.getItem("user"));
@@ -12,21 +11,13 @@ export default function AdminPage() {
     const [confirmInfo, setConfirmInfo] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost/user/pendingmanagers").then(resp => resp.json()).then(data => setConfirmInfo(data));
+        fetch("http://localhost:80/user/pendingmanagers").then(resp => resp.json()).then(data => setConfirmInfo(data));
     }, [])
     console.log(confirmInfo);
 
     function handleSectionClick(e) {
         e.preventDefault();
         setSection(e.target.name)
-    }
-
-    function handleLogout(e) {
-        window.localStorage.clear("token")
-        window.localStorage.clear("user")
-        window.localStorage.clear("company")
-        window.localStorage.clear("shift")
-        window.localStorage.clear("role")
     }
 
     return (
@@ -65,7 +56,7 @@ export default function AdminPage() {
                     <section className="operation-container d-flex flex-column text-center justify-content-center">
 
                         {section === null && <DashboardWelcome />}
-                        {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequests key={companyInfo.companyId} {...companyInfo} />)}
+                        {section === "register-requests" && confirmInfo.map(companyInfo => <RegisterRequests key={companyInfo.companyId} {...companyInfo} confirmInfo={confirmInfo} setConfirmInfo={setConfirmInfo}/>)}
                         {section === "comment-requests" && <CommentRequests />}
 
 
@@ -76,11 +67,11 @@ export default function AdminPage() {
     )
 }
 
-function RegisterRequests({ companyId, email, firstname, lastname, companyName, taxNo }) {
-    const defConfirm = { isAccepted: true, companyId: companyId, email: email, content: "" }; //content: "Üzgünüz"
-    const [confirm, setConfirm] = useState({ isAccepted: true, companyId: companyId, email: email, content: "" }); //content: "Üzgünüz"
+function RegisterRequests({ companyId, email, firstname, lastname, companyName, taxNo, confirmInfo, setConfirmInfo }) {
+    const defConfirm = { isAccepted: true, companyId: companyId, email: email, content: "Üzgünüz!" };
+    const [confirm, setConfirm] = useState({ isAccepted: true, companyId: companyId, email: email, content: "Üzgünüz!" });
 
-    function handleRefuseSubmit(e) {
+    function handleRefuseSubmit() {
         const refuse = { ...confirm, isAccepted: false }
         fetch("http://localhost:80/auth/approve", {
             method: "POST",
@@ -91,10 +82,11 @@ function RegisterRequests({ companyId, email, firstname, lastname, companyName, 
         }).then(resp => {
             console.log(resp);
             if (!resp.ok)
-                throw new Error("Üzgünüz, bir hata oluştu!");
+                throw new Error("Hata initiate");
             return resp.json();
         }).then(data => {
             setConfirm({ ...defConfirm })
+            setConfirmInfo(confirmInfo.filter(req =>req.companyId != companyId))
         }).catch(err => console.log(err))
     }
 
@@ -107,14 +99,12 @@ function RegisterRequests({ companyId, email, firstname, lastname, companyName, 
             body: JSON.stringify(confirm)
         }).then(resp => {
             if (!resp.ok)
-                throw new Error("Üzgünüz, bir hata oluştu!");
+                throw new Error("Hata initiate");
             return resp.json();
         }).then(data => {
             setConfirm({ ...defConfirm })
-        }).catch(err => {
-            console.log(err);
-            showErrorMessage(err.message)
-        })
+            setConfirmInfo(confirmInfo.filter(req => req.companyId != companyId))
+        }).catch(err => console.log(err))
     }
 
     function handleCancel() {
@@ -199,15 +189,11 @@ function CommentRequests() {
     const [pendingComments, setPendingComments] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost/comment/findallcommentforadmin")
+        fetch("http://localhost:80/comment/findallcommentforadmin")
             .then(resp => resp.json())
             .then(data => setPendingComments(data))
-            .catch(err => {
-                console.log(err);
-                showErrorMessage(err.message);
-            });
+            .catch(err => console.log(err));
     }, [])
-
 
     return (
         pendingComments.map(comment => <CommentRow key={comment.userId} {...comment} comments={pendingComments} setComments={setPendingComments} />)
@@ -221,24 +207,20 @@ function CommentRow({ id, companyId, userId, content, comments, setComments }) {
 
     function handleClick(e) {
         if (e.target.name == "accept") {
-            fetch(`http://localhost/comment/acceptcomment/${id}`).then(resp => {
+            fetch(`http://localhost:80/comment/acceptcomment/${id}`).then(resp => {
                 if (resp.ok) {
                     setComments(comments.filter(comment => comment.id != id));
                 }
             }).catch(err => console.log(err))
         } else {
-            fetch(`http://localhost/comment/rejectcomment/${id}`).then(resp => {
+            fetch(`http://localhost:80/comment/rejectcomment/${id}`).then(resp => {
                 if (resp.ok) {
                     setComments(comments.filter(comment => comment.id != id));
                 }
-            }).catch(err => {
-                console.log(err);
-                showErrorMessage(err.message);
-            });
+            }).catch(err => console.log(err))
         }
     }
-
-    function handleToggle(e) {
+    function handleToggle() {
         setToggle(false)
     }
 
@@ -304,25 +286,22 @@ function CommentRow({ id, companyId, userId, content, comments, setComments }) {
 
 function GetFirstAndLastName({ userId, user, setUser }) {
     useEffect(() => {
-        fetch(`http://localhost/user/getusersfirstandlastname/${userId}`).then(resp => resp.json()).then(data => {
+        fetch(`http://localhost:80/user/getusersfirstandlastname/${userId}`).then(resp => resp.json()).then(data => {
             if (!data.firstname)
                 throw new Error(data.message);
             setUser(data);
-        }).catch(err => {
-            console.log(err);
-            showErrorMessage(err.message);
-        });
+        }).catch(err => console.log(err))
     }, [])
 
     return <>
-        <label className="fw-bold">Kullanici Ad Soyad:</label>
+        <label className="fw-bold">Kullanıcı Ad Soyad:</label>
         <p>{user.firstname} {user.lastname}</p>
     </>
 }
 
 function GetCompanyNameAndTaxNo({ companyId, company, setCompany }) {
     useEffect(() => {
-        fetch(`http://localhost/company/companyinformation?id=${companyId}`).then(resp => resp.json()).then(data => {
+        fetch(`http://localhost:80/company/companyinformation?id=${companyId}`).then(resp => resp.json()).then(data => {
             if (!data.taxNo)
                 throw new Error(data.message);
             setCompany(data);
