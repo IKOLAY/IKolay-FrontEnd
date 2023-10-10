@@ -271,7 +271,7 @@ export default function EmployeePage() {
     )
 }
 
-function EmployeeProfile({ setOperation }) {
+function EmployeeProfile() {
 
     let defUser = JSON.parse(window.localStorage.getItem("user"));
     let userShiftDetails = JSON.parse(window.localStorage.getItem("shift"));

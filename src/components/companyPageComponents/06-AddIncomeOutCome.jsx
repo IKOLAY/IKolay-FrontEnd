@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { EmployeesAllPayments } from "./09-EmployeesAllPayments";
 import { CompanysPendingPayments } from "./08-CompanysPendingPayments";
-import { PatternFormat } from "react-number-format";
 import { EmployeeAdvanceRequests } from "../EmployeeAdvanceRequests";
 
 
