@@ -35,29 +35,31 @@ function EmployeeRow({ employeeList, setEmployeeList, firstname, lastname, photo
         <>
             <tr className="d-flex flex-column border-dark-subtle border-2 border-bottom-0">
                 <td className="d-flex justify-content-center">
-                    <div className="d-flex justify-content-center align-items-center">
-                        {photoUrl === null && <img
-                            src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random() * 6)}-bg.webp`}
-                            alt=""
-                            style={{ width: 45, height: 45 }}
-                            className="rounded-circle"
-                        />}
-                        {photoUrl !== null && <img
-                            src={photoUrl}
-                            alt=""
-                            style={{ width: 45, height: 45 }}
-                            className="rounded-circle"
-                        />}
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                        <div>
+                            {photoUrl === null && <img
+                                src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random() * 6)}-bg.webp`}
+                                alt=""
+                                style={{ width: 45, height: 45 }}
+                                className="rounded-circle"
+                            />}
+                            {photoUrl !== null && <img
+                                src={photoUrl}
+                                alt=""
+                                style={{ width: 45, height: 45 }}
+                                className="rounded-circle"
+                            />}
+                        </div>
                         <div className=" d-flex flex-column gap-1">
-                            <p className="fw-bold mb-1">{firstname} {lastname}</p>
+                            <p className="fw-bold mb-0">{firstname} {lastname}</p>
                             <p className="text-muted mb-0"><i className="fa-regular fa-envelope"></i> {email}</p>
                             <div className="d-flex align-items-center ms-5">
-                            <i className="fa-solid fa-phone"></i>
-                            <PatternFormat className="d-flex text-muted mb-1 bg-transparent border-0" value={phone} format="+90 (###) #### ###" allowEmptyFormatting mask="_" readOnly/> 
+                                <i className="fa-solid fa-phone"></i>
+                                <PatternFormat className="d-flex text-muted mb-1 bg-transparent border-0" value={phone} format="+90 (###) #### ###" allowEmptyFormatting mask="_" readOnly />
                             </div>
                             <div className="d-flex gap-1 justify-content-center">
-                            <UpdateEmployeesSalary employeeList={employeeList} salary={salary} id={id} firstname={firstname} lastname={lastname} setEmployeeList={setEmployeeList}/>
-                            <EmployeeDelete employeeList={employeeList} setEmployeeList={setEmployeeList} email={email} companyId={companyId} id={id}/>
+                                <UpdateEmployeesSalary employeeList={employeeList} salary={salary} id={id} firstname={firstname} lastname={lastname} setEmployeeList={setEmployeeList} />
+                                <EmployeeDelete employeeList={employeeList} setEmployeeList={setEmployeeList} email={email} companyId={companyId} id={id} />
                             </div>
 
                         </div>

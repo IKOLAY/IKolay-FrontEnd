@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { EmployeesAllPayments } from "./09-EmployeesAllPayments";
 import { CompanysPendingPayments } from "./08-CompanysPendingPayments";
+import { PatternFormat } from "react-number-format";
+import { EmployeeAdvanceRequests } from "../EmployeeAdvanceRequests";
 
 
 
@@ -129,7 +131,7 @@ export default function AddIncomeOutcome() {
 }
 
 export function IncomeOutcomeForEmployeeMethod() {
-    
+
     const fileInput = useRef();
     const user = JSON.parse(localStorage.getItem("user"));
     const [currencyList, setCurrencyList] = useState([]);
@@ -296,7 +298,7 @@ export function IncomeOutcomeForEmployeeMethod() {
                         />}
                         <div className="input-group-append">
                             <span className="input-group-text">
-                                <div className="input-group d-flex justify-content-center mt-1">
+                                <div className="d-flex justify-content-center mt-1">
                                     <select name="currencyType" value={addPayment.currencyType} onChange={handleChange} >
                                         {currencyList.map(curr => <option key={curr} value={`${curr}`} >{curr}</option>)}
                                     </select>
@@ -321,16 +323,75 @@ export function IncomeOutcomeForEmployeeMethod() {
                         onChange={onImageChange}
                         ref={fileInput}
                     />
-                    
-                    
+
+
                 </div>
                 {addPayment.file && <img width="200" src={addPayment.file} alt={addPayment.file} />}
                 <div className="d-flex flex-row justify-content-center mt-2">
                     <button type="submit" className="btn btn-info"><i className="fa-regular fa-paper-plane"></i> Gönder</button>
                 </div>
             </form>
-            <div className="overflow-y-auto mt-3" style={{maxHeight:"40%"}}>
+            <div className="overflow-y-auto mt-3" style={{ maxHeight: "40%" }}>
                 <EmployeesAllPayments myRequests={myRequests} user={user} setMyRequests={setMyRequests} />
+            </div>
+        </>
+
+    )
+
+}
+
+export function AdvanceRequest() {
+
+    return (
+        <>
+            <form className="bg-light text-def p-3 rounded">
+                <h3 className="text-center">AVANS TALEBİ GİR</h3>
+                <div className="border border-info mb-2 px-3 rounded mx-auto" style={{ maxWidth: "350px" }}>
+                    <p className="pt-3 small"><i className="fa-solid fa-circle-info me-1 text-info"></i> Avans talebiniz maaşınızdan yüksek olamaz!</p>
+                </div>
+                <div className="d-flex flex-column gap-3">
+                    <div className="d-flex flex-column fw-bold">
+                        <label htmlFor="advance-amount">Tutar</label>
+                        <div className="d-flex mt-1">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text">₺</span>
+                            </div>
+                            <input
+                                id="advance-amount"
+                                type="number"
+                                className="form-control"
+                                aria-label="advance-amount"
+                                placeholder="Talep ettiğiniz avans tutarını giriniz..."
+
+                            />
+                        </div>
+                    </div>
+
+                    <div className="d-flex flex-column fw-bold" >
+                        <label htmlFor="advance-description">Açıklama</label>
+                        <textarea
+                            className="w-100 p-2 mt-1"
+                            name="advance-description"
+                            id="advance-description"
+                            placeholder="Avans talebinizin nedenini açıklayınız..."
+                            cols="30"
+                            rows="10"
+                            maxLength="150"
+                            style={{ maxHeight: "400px", minHeight: "200px" }}
+                            required
+                            onInvalid={e => e.target.setCustomValidity('Açıklama boş olamaz!')}
+                            onInput={e => e.target.setCustomValidity('')}
+                        >
+                        </textarea>
+                    </div>
+
+                </div>
+                <div className="d-flex flex-row justify-content-center mt-2">
+                    <button type="submit" className="btn btn-info"><i className="fa-regular fa-paper-plane"></i> Gönder</button>
+                </div>
+            </form>
+            <div className="mt-2 overflow-x-auto bg-light rounded overflow-y-auto" style={{maxHeight:"40%"}}>
+                <EmployeeAdvanceRequests />
             </div>
         </>
 

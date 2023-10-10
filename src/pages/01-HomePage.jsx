@@ -76,15 +76,14 @@ export default function HomePage() {
                 </section>
 
                 <section id="services">
-                    <div className="container text-center">
+                    <div className="container-fluid text-center pb-0">
                         <div className="row">
                             <h2>Hizmetlerimiz</h2>
                         </div>
 
-                        <div className="row">
-                            <div className="col-md-3"></div>
+                        <div className="row d-flex justify-content-evenly mx-auto" style={{maxWidth:"900px"}}>
                             <div className="col-md-3">
-                                <ul className="list-unstyled text-center">
+                                <ul className="list-unstyled  d-flex flex-column justify-content-start align-items-start" style={{width:"max-content"}}>
                                     <li>
                                         <img src="/img/icons/onboarding.svg" alt="el sıkışma ikon" />
                                         PERSONEL ONBOARDING
@@ -101,13 +100,13 @@ export default function HomePage() {
                             </div>
 
                             <div className="col-md-3">
-                                <ul className="list-unstyled text-center">
+                                <ul className="list-unstyled  d-flex flex-column justify-content-start align-items-start" style={{width:"max-content"}}>
                                     <li>
                                         <img src="/img/icons/shift.svg" alt="yer değiştiren insanlar ikon" />
                                         VARDİYA YÖNETİMİ
                                     </li>
                                     <li>
-                                        <img src="/img/icons/rating.svg" alt="başarı kurdelesi uken" />
+                                        <img src="/img/icons/rating.svg" alt="başarı kurdelesi ikon" />
                                         ŞİRKET DEĞERLENDİRME
                                     </li>
                                     <li className="p-0">
@@ -116,8 +115,6 @@ export default function HomePage() {
                                     </li>
                                 </ul>
                             </div>
-
-                            <div className="col-md-3"></div>
                         </div>
                     </div>
                 </section>
@@ -126,7 +123,7 @@ export default function HomePage() {
             {
 
             }
-            <button className={`${backToTopButtonDisplay} btn btn-danger position-fixed bottom-0 end-0 me-2 mb-2`} onClick={backToTop} ><i className="fas fa-arrow-up"></i></button>
+            <button className={`${backToTopButtonDisplay} btn btn-info position-fixed bottom-0 end-0 me-2 mb-2`} onClick={backToTop} ><i className="fas fa-arrow-up"></i> Yukarı Dön</button>
             <HomeFooter />
         </>
     )
@@ -177,7 +174,7 @@ function HomeHeader({ role, user }) {
 
                         <li className="nav-item">
 
-                            <RoleButtons role={role} user={user}/>
+                            <RoleButtons role={role} user={user} />
 
                         </li>
                     </ul>
@@ -205,8 +202,8 @@ function HomeHeader({ role, user }) {
     )
 }
 
-function RoleButtons({role, user}) {
-    
+function RoleButtons({ role, user }) {
+
     switch (role) {
         case null:
             return (
@@ -267,7 +264,7 @@ function Clients() {
             }).catch(err => console.log(err));
     }, [])
 
-    function handleSearch(){
+    function handleSearch() {
         fetch(`http://localhost/company/findbysearchvalue?searchValue=${searchTerm}`).then(resp => resp.json())
             .then(data => {
                 if (data.message)
@@ -278,7 +275,7 @@ function Clients() {
     }
 
     return (
-        <section id="clients" className="d-flex flex-column justify-content-start overflow-x-auto p-4" style={{minHeight:"300px"}}>
+        <section id="clients" className="d-flex flex-column" style={{ minHeight: "300px" }}>
             <h2 className="text-center">Kimlerle Çalışıyoruz?</h2>
             <div className="d-flex mx-auto">
                 <form className="d-flex">
@@ -289,16 +286,18 @@ function Clients() {
                         aria-label="Search"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        
+
                     />
                     <button className="btn btn-outline-info ms-1" type="button" onClick={handleSearch}>
                         <i className="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
             </div>
-            <div className="d-flex overflow-y-hidden mx-auto gap-1 p-3">
-                {companyList.map(company => <ClientCard key={company.companyName} {...company} />)}
-                {companyList.length === 0 && <p className="text-def">Aradığınız kriterlere uygun bir şirket bulunamadı.</p>}
+            <div className="p-4 d-flex">
+                <div className="d-flex overflow-y-hidden mx-auto gap-1">
+                    {companyList.map(company => <ClientCard key={company.companyName} {...company} />)}
+                    {companyList.length === 0 && <p className="text-def">Aradığınız kriterlere uygun bir şirket bulunamadı.</p>}
+                </div>
             </div>
         </section>
     )

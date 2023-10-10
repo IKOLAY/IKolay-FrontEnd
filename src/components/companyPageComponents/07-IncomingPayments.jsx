@@ -28,7 +28,7 @@ export default function IncomingPayments() {
 
                     </tr>
                 </thead>
-                <tbody className="table-group-divider">
+                <tbody>
                     {incomingPayments.length != 0 && incomingPayments.map(payment => {
                         return <IncomingExpensesRow key={payment.name} {...payment} />
                     })}

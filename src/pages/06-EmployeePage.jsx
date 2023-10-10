@@ -5,7 +5,7 @@ import DashboardWelcome from "../components/DashboardWelcome";
 import CompanyBadge from "../components/CompanyBadge";
 import PublicHolidays from "../components/PublicHolidays";
 import { showErrorMessage, showInfoMessage, showSuccessMessage } from "../components/InfoMessages";
-import { IncomeOutcomeForEmployeeMethod } from "../components/companyPageComponents/06-AddIncomeOutCome";
+import { AdvanceRequest, IncomeOutcomeForEmployeeMethod } from "../components/companyPageComponents/06-AddIncomeOutCome";
 import { PatternFormat } from "react-number-format";
 
 export default function EmployeePage() {
@@ -247,6 +247,11 @@ export default function EmployeePage() {
                                             Harcama Talebi
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#" className="nav-link-dark" name="advance-request" onClick={handleSectionClick}>
+                                            Avans Talebi
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -258,6 +263,7 @@ export default function EmployeePage() {
                         {section === "leave-request" && <Leave {...defUser} />}
                         {section === "employee-profile" && <EmployeeProfile />}
                         {section === "expense-request" && <IncomeOutcomeForEmployeeMethod />}
+                        {section === "advance-request" && <AdvanceRequest />}
                     </section>
                 </div>
             </div>
@@ -310,8 +316,8 @@ function EmployeeProfile({ setOperation }) {
 
     return (
         <div className="d-flex justify-content-center align-items-center h-100 text-def">
-            <div className="card rounded">
-                <div className="card-body text-center">
+            <div className="bg-light p-4 rounded">
+                <div className=" text-center">
                     <div className="my-1">
                         <img
                             src={defUser.photoUrl}
