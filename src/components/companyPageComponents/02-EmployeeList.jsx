@@ -71,7 +71,7 @@ function EmployeeRow({ employeeList, setEmployeeList, firstname, lastname, photo
 }
 
 function EmployeeAdd({ companyId, employeeList, setEmployeeList }) {
-    const defUser = { firstname: "", lastname: "", email: "", salary: "" };
+    const defUser = { firstname: "", lastname: "", email: "", salary: "", photoUrl: null };
     const [newEmployee, setNewEmployee] = useState({ ...defUser })
 
     function handleSubmit(e) {

@@ -373,8 +373,8 @@ export function AdvanceRequest() {
     }
 
     return (
-        <>
-            <form className="bg-light text-def p-3 rounded" onSubmit={handleSubmit}>
+        <section style={{height:"100vh"}}>
+            <form className="bg-light text-def p-3 m-3 rounded" onSubmit={handleSubmit} style={{height:"60%"}}>
                 <h3 className="text-center">AVANS TALEBİ GİR</h3>
                 <div className="border border-info mb-2 px-3 rounded mx-auto" style={{ maxWidth: "350px" }}>
                     <p className="pt-3 small"><i className="fa-solid fa-circle-info me-1 text-info"></i> Avans talebiniz maaşınızdan yüksek olamaz!</p>
@@ -409,7 +409,7 @@ export function AdvanceRequest() {
                             cols="30"
                             rows="10"
                             maxLength="150"
-                            style={{ maxHeight: "400px", minHeight: "200px" }}
+                            style={{ maxHeight: "150px", minHeight: "50px" }}
                             required
                             onInvalid={e => e.target.setCustomValidity('Açıklama boş olamaz!')}
                             onInput={e => e.target.setCustomValidity('')}
@@ -424,10 +424,10 @@ export function AdvanceRequest() {
                     <button type="submit" className="btn btn-info"><i className="fa-regular fa-paper-plane"></i> Gönder</button>
                 </div>
             </form>
-            <div className="mt-2 overflow-x-auto bg-light rounded overflow-y-auto" style={{ maxHeight: "40%" }}>
+            <div className="mt-2 overflow-x-auto bg-light rounded overflow-y-auto m-3" style={{ maxHeight: "34%" }}>
                 <EmployeeAdvanceRequests advanceList={advanceList}/>
             </div>
-        </>
+        </section>
 
     )
 

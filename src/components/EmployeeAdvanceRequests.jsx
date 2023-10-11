@@ -12,9 +12,9 @@ export function AllEmployeAdvanceRequests() {
 
     return (
         <>
-            <div className="d-flex flex-column justify-content-center align-items-center bg-white rounded text-def p-3">
-                <h3 className="text-center p-2">ONAY BEKLEYEN PERSONEL AVANS TALEPLERİ</h3>
-                {pendingAdvanceList.length>0?<table className="table align-middle mb-0 bg-white small">
+            <div className="d-flex flex-column justify-content-center align-items-start bg-white rounded text-def p-3 overflow-x-auto">
+                <h3 className="mx-auto p-2">ONAY BEKLEYEN PERSONEL AVANS TALEPLERİ</h3>
+                {pendingAdvanceList.length>0?<table className="table align-middle mb-0 bg-white small ">
                     <thead className="bg-ligh">
                         <tr>
                             <th>Açıklama</th>
@@ -27,7 +27,7 @@ export function AllEmployeAdvanceRequests() {
                     <tbody className="table-group-divider">
                         {pendingAdvanceList.map(request => <ManagerPendingAdvanceListRow key={request.id} {...request} setPendingAdvanceList={setPendingAdvanceList} pendingAdvanceList={pendingAdvanceList} />)}
                     </tbody>
-                </table>:<h4>Harika! Personellerinizden herhangi bir avans talebini bulunmuyor!</h4>}
+                </table>:<p>Harika! Personellerinizden herhangi bir avans talebini bulunmuyor!</p>}
             </div>
         </>
     )
@@ -38,9 +38,9 @@ export function EmployeeAdvanceRequests({ advanceList }) {
     console.log(advanceList);
     return (
         <>
-            <div className="d-flex flex-column justify-content-center bg-white rounded text-def">
+            <div className="d-flex flex-column justify-content-center bg-white rounded text-def overflow-y-auto " style={{maxHeight:"90%"}}>
                 <h3 className="text-center mt-3">Avans Taleplerim</h3>
-                {advanceList.length > 0 ? <table className="table align-middle mb-0 bg-white small">
+                {advanceList.length > 0 ? <table className="table align-middle mb-0 bg-white small ">
                     <thead className="bg-light">
                         <tr>
                             <th>Talep Tarihi</th>
@@ -53,7 +53,7 @@ export function EmployeeAdvanceRequests({ advanceList }) {
                     <tbody>
                         {advanceList.map(request => <AdvanceRequestTableRow key={request.id} {...request} />)}
                     </tbody>
-                </table> : <h3 className="text-center">Harcama talebiniz bulunmuyor!</h3>}
+                </table> : <p className="text-center">Harcama talebiniz bulunmuyor!</p>}
 
             </div>
         </>
@@ -148,12 +148,15 @@ function ManagerPendingAdvanceListRow({ description, userId, id, advanceStatus, 
                 <td>{new Date(createDate + 12600000).toISOString().split("T")[0]}</td>
                 <td>{advanceAmount}</td>
                 <td>
-                    <div className="mb-1">
-                        <button type="button" className="btn btn-sm btn-outline-success mx-1" onClick={handleConfirm}>Onayla</button>
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="mb-1 d-flex justify-content-center w-100 gap-1">
+                        <button type="button" className="btn btn-sm btn-outline-success " onClick={handleConfirm}>Onayla</button>
                         <button type="button" className="btn btn-sm btn-outline-danger" onClick={handleReject}>Reddet</button>
                     </div>
-                    <button type="button" className="btn btn-sm btn-outline-warning " data-bs-toggle="modal"
-                        data-bs-target={`#modalDetails-${id}`} onClick={handleGetAdvances}>Önceki talepleri görüntüle</button>
+                    <button type="button" className="btn btn-sm btn-outline-warning px-3" data-bs-toggle="modal"
+                        data-bs-target={`#modalDetails-${id}`} onClick={handleGetAdvances}>Geçmiş talepler
+                        </button>
+                        </div>
                     <div
                         className="modal fade"
                         id={`modalDetails-${id}`}
