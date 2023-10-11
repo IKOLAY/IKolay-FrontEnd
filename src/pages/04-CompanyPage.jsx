@@ -13,6 +13,7 @@ import CompanyBadge from "../components/CompanyBadge";
 import EmployeePage from "./06-EmployeePage";
 import { showErrorMessage } from "../components/InfoMessages";
 import { PatternFormat } from "react-number-format";
+import { AllEmployeAdvanceRequests } from "../components/EmployeeAdvanceRequests";
 
 export default function CompanyPage() {
     const [section, setSection] = useState(null);
@@ -265,7 +266,7 @@ export default function CompanyPage() {
                                         data-bs-target="#employee-collapse"
                                         onClick={handleAriaExpandedEmployee}
                                     >
-                                        <span className="btn-toggle-employee me-1" aria-expanded={ariaExpandedEmployee}></span> Personel <i class="fa-solid fa-person"></i>
+                                        <span className="btn-toggle-employee me-1" aria-expanded={ariaExpandedEmployee}></span> Personel <i className="fa-solid fa-person"></i>
                                     </button>
                                     <div className="collapse" id="employee-collapse">
                                         <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 d-flex flex-column gap-2">
@@ -295,7 +296,7 @@ export default function CompanyPage() {
                                         data-bs-target="#finance-collapse"
                                         onClick={handleAriaExpandedFinance}
                                     >
-                                        <span className="btn-toggle-finance me-1" aria-expanded={ariaExpandedFinance}></span> Finans <i class="fa-solid fa-coins"></i>
+                                        <span className="btn-toggle-finance me-1" aria-expanded={ariaExpandedFinance}></span> Finans <i className="fa-solid fa-coins"></i>
                                     </button>
                                     <div className="collapse" id="finance-collapse">
                                         <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 d-flex flex-column gap-2">
@@ -319,6 +320,11 @@ export default function CompanyPage() {
                                                     Gelir/Gider Gir
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="#" className="nav-link-dark" name="pending-advance-requests" onClick={handleSectionClick}>
+                                                    Avans Talepleri
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -333,6 +339,7 @@ export default function CompanyPage() {
                             {section === "all-expenses" && <AllExpenses />}
                             {section === "incoming-payments" && <IncomingPayments />}
                             {section === "add-income-outcome" && <AddIncomeOutcome />}
+                            {section === "pending-advance-requests" && <AllEmployeAdvanceRequests />}
 
 
 
