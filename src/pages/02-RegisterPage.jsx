@@ -4,12 +4,14 @@ import { FormValidationMessage, showErrorMessage, showSuccessMessage } from "../
 
 export default function RegisterPage() {
     const [roleChoice, setRoleChoice] = useState(null);
+    const [membership, setMembership] = useState(null);
 
     return (
         <>
             {roleChoice === null && <SelectRole setRoleChoice={setRoleChoice} />}
-            {roleChoice === "company" && <Pricing />}
-            {roleChoice === "guest" && <RegisterGuest />}
+            {roleChoice === "company" && membership === null && <Pricing roleChoice={roleChoice} membership={membership} setMembership={setMembership}/>}
+            {roleChoice === "company" && membership !== null && <RegisterCompanyManager membership={membership}/>}
+            {roleChoice === "guest" && <RegisterGuest/>}
         </>
     )
 }
@@ -43,10 +45,12 @@ function SelectRole({ setRoleChoice }) {
     )
 }
 
-function Pricing() {
+function Pricing({setMembership}) {
     const defPackages = [{ title: "Bronz", price: 500, description: "Hesabınıza tek seferlik 1 aylık kullanım tanımlayın." }, { title: "Gümüş", price: 450, description: "Hesabınıza tek seferlik 3 aylık kullanım tanımlayın." }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın! Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın! Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }]
 
+    
     return (
+        
         <main className="container-fluid bg-default">
             <div className="d-flex flex-column text-center mt-3 mb-3">
                 <NavLink className="navbar-brand logo-text" to="/">
@@ -60,7 +64,7 @@ function Pricing() {
             </div>
             <div className="mx-auto" style={{ maxWidth: "800px" }}>
                 <div className="row d-flex flex-wrap justify-content-center gap-2"  >
-                    {defPackages.map(p => <PricingCard key={p.title} {...p} />)}
+                    {defPackages.map(p => <PricingCard key={p.title} packg={p} setMembership={setMembership}/>)}
                 </div>
             </div>
 
@@ -68,32 +72,39 @@ function Pricing() {
     )
 }
 
-function PricingCard(props) {
+function PricingCard({packg, setMembership}) {
+    function handleMembershipSelection(e){
+        setMembership(e.target.name);
+    }
 
     return (
         <div className="bg-light card col-3 text-center" style={{minHeight:"250px", minWidth:"250px", maxHeight:"250px", maxWidth:"250px"}}>
             <div className="card-header m-0 p-0 w-100">
-                <h4>{props.title}</h4>
+                <h4>{packg.title}</h4>
             </div>
             <div className="card-body m-0 p-1 d-flex flex-column justify-content-around align-items-center">
                 <h2 className="card-title m-0 p-0">
-                    {props.price} ₺ <small className="text-muted">/ ay</small>
+                    {packg.price} ₺ <small className="text-muted">/ ay</small>
                 </h2>
                 <p className="text-muted m-0 p-0" style={{fontSize:"0.7em"}}>
-                    {props.description}
+                    {packg.description}
                 </p>
                 <button
                     type="button"
                     className="btn btn btn-info m-1"
+                    name={packg.title}
+                    onClick={handleMembershipSelection}
                 >
                     Seç
                 </button>
             </div>
+            
         </div>
+        
     )
 }
 
-function RegisterCompanyManager() {
+function RegisterCompanyManager({membership}) {
 
     const defUser = {
 
@@ -151,16 +162,19 @@ function RegisterCompanyManager() {
                         <span className="text-info logo-text">İK</span>olay
                     </NavLink>
                 </div>
-
+                <div className="rounded mb-2 p-1  fw-bold text-def d-flex justify-content-center flex-column align-items-center" style={{height:"100px", width:"220px", background:"radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%)"}}>
+                <p className="text-center">Seçilen üyelik paketi:</p>
+                <p>{membership}</p>
+</div>
                 <label className="form-label" htmlFor="companyName">
                     Şirket Adı
                     <input type="text" id="companyName" name="companyName" className="form-control" onChange={handleChange} value={user.companyName} required onInvalid={e => e.target.setCustomValidity('Şirket Adı boş olamaz!')}
                         onInput={e => e.target.setCustomValidity('')} />
                 </label>
 
-                <label className="form-label w-100" htmlFor="taxNo">
+                <label className="form-label" htmlFor="taxNo">
                     Vergi No
-                    <input className="form-control" value={user.taxNo} id="taxNo" type="number" name="taxNo" onChange={handleChange} max="9999999999" min="1000000000" onInvalid={e => e.target.setCustomValidity('Vergi no 10 haneli olmalıdır.')} onInput={e => e.target.setCustomValidity('')} required />
+                    <input className="form-control" value={user.taxNo} id="taxNo" type="text" name="taxNo" onChange={handleChange} maxLength="10" minLength="10" onInvalid={e => e.target.setCustomValidity('Vergi no 10 haneli olmalıdır.')} onInput={e => e.target.setCustomValidity('')} title="Vergi no 10 haneli olmalıdır." required/>
                 </label>
 
                 <label className="form-label" htmlFor="firstname">

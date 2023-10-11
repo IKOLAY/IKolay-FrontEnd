@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom"
 import DashboardWelcome from "../components/DashboardWelcome";
 import AvatarDropdown from "../components/AvatarDropdown";
+import CompanyBadge from "../components/CompanyBadge";
 
 export default function AdminPage() {
     const user = JSON.parse(window.localStorage.getItem("user"));
@@ -9,6 +10,14 @@ export default function AdminPage() {
     const [section, setSection] = useState(null)
 
     const [confirmInfo, setConfirmInfo] = useState([]);
+
+    const ikolay = {
+        logo: "https://lh3.googleusercontent.com/pw/ADCreHfCCDcwmiOg0DTcRbOx--axodmnAIvjYzrh7ghut1TuAkQ73ddded9SUcOLwLXG6x0K-tSvbxWYYJWlCj_dUjflqR8YOE7i69Rldw5ykN9Oa4UVQRbzLlNnJ-OUOyV7f3oP534TErnxApTm6UCISgx2jQ=w500-h500-s-no?authuser=0",
+        companyName: "İKolay A.Ş.",
+        address: "Bağlıca Mh. Çakmaklıtaş Cd. 1188. Sk. 5/38 Ankara",
+        about: "2023 yılında kurulan şirketimiz,  iş dünyasının dönüşen ihtiyaçlarına yanıt vermek ve şirketlerin insan kaynakları süreçlerini optimize etmek için özel olarak tasarlanmış çözümler sunmaktadır.",
+        phone: "5464837452"
+    };
 
     useEffect(() => {
         fetch("http://localhost:80/user/pendingmanagers").then(resp => resp.json()).then(data => setConfirmInfo(data));
@@ -28,10 +37,11 @@ export default function AdminPage() {
                         <NavLink to="/">
                             <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
                         </NavLink>
-                        <NavLink to="/admin">
+                        <a href="/admin">
                             <span className="navbar-brand logo-dark-text nav-link-dark">Admin</span>
-                        </NavLink>
+                        </a>
                     </div>
+                    <CompanyBadge company={ikolay} />
                     <div className="d-flex flex-column my-4">
                         <a name="register-requests" onClick={handleSectionClick}
                             href="#"

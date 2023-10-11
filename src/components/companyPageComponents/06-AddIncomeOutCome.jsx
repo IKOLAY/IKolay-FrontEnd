@@ -3,8 +3,6 @@ import { EmployeesAllPayments } from "./09-EmployeesAllPayments";
 import { CompanysPendingPayments } from "./08-CompanysPendingPayments";
 import { EmployeeAdvanceRequests } from "../EmployeeAdvanceRequests";
 
-
-
 export default function AddIncomeOutcome() {
     const user = JSON.parse(localStorage.getItem("user"));
 

@@ -114,7 +114,7 @@ footer {
     content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='deepskyblue' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
     transition: transform .35s ease;
     transform-origin: .5em 50%;
-    
+
 }
 
 .btn-toggle-finance[aria-expanded="true"] {
@@ -237,11 +237,11 @@ footer {
 
 
 
-@media screen and (min-device-width: 320px)
-    and (-webkit-min-device-pixel-ratio: 2) {
-        * {
-            font-size: 12px;
-        }
+@media screen and (min-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
+    * {
+        font-size: 12px;
+    }
+
     h3 {
         font-size: 16px;
     }
@@ -262,7 +262,13 @@ footer {
         font-size: 0.7rem;
     }
 
+    .taxNo {
+        width: 170px;
     }
+
+}
+
+
 
 @media screen and (min-width: 1024px) {
     .operation-container {
@@ -277,80 +283,86 @@ footer {
         width: 40%;
     }
 
-    }
 
-    .ribbon {
-        position: absolute;
-        right: -5px;
-        top: -5px;
-        z-index: 1;
-        overflow: hidden;
-        width: 93px;
-        height: 93px;
-        text-align: right;
-      }
-      .ribbon span {
-        font-size: 0.7rem;
-        color: #fff;
-        text-transform: uppercase;
-        text-align: center;
-        font-weight: bold;
-        line-height: 32px;
-        transform: rotate(45deg);
-        width: 125px;
-        display: block;
-        background: #F7AE54;
-        background: linear-gradient(#EA9122 0%, #F7AE54 100%);
-        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-        position: absolute;
-        top: 17px; 
-        right: -29px;
-        
-      }
-      
-      .ribbon span::before {
-         content: '';
-         position: absolute; 
-         left: 0px; top: 100%;
-         z-index: -1;
-         border-left: 3px solid #F7AE54;
-         border-right: 3px solid transparent;
-         border-bottom: 3px solid transparent;
-         border-top: 3px solid #F7AE54;
-      }
-      .ribbon span::after {
-         content: '';
-         position: absolute; 
-         right: 0%; top: 100%;
-         z-index: -1;
-         border-right: 3px solid #F7AE54;
-         border-left: 3px solid transparent;
-         border-bottom: 3px solid transparent;
-         border-top: 3px solid #F7AE54;
-      }
+}
 
-      ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-      }
-      
-      /* Track */
-      ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey; 
-        border-radius: 10px;
-      }
-       
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
-        background: gray; 
-        border-radius: 10px;
-      }
-      
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
-        background: #54B4D3; 
-      }
+.ribbon {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    z-index: 1;
+    overflow: hidden;
+    width: 93px;
+    height: 93px;
+    text-align: right;
+}
 
-      .avatar-dropdown {
-        z-index: 4;
-      }
+.ribbon span {
+    font-size: 0.7rem;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    line-height: 32px;
+    transform: rotate(45deg);
+    width: 125px;
+    display: block;
+    background: #F7AE54;
+    background: linear-gradient(#EA9122 0%, #F7AE54 100%);
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 17px;
+    right: -29px;
+
+}
+
+.ribbon span::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 100%;
+    z-index: -1;
+    border-left: 3px solid #F7AE54;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #F7AE54;
+}
+
+.ribbon span::after {
+    content: '';
+    position: absolute;
+    right: 0%;
+    top: 100%;
+    z-index: -1;
+    border-right: 3px solid #F7AE54;
+    border-left: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #F7AE54;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #54B4D3;
+}
+
+.avatar-dropdown {
+    z-index: 4;
+}
+

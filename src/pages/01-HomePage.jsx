@@ -425,7 +425,7 @@ function EmployeeReviews({ content }) {
 function HomeFooter() {
     return (
         <footer className="d-flex align-items-center justify-content-center bg-dark">
-            <small>© 2022 İKolay, Inc</small>
+            <small>© 2022 İKolay A.Ş.</small>
         </footer>
 
     )
