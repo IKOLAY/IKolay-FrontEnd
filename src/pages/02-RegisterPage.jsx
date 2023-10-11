@@ -45,7 +45,7 @@ function SelectRole({ setRoleChoice }) {
     )
 }
 
-function Pricing({setMembership, membership}) {
+function Pricing({setMembership}) {
     const [membershipList, setMembershipList] = useState([])
 
     useEffect(() => {

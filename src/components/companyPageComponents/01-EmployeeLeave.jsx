@@ -86,7 +86,7 @@ export default function EmployeeLeave() {
                 >+ İzin</button>
             </section>
             <section
-                className="modal fade"
+                className="modal fade text-def"
                 id="modalHoliday"
                 tabIndex={-1}
                 aria-labelledby="exampleModalLabel"
@@ -150,7 +150,7 @@ export default function EmployeeLeave() {
                             >
                                 Vazgeç
                             </button>
-                            <button type="button" className="btn btn-outline-primary" onClick={handleSubmit}>
+                            <button type="button" className="btn btn-info" onClick={handleSubmit}>
                                 Kaydet
                             </button>
                         </div>
@@ -158,7 +158,7 @@ export default function EmployeeLeave() {
                 </div>
             </section>
             <section
-                className="modal fade"
+                className="modal fade text-def"
                 id="modalLeave"
                 tabIndex={-1}
                 aria-labelledby="exampleModalLabel"
@@ -180,7 +180,7 @@ export default function EmployeeLeave() {
                         <div className="modal-body">
                             <form typeof="submit" onSubmit={handleSubmit}>
                                 <div className="form-group">
-                                    <label htmlFor="holidayName">İzin Tipi</label>
+                                    <label htmlFor="holidayName">Gerekçe</label>
                                     <input
                                         type="text"
                                         className="form-control"
@@ -235,7 +235,7 @@ export default function EmployeeLeave() {
                             >
                                 Vazgeç
                             </button>
-                            <button type="button" className="btn btn-outline-primary" onClick={handleSubmit}>
+                            <button type="button" className="btn btn-info" onClick={handleSubmit}>
                                 Kaydet
                             </button>
                         </div>

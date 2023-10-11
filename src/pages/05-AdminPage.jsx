@@ -477,7 +477,7 @@ function MembershipOperations() {
                         </tr>
                     </thead>
                     <tbody>
-                        {membershipList.map(p => <MembershipListRow packg={p} />)}
+                        {membershipList.map(p => <MembershipListRow packg={p} setMembershipList={setMembershipList} membershipList={membershipList}/>)}
                     </tbody>
                 </table>
             </section>
@@ -485,7 +485,7 @@ function MembershipOperations() {
     )
 }
 
-function MembershipListRow({ packg }) {
+function MembershipListRow({ packg, setMembershipList, membershipList }) {
 
     function handlePassivation() {
         console.log(packg.id)
@@ -494,7 +494,14 @@ function MembershipListRow({ packg }) {
                 throw new Error("Üzgünüz, bir hata oluştu!");
             return resp.json();
         }).then(data => {
-
+            const targetPackage = {...membershipList.find(m => m.id == packg.id)};
+            targetPackage.status = "PASSIVE";
+            setMembershipList(membershipList.map(m => {
+                if(m.id === packg.id){
+                    return targetPackage;
+                }
+                return m;
+            }))
         }).catch(err => console.log(err))
 
     }

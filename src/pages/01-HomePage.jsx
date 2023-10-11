@@ -1,5 +1,5 @@
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AvatarDropdown from "../components/AvatarDropdown";
 import { useEffect, useState } from "react";
 import CompanyBadge from "../components/CompanyBadge";
@@ -131,6 +131,7 @@ export default function HomePage() {
 
 function HomeHeader({ role, user }) {
     const company = JSON.parse(localStorage.getItem("company"));
+    const navigate = useNavigate();
 
     let expDate = Date.now()+800000000;
     if(company != null){
@@ -140,8 +141,7 @@ function HomeHeader({ role, user }) {
     console.log(new Date(Date.now()));
 
     function handleClick(){
-        //paket yenileme sayfasına yönlendirecek.
-        console.log("Paket seçme sayfasına yönlendirildiniz!");
+        navigate("/membershipUpdate")
     }
     return (
         <header className="container-fluid px-5 text-center">

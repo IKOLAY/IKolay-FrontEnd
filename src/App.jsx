@@ -7,6 +7,7 @@ import CompanyPage from './pages/04-CompanyPage'
 import AdminPage from './pages/05-AdminPage'
 import EmployeePage from './pages/06-EmployeePage'
 import Error404 from './pages/07-Error404'
+import MembershipUpdate from './pages/08-MembershipUpdate'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path='/admin' element={<AdminPage />} />
         <Route path='/employee' element={<EmployeePage />} />
         <Route path='/error' element={<Error404 />} />
+        <Route path='/membershipUpdate' element={<MembershipUpdate />} />
       </Routes>
   )
 }
