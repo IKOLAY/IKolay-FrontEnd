@@ -148,7 +148,7 @@ export function IncomeOutcomeForEmployeeMethod() {
     const payment = {
         companyId: user.companyId,
         employeeId: user.id,
-        name: `Personel Ödemesi - ${user.id}`,
+        name: `Personel Ödemesi - ${user.firstname} ${user.lastname} - ${user.id}`,
         expenseType: expenseList.length > 0 ? expenseList[0] : "",
         currencyMultiplier: 1,
         currencyType: "TL",

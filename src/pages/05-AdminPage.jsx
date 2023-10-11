@@ -439,7 +439,9 @@ function MembershipOperations() {
                                         id="description"
                                         name="description"
                                         maxLength="150"
+                                        value={newMembership.description}
                                         style={{ maxHeight: "200px", minHeight: "100px" }}
+                                        onChange={handleChange}
                                     />
                                 </div>
                                 <div className="modal-footer justify-content-between">
@@ -502,7 +504,7 @@ function MembershipListRow({ packg }) {
             <td>{packg.name}</td>
             <td>{packg.price}</td>
             <td>{packg.membershipDuration}</td>
-            <td className="text-danger">Açıklama backende eklenecek</td>
+            <td className="text-danger">{packg.description}</td>
             <td>
                 {packg.status === "ACTIVE" && <span className="border border-success text-success rounded bg-success-subtle p-2">Aktif</span>}
                 {packg.status === "PASSIVE" && <span className="border border-secondary text-secondary rounded bg-secondary-subtle p-2">Pasif</span>}
