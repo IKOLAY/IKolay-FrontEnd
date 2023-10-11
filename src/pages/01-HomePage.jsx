@@ -305,6 +305,14 @@ function Clients() {
                         aria-label="Search"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => {
+                            if(e.key === "Enter"){
+                                e.preventDefault();
+                                setSearchTerm(e.target.value);
+                                handleSearch();
+                            }}
+                            }
+                        tabIndex={-1}
 
                     />
                     <button className="btn btn-outline-info ms-1" type="button" onClick={handleSearch}>

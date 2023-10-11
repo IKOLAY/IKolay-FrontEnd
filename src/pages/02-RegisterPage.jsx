@@ -9,9 +9,9 @@ export default function RegisterPage() {
     return (
         <>
             {roleChoice === null && <SelectRole setRoleChoice={setRoleChoice} />}
-            {roleChoice === "company" && membership === null && <Pricing roleChoice={roleChoice} membership={membership} setMembership={setMembership}/>}
-            {roleChoice === "company" && membership !== null && <RegisterCompanyManager membership={membership}/>}
-            {roleChoice === "guest" && <RegisterGuest/>}
+            {roleChoice === "company" && membership === null && <Pricing roleChoice={roleChoice} membership={membership} setMembership={setMembership} />}
+            {roleChoice === "company" && membership !== null && <RegisterCompanyManager membership={membership} />}
+            {roleChoice === "guest" && <RegisterGuest />}
         </>
     )
 }
@@ -45,7 +45,7 @@ function SelectRole({ setRoleChoice }) {
     )
 }
 
-function Pricing({setMembership}) {
+function Pricing({ setMembership }) {
     const [membershipList, setMembershipList] = useState([])
 
     useEffect(() => {
@@ -57,11 +57,11 @@ function Pricing({setMembership}) {
             setMembershipList(data);
         }).catch(err => console.log(err))
     }, []);
-    
+
     return (
-        
-        <main className="container-fluid text-def-light">
-            <div className="d-flex flex-column text-center mt-3 mb-3">
+
+        <main className="container-fluid text-def-light ">
+            <div className="d-flex flex-column  text-center mt-5 mb-3">
                 <NavLink className="navbar-brand logo-text" to="/">
                     <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
                     <span className="text-info logo-text">İK</span>olay
@@ -73,7 +73,7 @@ function Pricing({setMembership}) {
             </div>
             <div className="mx-auto" style={{ maxWidth: "800px" }}>
                 <div className="row d-flex flex-wrap justify-content-center gap-2"  >
-                    {membershipList.map(p => <PricingCard key={p.title} packg={p} setMembership={setMembership}/>)}
+                    {membershipList.map(p => <PricingCard key={p.title} packg={p} setMembership={setMembership} />)}
                 </div>
             </div>
 
@@ -81,21 +81,23 @@ function Pricing({setMembership}) {
     )
 }
 
-function PricingCard({packg, setMembership}) {
-    function handleMembershipSelection(e){
+function PricingCard({ packg, setMembership }) {
+    function handleMembershipSelection(e) {
         setMembership(packg);
     }
 
     return (
-        <div className="bg-light card col-3 text-center" style={{minHeight:"250px", minWidth:"250px", maxHeight:"250px", maxWidth:"250px"}}>
+        <div className="bg-light card col-3 text-center" style={{ minHeight: "250px", minWidth: "250px", maxHeight: "250px", maxWidth: "250px" }}>
+            {packg.name === "Bronz" && <div className="ribbon"><span>EN POPÜLER!</span></div>}
             <div className="card-header m-0 p-0 w-100">
                 <h4>{packg.name}</h4>
             </div>
+            
             <div className="card-body m-0 p-1 d-flex flex-column justify-content-around align-items-center">
                 <h2 className="card-title m-0 p-0">
-                    {packg.price} ₺ <small className="text-muted">/ ay</small>
+                    {Math.floor(packg.price / (packg.membershipDuration / 30))} ₺ <small className="text-muted">/ ay</small>
                 </h2>
-                <p className="text-muted m-0 p-0" style={{fontSize:"0.7em"}}>
+                <p className="text-muted m-0 p-0" style={{ fontSize: "0.7em" }}>
                     {packg.description}
                 </p>
                 <button
@@ -106,13 +108,13 @@ function PricingCard({packg, setMembership}) {
                     Seç
                 </button>
             </div>
-            
+
         </div>
-        
+
     )
 }
 
-function RegisterCompanyManager({membership}) {
+function RegisterCompanyManager({ membership }) {
 
     const defUser = {
 
@@ -167,10 +169,10 @@ function RegisterCompanyManager({membership}) {
                         <span className="text-info logo-text">İK</span>olay
                     </NavLink>
                 </div>
-                <div className="rounded  text-def d-flex justify-content-center flex-column align-items-center mb-2 w-100" style={{height:"70px", background:"radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%)"}}>
-                <p className="text-center fw-bold m-0 p-0">Seçilen üyelik paketi:</p>
-                <p className="fw-semibold m-0 p-0"><i class="fa-regular fa-star"></i> {membership.name} <i class="fa-regular fa-star"></i></p>
-</div>
+                <div className="rounded  text-def d-flex justify-content-center flex-column align-items-center mb-2 w-100" style={{ height: "70px", background: "radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%)" }}>
+                    <p className="text-center fw-bold m-0 p-0">Seçilen üyelik paketi:</p>
+                    <p className="fw-semibold m-0 p-0"><i class="fa-regular fa-star"></i> {membership.name} <i class="fa-regular fa-star"></i></p>
+                </div>
                 <label className="form-label" htmlFor="companyName">
                     Şirket Adı
                     <input type="text" id="companyName" name="companyName" className="form-control" onChange={handleChange} value={user.companyName} required onInvalid={e => e.target.setCustomValidity('Şirket Adı boş olamaz!')}
@@ -179,7 +181,7 @@ function RegisterCompanyManager({membership}) {
 
                 <label className="form-label" htmlFor="taxNo">
                     Vergi No
-                    <input className="form-control" value={user.taxNo} id="taxNo" type="text" name="taxNo" onChange={handleChange} maxLength="10" minLength="10" onInvalid={e => e.target.setCustomValidity('Vergi no 10 haneli olmalıdır.')} onInput={e => e.target.setCustomValidity('')} title="Vergi no 10 haneli olmalıdır." required/>
+                    <input className="form-control" value={user.taxNo} id="taxNo" type="text" name="taxNo" onChange={handleChange} maxLength="10" minLength="10" onInvalid={e => e.target.setCustomValidity('Vergi no 10 haneli olmalıdır.')} onInput={e => e.target.setCustomValidity('')} title="Vergi no 10 haneli olmalıdır." required />
                 </label>
 
                 <label className="form-label" htmlFor="firstname">
@@ -220,7 +222,7 @@ function RegisterCompanyManager({membership}) {
                     {user.password != user.passwordControl && <FormValidationMessage message="Şifreler uyuşmuyor!" />}
                 </div>
 
-                <div className="d-flex justify-content-center w-100 gap-5 mt-2" style={{minWidth:"75%", maxWidth:"75%"}}>
+                <div className="d-flex justify-content-center w-100 gap-5 mt-2" style={{ minWidth: "75%", maxWidth: "75%" }}>
                     <a className="w-100 d-flex pb-2 pt-0" href="http://localhost:5173/register">
                         <button className="btn btn-secondary w-100" type="button">Vazgeç</button>
                     </a>
