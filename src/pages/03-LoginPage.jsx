@@ -40,7 +40,7 @@ export default function LoginPage() {
                                 window.localStorage.setItem("company", JSON.stringify(data3));
                                 if (data2.shiftId == null) {
                                     window.localStorage.setItem("shift", null);
-                                    roleCheck(data.role)
+                                    expiredCheck(data.role,data3.membershipExpiration)
                                 }
                                 else {
                                     fetch(`http://localhost:80/shift/findshift/${data2.shiftId}`)
@@ -48,7 +48,7 @@ export default function LoginPage() {
                                         .then(data4 => {
                                             console.log(data4);
                                             window.localStorage.setItem("shift", JSON.stringify(data4));
-                                            roleCheck(data.role)
+                                            expiredCheck(data.role,data3.membershipExpiration)
                                         })
                                 }
                             });
@@ -72,6 +72,25 @@ export default function LoginPage() {
             navigate("/")
     }
 
+    function expiredCheck(role, epoch) {
+        const now = Date.now();
+        const expDate = new Date(epoch).getTime();
+        switch (role) {
+            case "MANAGER":
+                if (Math.ceil((expDate - now) / (1000 * 60 * 60 * 24)) < 8)
+                    navigate("/")
+                else
+                    roleCheck(role)
+                break;
+            case "EMPLOYEE":
+                if (expDate - now < 0)
+                    navigate("/");
+                else
+                    roleCheck(role);
+                break;
+        }
+    }
+
     function handleChange(e) {
         setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value })
     }
@@ -81,9 +100,9 @@ export default function LoginPage() {
             <form typeof="submit" onSubmit={handleSubmit}>
                 <NavLink to="/">
                     <div className="navbar-brand logo-text form-outline mb-4 text-center">
-                   
-                            <span className="text-info logo-text">İK</span>olay
-                    
+
+                        <span className="text-info logo-text">İK</span>olay
+
                     </div>
                 </NavLink>
                 <div className="form-outline mb-4">
@@ -96,7 +115,7 @@ export default function LoginPage() {
                                 e.target.setCustomValidity('Eposta @ içermeli! Örnek: ornek@ornek.com')
                             }
                         }}
-                            onInput={e => e.target.setCustomValidity('')} title="Eposta @ içermeli! Örnek: ornek@ornek.com"/>
+                            onInput={e => e.target.setCustomValidity('')} title="Eposta @ içermeli! Örnek: ornek@ornek.com" />
                     </label>
                 </div>
                 <div className="form-outline mb-4">
@@ -109,17 +128,17 @@ export default function LoginPage() {
                 <button type="submit" className="btn btn-info mb-4 w-100">
                     Giriş
                 </button>
-                
+
                 <p className="text-center d-flex justify-content-between">
-                    Üye değil misiniz? 
+                    Üye değil misiniz?
                     <NavLink to="/register">
-                    <span className="text-info small text-decoration-underline">Kaydol!</span>
+                        <span className="text-info small text-decoration-underline">Kaydol!</span>
                     </NavLink>
                 </p>
 
 
             </form>
-            
+
         </main>
     )
 }

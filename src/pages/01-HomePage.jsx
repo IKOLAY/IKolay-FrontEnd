@@ -130,7 +130,19 @@ export default function HomePage() {
 }
 
 function HomeHeader({ role, user }) {
+    const company = JSON.parse(localStorage.getItem("company"));
 
+    let expDate = Date.now()+800000000;
+    if(company != null){
+        expDate = new Date(company.membershipExpiration).getTime();
+    }
+    const currentDate = Date.now();
+    console.log(new Date(Date.now()));
+
+    function handleClick(){
+        //paket yenileme sayfasına yönlendirecek.
+        console.log("Paket seçme sayfasına yönlendirildiniz!");
+    }
     return (
         <header className="container-fluid px-5 text-center">
             <nav className="navbar navbar-expand-lg ">
@@ -187,7 +199,16 @@ function HomeHeader({ role, user }) {
                         {role !== null && <h1>Hoş geldiniz <span className="text-info logo-text" style={{ fontSize: "1em" }}>{user.firstname} {user.lastname}</span>!</h1>}
                         <h5>İnsan Kaynakları Yönetimi artık çok kolay!</h5>
                         {role === null && <h1>Siz de <span className="logo-text" style={{ fontSize: "1em" }}><span className="text-info logo-text" style={{ fontSize: "1em" }}>İK</span>olay</span> Ailesine Katılın</h1>}
-                        <p className="lead">Şirketinizin büyümesine destek olmak için buradayız. İnsan kaynakları yönetimini basit ve etkili hale getiren güçlü bir çözüm sunuyoruz. <br /> Personel onboarding, maaş ve ödemeler, vardiyalar ve daha fazlasını kolayca yönetin.</p>
+                        {(role==="EMPLOYEE" || expDate-currentDate>604800000 ) && <p className="lead">Şirketinizin büyümesine destek olmak için buradayız. İnsan kaynakları yönetimini basit ve etkili hale getiren güçlü bir çözüm sunuyoruz. <br /> Personel onboarding, maaş ve ödemeler, vardiyalar ve daha fazlasını kolayca yönetin.</p>}
+                        {(role=="EMPLOYEE" && expDate-currentDate<0) &&<p className="border rounded border-danger text-light p-2 text-bg-danger"  > Firmanızın üyelik paketi sona ermiştir! Sitemiz hizmetlerinden yararlanmak için lütfen yöneticinizle iletişime geçin.</p>}
+                        {(role=="MANAGER" && expDate-currentDate>0 && expDate-currentDate<604800000 ) && <>
+                        <p className="border rounded border-warning text-dark p-2 text-bg-warning"  >Paketinizin bitmesine <b>{`${Math.ceil((expDate-currentDate)/(1000*60*60*24))}`}</b> gün kalmıştır. Paketinizi aşağıdaki buton aracılığı ile yenileyebilirsiniz.</p>
+                        <button type="button" className="btn btn-lg btn-outline-primary" onClick={handleClick}>Üyeliği yenile!</button>
+                        </> }
+                        {(role=="MANAGER" && expDate-currentDate<0) && <>
+                        <p className="border rounded border-danger text-light p-2 text-bg-danger" >Firmanızın üyelik paketi sona ermiştir! Sitemiz hizmetlerinden yararlanmak için lütfen yeni bir paket satın alın!</p> 
+                        <button type="button" className="btn btn-lg btn-outline-primary" onClick={handleClick}>Üyeliği yenile!</button>
+                        </>}
                         {role === null && <NavLink to="/register">
                             <button className="btn btn-info px-4 py-2">Hemen Ücretsiz Kaydol!</button>
                         </NavLink>}
