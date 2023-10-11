@@ -132,7 +132,7 @@ export default function CompanyPage() {
                         <div className="position-fixed end-0">
                             <AvatarDropdown userNameTitle="Yönetici Adı" userEmailTitle="Yönetici Email" user={user} role={role} />
                         </div>
-                        <div className=" px-2 bg-ikolay-light ikolay-sidebar text-center small" style={{ height: "100%", width: "36%" }}>
+                        <div className="px-2 bg-ikolay-light ikolay-sidebar text-center small" style={{ height: "100%", width: "36%" }}>
 
                             <div className="border-bottom border-secondary py-2 mb-1">
                                 <NavLink to="/">

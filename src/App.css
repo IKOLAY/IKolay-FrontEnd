@@ -101,6 +101,10 @@ footer {
     color: var(--text--dark);
 }
 
+.text-def-light {
+    color: var(--text--light);
+}
+
 
 .btn-toggle-employee[aria-expanded="true"] {
     transform: rotate(90deg);

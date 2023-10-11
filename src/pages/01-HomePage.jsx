@@ -76,7 +76,7 @@ export default function HomePage() {
                 </section>
 
                 <section id="services">
-                    <div className="container-fluid text-center pb-0">
+                    <div className="container-fluid text-center pb-4">
                         <div className="row">
                             <h2>Hizmetlerimiz</h2>
                         </div>

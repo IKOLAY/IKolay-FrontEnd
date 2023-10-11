@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FormValidationMessage, showErrorMessage, showSuccessMessage } from "../components/InfoMessages";
 
@@ -45,13 +45,22 @@ function SelectRole({ setRoleChoice }) {
     )
 }
 
-function Pricing({setMembership}) {
-    const defPackages = [{ title: "Bronz", price: 500, description: "Hesabınıza tek seferlik 1 aylık kullanım tanımlayın." }, { title: "Gümüş", price: 450, description: "Hesabınıza tek seferlik 3 aylık kullanım tanımlayın." }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın! Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın! Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }, { title: "Altın", price: 400, description: "Bir yıl boyunca, paket yenileme derdi olmadan sınırsız İKolaylayın!" }]
+function Pricing({setMembership, membership}) {
+    const [membershipList, setMembershipList] = useState([])
 
+    useEffect(() => {
+        fetch(`http://localhost:80/membership/getactivememberships`).then(resp => {
+            if (!resp.ok)
+                throw new Error("Üzgünüz, bir hata oluştu!");
+            return resp.json();
+        }).then(data => {
+            setMembershipList(data);
+        }).catch(err => console.log(err))
+    }, []);
     
     return (
         
-        <main className="container-fluid bg-default">
+        <main className="container-fluid text-def-light">
             <div className="d-flex flex-column text-center mt-3 mb-3">
                 <NavLink className="navbar-brand logo-text" to="/">
                     <img src="/img/ikolay-logo-light.svg" alt="ikolay logo" />
@@ -64,7 +73,7 @@ function Pricing({setMembership}) {
             </div>
             <div className="mx-auto" style={{ maxWidth: "800px" }}>
                 <div className="row d-flex flex-wrap justify-content-center gap-2"  >
-                    {defPackages.map(p => <PricingCard key={p.title} packg={p} setMembership={setMembership}/>)}
+                    {membershipList.map(p => <PricingCard key={p.title} packg={p} setMembership={setMembership}/>)}
                 </div>
             </div>
 
@@ -74,13 +83,13 @@ function Pricing({setMembership}) {
 
 function PricingCard({packg, setMembership}) {
     function handleMembershipSelection(e){
-        setMembership(e.target.name);
+        setMembership(packg);
     }
 
     return (
         <div className="bg-light card col-3 text-center" style={{minHeight:"250px", minWidth:"250px", maxHeight:"250px", maxWidth:"250px"}}>
             <div className="card-header m-0 p-0 w-100">
-                <h4>{packg.title}</h4>
+                <h4>{packg.name}</h4>
             </div>
             <div className="card-body m-0 p-1 d-flex flex-column justify-content-around align-items-center">
                 <h2 className="card-title m-0 p-0">
@@ -92,7 +101,6 @@ function PricingCard({packg, setMembership}) {
                 <button
                     type="button"
                     className="btn btn btn-info m-1"
-                    name={packg.title}
                     onClick={handleMembershipSelection}
                 >
                     Seç
@@ -114,7 +122,8 @@ function RegisterCompanyManager({membership}) {
         passwordControl: "",
         email: "",
         companyName: "",
-        taxNo: ""
+        taxNo: "",
+        membershipId: ""
 
     }
 
@@ -126,9 +135,10 @@ function RegisterCompanyManager({membership}) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const saveManager = { ...user, role: "MANAGER" }
+        const saveManager = { ...user, role: "MANAGER", membershipId: membership.id }
+        console.log(JSON.stringify(saveManager));
         setUser(saveManager);
-        //POST METHODLARINDA PORT BİLGİSİ BELLİ EDİLMELİDİR VEYA localhost yerine 127.0.0.1 tercih edilmelidir !! Yoksa resp ve data 405 hatası döndürür !!
+        //POST METHODLARINDA PORT BİLGİSİ LOCAL'DE ÇALIŞILIYORSA BELLİ EDİLMELİDİR VEYA localhost yerine 127.0.0.1 tercih edilmelidir !! Yoksa resp ve data 405 hatası döndürür !!
         fetch("http://localhost:80/auth/register", {
             method: "POST",
             headers: {
@@ -136,21 +146,16 @@ function RegisterCompanyManager({membership}) {
             },
             body: JSON.stringify(saveManager)
         }).then(resp => {
-            if (resp.ok)
-                setUser({ ...defUser })
             return resp.json();
         }).then(data => {
-            if (data.message === "Email Adresi Zaten Mevcut.") {
-                console.log(data);
-                showErrorMessage(data.message)
-            } else {
-                console.log(data);
-                showSuccessMessage(data.message)
-            }
+            setUser({ ...defUser })
+            console.log(data);
+            showSuccessMessage(data.message);
         }).catch(err => {
-            console.log(err);
+            console.log(err)
             showErrorMessage(err.message)
         })
+
     }
 
     return (
@@ -162,9 +167,9 @@ function RegisterCompanyManager({membership}) {
                         <span className="text-info logo-text">İK</span>olay
                     </NavLink>
                 </div>
-                <div className="rounded mb-2 p-1  fw-bold text-def d-flex justify-content-center flex-column align-items-center" style={{height:"100px", width:"220px", background:"radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%)"}}>
-                <p className="text-center">Seçilen üyelik paketi:</p>
-                <p>{membership}</p>
+                <div className="rounded  text-def d-flex justify-content-center flex-column align-items-center mb-2 w-100" style={{height:"70px", background:"radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%)"}}>
+                <p className="text-center fw-bold m-0 p-0">Seçilen üyelik paketi:</p>
+                <p className="fw-semibold m-0 p-0"><i class="fa-regular fa-star"></i> {membership.name} <i class="fa-regular fa-star"></i></p>
 </div>
                 <label className="form-label" htmlFor="companyName">
                     Şirket Adı
@@ -215,9 +220,9 @@ function RegisterCompanyManager({membership}) {
                     {user.password != user.passwordControl && <FormValidationMessage message="Şifreler uyuşmuyor!" />}
                 </div>
 
-                <div className="d-flex justify-content-between w-100 gap-1">
+                <div className="d-flex justify-content-center w-100 gap-5 mt-2" style={{minWidth:"75%", maxWidth:"75%"}}>
                     <a className="w-100 d-flex pb-2 pt-0" href="http://localhost:5173/register">
-                        <button className=" btn btn-secondary w-100" type="button">Vazgeç</button>
+                        <button className="btn btn-secondary w-100" type="button">Vazgeç</button>
                     </a>
                     <button className=" btn btn-info mb-2 w-100 " disabled={user.password != user.passwordControl && true} type="submit">GÖNDER</button>
                 </div>
