@@ -139,9 +139,7 @@ export default function CompanyPage() {
                                 <NavLink to="/">
                                     <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
                                 </NavLink>
-                                <NavLink to="/company">
                                     <span className="navbar-brand logo-dark-text nav-link-dark">Kurumsal</span>
-                                </NavLink>
                             </div>
                             <CompanyBadge company={defCompany} />
                             <button

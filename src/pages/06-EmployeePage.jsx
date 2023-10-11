@@ -103,9 +103,7 @@ export default function EmployeePage() {
                         <NavLink to="/">
                             <img src="/img/ikolay-logo-dark.svg" alt="ikolay logo" />
                         </NavLink>
-                        <NavLink to="/employee">
                             <span className="navbar-brand logo-dark-text nav-link-dark">Personel</span>
-                        </NavLink>
                     </div>
                     <CompanyBadge company={company} />
                     <button
@@ -533,7 +531,7 @@ function Leave({ id, companyId }) {
                 >+ İzin Talebi Gir</button>
             </section>
             <section
-                className="modal fade"
+                className="modal fade text-def"
                 id="modalLeave"
                 tabIndex={-1}
                 aria-labelledby="exampleModalLabel"
