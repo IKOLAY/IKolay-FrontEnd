@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { EmployeesAllPayments } from "./09-EmployeesAllPayments";
 import { CompanysPendingPayments } from "./08-CompanysPendingPayments";
 import { EmployeeAdvanceRequests } from "../EmployeeAdvanceRequests";
+import { showErrorMessage, showSuccessMessage } from "../InfoMessages";
 
 
 
@@ -340,10 +341,42 @@ export function IncomeOutcomeForEmployeeMethod() {
 }
 
 export function AdvanceRequest() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const defAdvance = { description: "", advanceAmount: "", companyId: user.companyId, userId: user.id }
+    const [advance, setAdvance] = useState({ ...defAdvance })
+    const [advanceList, setAdvanceList] = useState([]);
+    useEffect(() => {
+        fetch(`http://localhost:80/advance/getoneemployeerequests?companyId=${user.companyId}&userId=${user.id}`).then(resp => resp.json())
+            .then(data => setAdvanceList(data))
+    }, [])
+    function handleChange(e) {
+        setAdvance({ ...advance, [e.target.name]: e.target.value })
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        fetch(`http://localhost:80/advance/sendadvancerequest`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(advance)
+        }
+        ).then(response => {
+            return response.json();
+        }).then(data => {
+            if (data.message)
+                throw new Error(data.message)
+            setAdvance({ ...defAdvance })
+            const { systemMessage, ...rest } = data
+            setAdvanceList([...advanceList,rest])
+            showSuccessMessage(systemMessage);
+        }).catch(error => showErrorMessage(error.message));
+    }
 
     return (
         <>
-            <form className="bg-light text-def p-3 rounded">
+            <form className="bg-light text-def p-3 rounded" onSubmit={handleSubmit}>
                 <h3 className="text-center">AVANS TALEBİ GİR</h3>
                 <div className="border border-info mb-2 px-3 rounded mx-auto" style={{ maxWidth: "350px" }}>
                     <p className="pt-3 small"><i className="fa-solid fa-circle-info me-1 text-info"></i> Avans talebiniz maaşınızdan yüksek olamaz!</p>
@@ -358,10 +391,12 @@ export function AdvanceRequest() {
                             <input
                                 id="advance-amount"
                                 type="number"
+                                name="advanceAmount"
                                 className="form-control"
                                 aria-label="advance-amount"
                                 placeholder="Talep ettiğiniz avans tutarını giriniz..."
-
+                                value={advance.advanceAmount}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -370,7 +405,7 @@ export function AdvanceRequest() {
                         <label htmlFor="advance-description">Açıklama</label>
                         <textarea
                             className="w-100 p-2 mt-1"
-                            name="advance-description"
+                            name="description"
                             id="advance-description"
                             placeholder="Avans talebinizin nedenini açıklayınız..."
                             cols="30"
@@ -380,6 +415,8 @@ export function AdvanceRequest() {
                             required
                             onInvalid={e => e.target.setCustomValidity('Açıklama boş olamaz!')}
                             onInput={e => e.target.setCustomValidity('')}
+                            value={advance.description}
+                            onChange={handleChange}
                         >
                         </textarea>
                     </div>
@@ -389,8 +426,8 @@ export function AdvanceRequest() {
                     <button type="submit" className="btn btn-info"><i className="fa-regular fa-paper-plane"></i> Gönder</button>
                 </div>
             </form>
-            <div className="mt-2 overflow-x-auto bg-light rounded overflow-y-auto" style={{maxHeight:"40%"}}>
-                <EmployeeAdvanceRequests />
+            <div className="mt-2 overflow-x-auto bg-light rounded overflow-y-auto" style={{ maxHeight: "40%" }}>
+                <EmployeeAdvanceRequests advanceList={advanceList}/>
             </div>
         </>
 

@@ -80,10 +80,10 @@ export default function LoginPage() {
         <main className="bg-default-h-100 d-flex justify-content-center align-items-center">
             <form typeof="submit" onSubmit={handleSubmit}>
                 <NavLink to="/">
-                    <div className="form-outline mb-4 text-center">
-                        <a className="navbar-brand logo-text " href="#">
+                    <div className="navbar-brand logo-text form-outline mb-4 text-center">
+                   
                             <span className="text-info logo-text">İK</span>olay
-                        </a>
+                    
                     </div>
                 </NavLink>
                 <div className="form-outline mb-4">
@@ -113,7 +113,7 @@ export default function LoginPage() {
                 <p className="text-center d-flex justify-content-between">
                     Üye değil misiniz? 
                     <NavLink to="/register">
-                    <a href="#!" className="text-info small text-decoration-underline">Kaydol!</a>
+                    <span className="text-info small text-decoration-underline">Kaydol!</span>
                     </NavLink>
                 </p>
 

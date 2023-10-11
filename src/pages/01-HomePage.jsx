@@ -208,14 +208,12 @@ function RoleButtons({ role, user }) {
         case null:
             return (
                 <div className="d-flex justify-content-center gap-1">
-                    <li className="nav-item">
+                   
                         <NavLink to="/login" className="nav-link text-decoration-underline">Giriş</NavLink>
-                    </li>
-                    <li>
                         <NavLink to="/register">
                             <button type="button" className="btn btn-info">Kayıt</button>
                         </NavLink>
-                    </li>
+                   
                 </div>
             )
 
