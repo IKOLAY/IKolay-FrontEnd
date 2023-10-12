@@ -96,6 +96,7 @@ export default function AddIncomeOutcome() {
                                 name="transactionAmount"
                                 value={addPayment.transactionAmount}
                                 onChange={handleChange}
+                                min="0"
                             />
                             <span className="input-group-text">TL</span>
                         </div>

@@ -169,6 +169,12 @@ function RegisterCompanyManager({ membership }) {
 
     }
 
+    function handleKeyDown(e){
+        if ((e.key < '0' || e.key > '9') && e.key !== "Backspace") {
+            e.preventDefault()
+          }
+    }
+
     return (
         <main className="bg-default-h-100 d-flex justify-content-center align-items-center">
             <form typeof="submit" onSubmit={handleSubmit} className="d-flex align-items-center flex-column justify-content-center" >
@@ -190,7 +196,7 @@ function RegisterCompanyManager({ membership }) {
 
                 <label className="form-label" htmlFor="taxNo">
                     Vergi No
-                    <input className="form-control" value={user.taxNo} id="taxNo" type="text" name="taxNo" onChange={handleChange} maxLength="10" minLength="10" onInvalid={e => e.target.setCustomValidity('Vergi no 10 haneli olmalıdır.')} onInput={e => e.target.setCustomValidity('')} title="Vergi no 10 haneli olmalıdır." required />
+                    <input className="form-control" value={user.taxNo} id="taxNo" type="text" name="taxNo" onKeyDown={handleKeyDown} onChange={handleChange} maxLength="10" minLength="10" onInvalid={e => e.target.setCustomValidity('Vergi no 10 haneli olmalıdır.')} onInput={e => e.target.setCustomValidity('')} title="Vergi no 10 haneli olmalıdır." required />
                 </label>
 
                 <label className="form-label" htmlFor="firstname">

@@ -426,12 +426,12 @@ function ClientCard(props) {
     )
 }
 
-function EmployeeReviews({ content }) {
+function EmployeeReviews({ content, updateDate }) {
     return (
         <>
             <div className="d-flex justify-content-between">
                 <p className="small mb-1"></p>
-                <p className="small mb-1 text-muted">23 Ocak 2023</p>
+                <p className="small mb-1 text-muted">{new Date(updateDate+10800000).toISOString().split("T")[0]}</p>
             </div>
             <div className="d-flex flex-row justify-content-start">
                 <img
