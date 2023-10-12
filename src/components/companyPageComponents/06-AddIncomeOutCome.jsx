@@ -373,7 +373,7 @@ export function AdvanceRequest() {
     }
 
     return (
-        <section style={{height:"100vh"}}>
+        <section style={{height:"100vh"}} className="d-flex flex-column justify-content-center">
             <form className="bg-light text-def p-3 m-3 rounded" onSubmit={handleSubmit} style={{height:"60%"}}>
                 <h3 className="text-center">AVANS TALEBİ GİR</h3>
                 <div className="border border-info mb-2 px-3 rounded mx-auto" style={{ maxWidth: "350px" }}>
