@@ -180,7 +180,7 @@ function RegisterCompanyManager({ membership }) {
                 </div>
                 <div className="rounded  text-def d-flex justify-content-center flex-column align-items-center mb-2 w-100" style={{ height: "70px", background: "radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%)" }}>
                     <p className="text-center fw-bold m-0 p-0">Seçilen üyelik paketi:</p>
-                    <p className="fw-semibold m-0 p-0"><i class="fa-regular fa-star"></i> {membership.name} <i class="fa-regular fa-star"></i></p>
+                    <p className="fw-semibold m-0 p-0"><i className="fa-regular fa-star"></i> {membership.name} <i className="fa-regular fa-star"></i></p>
                 </div>
                 <label className="form-label" htmlFor="companyName">
                     Şirket Adı

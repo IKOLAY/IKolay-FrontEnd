@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { showErrorMessage, showSuccessMessage } from "../InfoMessages";
 
 export default function ShiftSystem() {
     const user = JSON.parse(window.localStorage.getItem("user"))
@@ -35,8 +36,9 @@ export default function ShiftSystem() {
                 if (data.message)
                     throw new Error(data.message)
                 setNewShift({ ...defShift })
-                setShiftsList([...shiftsList, shifts]);
-            }).catch(err => console.log(err));
+                setShiftsList([...shiftsList, data]);
+                showSuccessMessage("Yeni vardiya başarıyla eklendi!")
+            }).catch(err => showErrorMessage("Bu vardiya adı zaten mevcut!"));
 
     }
     return (
@@ -104,7 +106,8 @@ function AssignShift({ shiftsList, setShiftsList, companyId }) {
                     throw new Error(data.message)
                 console.log(data);
                 setNewAssignShift({ ...defAssignShift })
-            }).catch(err => console.log(err));
+                showSuccessMessage("Personel vardiya ataması başarılı!")
+            }).catch(err => showErrorMessage(err.message));
     }
 
     return (
