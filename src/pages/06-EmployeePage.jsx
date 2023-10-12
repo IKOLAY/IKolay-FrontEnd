@@ -63,6 +63,7 @@ export default function EmployeePage() {
                     throw new Error(data.message)
                 }
                 setStatus("success")
+                showSuccessMessage("Yorumunuz admin onayına gönderildi!")
             }).catch(err => {
                 setStatus("error")
                 console.log(err);
@@ -513,8 +514,9 @@ function Leave({ id, companyId }) {
                 console.log(data);
                 setMyRequest([...myRequest, { ...data }])
                 setNewLeave({ ...defLeave })
+                showSuccessMessage("İzin talebiniz Yöneticinize başarıyla gönderildi!")
                 console.log(defLeave);
-            })
+            }).catch(err=>showErrorMessage(err.message))
     }
     function handleCancel(e) {
         setNewLeave({ ...defLeave })
@@ -627,7 +629,7 @@ function Leave({ id, companyId }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {myRequest != null && myRequest.map(request => <MyRequestEmployeeTableRow setMyRequest={setMyRequest} myRequest={myRequest} {...request} />)}
+                        {myRequest != null && myRequest.map(request => <MyRequestEmployeeTableRow key={request.id} setMyRequest={setMyRequest} myRequest={myRequest} {...request} />)}
                     </tbody>
                 </table>
             </section>

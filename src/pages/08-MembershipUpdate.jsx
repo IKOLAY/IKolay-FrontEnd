@@ -6,6 +6,10 @@ export default function MembershipUpdate() {
     const [membershipList, setMembershipList] = useState([]);
     const user = JSON.parse(window.localStorage.getItem("user"));
 
+    const [packsWithRibbon,setPacksWithRibbon] = useState([])
+           
+           
+
     useEffect(() => {
         fetch(`http://localhost:80/membership/getactivememberships`).then(resp => {
             if (!resp.ok)
@@ -13,6 +17,13 @@ export default function MembershipUpdate() {
             return resp.json();
         }).then(data => {
             setMembershipList(data);
+            if(data.length>0){
+                const temp = [...data];
+                temp.sort((a,b)=>{
+                    return b.activeUserCount-a.activeUserCount
+                })
+                setPacksWithRibbon(temp.filter(pack =>(temp[0].activeUserCount==pack.activeUserCount && pack.activeUserCount>0)).map(filtpack=>filtpack.id))
+            }
         }).catch(err => console.log(err))
     }, []);
 
@@ -31,7 +42,7 @@ export default function MembershipUpdate() {
             </div>
             <div className="mx-auto" style={{ maxWidth: "800px" }}>
                 <div className="row d-flex flex-wrap justify-content-center gap-2"  >
-                    {membershipList.map(p => <PricingCard key={p.title} packg={p} user={user} />)}
+                    {membershipList.map(p => <PricingCard key={p.id} packg={p} user={user} packsWithRibbon={packsWithRibbon} />)}
                 </div>
             </div>
 
@@ -39,7 +50,7 @@ export default function MembershipUpdate() {
     )
 }
 
-function PricingCard({ packg, user }) {
+function PricingCard({ packg, user,packsWithRibbon }) {
     const selectedMembership = { companyId: user.companyId, membershipId: packg.id }
     function handleMembershipSelection(e) {
         fetch(`http://localhost:80/membership/setselectedmembership`, {
@@ -65,6 +76,7 @@ function PricingCard({ packg, user }) {
 
     return (
         <div className="bg-light card col-3 text-center" style={{ minHeight: "250px", minWidth: "250px", maxHeight: "250px", maxWidth: "250px" }}>
+            {packsWithRibbon.includes(packg.id) && <div className="ribbon"><span>EN POPÜLER!</span></div>}
             <div className="card-header m-0 p-0 w-100">
                 <h4>{packg.name}</h4>
             </div>

@@ -45,9 +45,12 @@ export default function AddIncomeOutcome() {
             console.log(response);
             return response.json();
         }).then(data => {
+            if(data.message)
+            throw new Error(data.message)
             setAddPayment({ ...payment })
+            showSuccessMessage("İşleminiz başarıyla kaydedildi!")
             console.log(data);
-        }).catch(error => console.log(error));
+        }).catch(error => showErrorMessage(error.message));
     }
 
     return (
@@ -121,7 +124,7 @@ export default function AddIncomeOutcome() {
                     <button type="submit" className="btn btn-info" >EKLE</button>
                 </div>
             </form>
-            <div className="overflow-y-hidden mt-3">
+            <div className="overflow-y-auto mt-3">
                 <CompanysPendingPayments />
             </div>
         </>
