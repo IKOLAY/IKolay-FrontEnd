@@ -8,20 +8,46 @@ import AdminPage from './pages/05-AdminPage'
 import EmployeePage from './pages/06-EmployeePage'
 import Error404 from './pages/07-Error404'
 import MembershipUpdate from './pages/08-MembershipUpdate'
+import { EmployeeAuthentication } from './components/protectedRoutes/EmployeeAuthentication'
+import { CompanyAuthentication } from './components/protectedRoutes/CompanyAuthentication'
+import { AdminAuthentication } from './components/protectedRoutes/AdminAuthentication'
+import { MembershipAuthentication } from './components/protectedRoutes/MembershipAuthentication'
+import { LoginAuthentication } from './components/protectedRoutes/LoginAuthentication'
 
 function App() {
 
   return (
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/company' element={<CompanyPage />} />
-        <Route path='/admin' element={<AdminPage />} />
-        <Route path='/employee' element={<EmployeePage />} />
-        <Route path='/error' element={<Error404 />} />
-        <Route path='/membershipUpdate' element={<MembershipUpdate />} />
-      </Routes>
+    <Routes>
+
+      <Route path='*' element={<Error404 />} />
+      <Route path='/error' element={<Error404 />} />
+
+      <Route path='/' element={<HomePage />} />
+      <Route path='/register' element={<RegisterPage />} />
+
+
+      <Route path='/login' element={<LoginAuthentication />}>
+        <Route path='' element={<LoginPage />} />
+      </Route>
+
+
+      <Route path='/company' element={<CompanyAuthentication />}>
+        <Route path='' element={<CompanyPage />} />
+      </Route>
+
+      <Route path='/admin' element={<AdminAuthentication />}>
+        <Route path='' element={<AdminPage />} />
+      </Route>
+
+      <Route path='/employee' element={<EmployeeAuthentication />}>
+        <Route path='' element={<EmployeePage />} />
+      </Route>
+
+      <Route path='/membershipUpdate' element={<MembershipAuthentication />}>
+        <Route path='' element={<MembershipUpdate />} />
+      </Route>
+
+    </Routes>
   )
 }
 
