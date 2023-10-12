@@ -97,7 +97,7 @@ function PricingCard({ packg, setMembership,packsWithRibbon }) {
 
     return (
         <div className="bg-light card col-3 text-center" style={{ minHeight: "250px", minWidth: "250px", maxHeight: "250px", maxWidth: "250px" }}>
-            {packsWithRibbon.includes(packg.id) && <div className="ribbon"><span>EN POPÜLER!</span></div>}
+            {packsWithRibbon.includes(packg.id) && <div className="ribbon"><span>POPÜLER!</span></div>}
             <div className="card-header m-0 p-0 w-100">
                 <h4>{packg.name}</h4>
             </div>
