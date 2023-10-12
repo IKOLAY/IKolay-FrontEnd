@@ -62,6 +62,7 @@ export default function EmployeeLeave() {
                 if (data.message)
                     throw new Error(data.message)
                 setNewLeave({ ...defLeave })
+                setLeaveList([...leaveList,data])
                 showSuccessMessage("İzin başarıyla kaydedilmiştir.")
             }).catch(err => {
                 console.log(err)
