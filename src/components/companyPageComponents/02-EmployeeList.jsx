@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
+import { showEmployeeSaveSuccessMessage, showErrorMessage, showSuccessMessage } from "../InfoMessages";
 
 export default function EmployeeList() {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -85,15 +86,20 @@ function EmployeeAdd({ companyId, employeeList, setEmployeeList }) {
             },
             body: JSON.stringify(saveEmployee)
         }).then(resp => {
-            if (!resp.ok)
-                throw new Error("Üzgünüz, bir hata oluştu!");
             return resp.json();
         }).then(data => {
+            if (data.code) {
+                throw new Error(data.message)
+            }
             setNewEmployee({ ...defUser })
-            console.log(data);
-            const newList = [...employeeList, saveEmployee];
-            setEmployeeList(newList);
-        }).catch(err => console.log(err))
+            console.log(data);                       
+            showEmployeeSaveSuccessMessage(companyId,setEmployeeList)
+        }).catch(err => showErrorMessage(err.message))
+        
+    }
+
+    function handleChange(e) {
+        setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value })
     }
 
     function handleChange(e) {
@@ -331,7 +337,6 @@ function UpdateEmployeesSalary({ id, salary, setEmployeeList, employeeList, firs
     }
 
     function handleClick(e) {
-
         fetch("http://localhost:80/user/updatesalary", {
             method: "PUT",
             headers: {
@@ -341,15 +346,20 @@ function UpdateEmployeesSalary({ id, salary, setEmployeeList, employeeList, firs
         }).then(resp => {
             return resp.json();
         }).then(data => {
-            if (data.message)
+            if (data.message == "Parametre hatası")
+                throw new Error(data.fields[0].split(": ")[1])
+            else if (data.message) {
                 throw new Error(data.message)
+            }
             setEmployeeList(employeeList.map(emp => {
                 if (emp.id == id)
                     return { ...emp, salary: updateSalary.salary }
                 return emp;
             }))
             setUpdateSalary({ ...defUpdateSalary })
-        }).catch(err => console.log(err))
+            showSuccessMessage("Personel Maaşı Başarıyla Güncellendi !!")
+        }).catch(err => showErrorMessage(err.message))
+        
     }
 
     return (<>

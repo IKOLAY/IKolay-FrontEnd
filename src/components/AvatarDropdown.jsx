@@ -52,7 +52,18 @@ export default function AvatarDropdown({ userNameTitle, userEmailTitle, user, ro
                     aria-haspopup="true"
                     aria-expanded="false"
                 >
-                    <img width={40} className="avatar rounded-circle pt-2 me-1" src={user.photoUrl} alt="" />
+                    {user.photoUrl === null && <img
+                        src={`https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava${Math.ceil(Math.random() * 6)}-bg.webp`}
+                    alt=""
+                    style={{ width: 45, height: 45 }}
+                    className="rounded-circle"
+                            />}
+                    {user.photoUrl !== null && <img
+                        src={user.photoUrl}
+                        alt=""
+                        style={{ width: 45, height: 45 }}
+                        className="rounded-circle"
+                    />}
                 </a>
                 <div
                     className="dropdown-menu"
