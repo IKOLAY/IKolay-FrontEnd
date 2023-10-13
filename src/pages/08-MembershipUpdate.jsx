@@ -82,7 +82,7 @@ function PricingCard({ packg, user,packsWithRibbon }) {
             </div>
             <div className="card-body m-0 p-1 d-flex flex-column justify-content-around align-items-center">
                 <h2 className="card-title m-0 p-0">
-                    {packg.price} ₺ <small className="text-muted">/ ay</small>
+                {Math.floor(packg.price / (packg.membershipDuration / 30))} ₺ <small className="text-muted">/ ay</small>
                 </h2>
                 <p className="text-muted m-0 p-0" style={{ fontSize: "0.7em" }}>
                     {packg.description}

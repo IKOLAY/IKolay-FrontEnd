@@ -57,3 +57,21 @@ export function showMembershipUpdateMessage () {
       })
 }
 
+export function showEmployeeSaveSuccessMessage(companyId,setEmployeeList) {
+    //Personel kaydı sırasın mesaj dönüyor. Yeni eklenen kullanıcının idsi olmadığı için silme ve güncelleme işleminde sorun çıkıyor. Bu yüzden fetch metodu kullanıldı. Bunun yanı sıra BACKEND düzeltilince eski haline getirilebilir Fetch'e gerek kalmayacaktır !!
+    Swal.fire({
+        title: 'Tebrikler!',
+        text: "Personel Başarıyla Kaydedildi !",
+        icon: 'success',
+        confirmButtonColor: '#5cb85c',
+        confirmButtonText: 'Tamam'
+    });
+    fetch(`http://localhost:80/user/getallpersonelwithcompanyid?companyId=${companyId}`).then(resp => {
+        if (!resp.ok)
+            throw new Error("Üzgünüz, bir hata oluştu!");
+        return resp.json();
+    }).then(data => {
+        setEmployeeList(data);
+    }).catch(err => console.log(err))
+}
+

@@ -13,6 +13,7 @@ import { CompanyAuthentication } from './components/protectedRoutes/CompanyAuthe
 import { AdminAuthentication } from './components/protectedRoutes/AdminAuthentication'
 import { MembershipAuthentication } from './components/protectedRoutes/MembershipAuthentication'
 import { LoginAuthentication } from './components/protectedRoutes/LoginAuthentication'
+import { Redirect } from './components/RedirectPage'
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
         <Route path='' element={<MembershipUpdate />} />
       </Route>
 
+      <Route path='/redirect' element={<Redirect />} />
     </Routes>
   )
 }
