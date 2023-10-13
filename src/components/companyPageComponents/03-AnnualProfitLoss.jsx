@@ -7,7 +7,7 @@ export default function AnnualProfitLoss() {
 }
 
 function PeriodSelection() {
-    //companyId için => const defUser = window.localStorage.getItem("user"); dan user çekilip localstorage kaydedilecek.
+    const defUser = JSON.parse(window.localStorage.getItem("user"))
     const [cardList, setCardList] = useState([]);
     const [status, setStatus] = useState("active");
     const [period, setPeriod] = useState({ start: "", end: "" })
@@ -18,7 +18,7 @@ function PeriodSelection() {
     function handleSubmit(e) {
         e.preventDefault();
         setStatus("pending")
-        const annuals = { ...period, companyId: 1 }
+        const annuals = { ...period, companyId: defUser.companyId }
         setPeriod(annuals);
         fetch("http://localhost:80/transaction/annualprofitloss", {
             method: "POST",
